@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { useTheme } from '../context/ThemeContext';
+import API_URL from '../config/api';
 import { ProjectModal } from '../components/ProjectModal';
 import { LeaveReviewModal } from '../components/LeaveReviewModal';
 
@@ -33,21 +34,21 @@ export const Home = ({ onContactClick }) => {
   const fetchData = async () => {
     try {
       // Projects
-      const pRes = await fetch('http://localhost:5000/api/projects');
+      const pRes = await fetch(`${API_URL}/api/projects`);
       if (pRes.ok) {
         const pData = await pRes.json();
         setPinnedProjects(pData.filter(p => p.isPinnedHome === true));
       }
       
       // Team
-      const tRes = await fetch('http://localhost:5000/api/team');
+      const tRes = await fetch(`${API_URL}/api/team`);
       if (tRes.ok) {
         const tData = await tRes.json();
         setPinnedTeam(tData.filter(t => t.isPinnedHome === true));
       }
 
       // Reviews
-      const rRes = await fetch('http://localhost:5000/api/reviews');
+      const rRes = await fetch(`${API_URL}/api/reviews`);
       if (rRes.ok) {
         const rData = await rRes.json();
         setReviews(rData);
@@ -248,7 +249,7 @@ export const Home = ({ onContactClick }) => {
     setContactError('');
 
     try {
-      const res = await fetch('http://localhost:5000/api/inquiries', {
+      const res = await fetch(`${API_URL}/api/inquiries`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -721,7 +722,7 @@ export const Home = ({ onContactClick }) => {
                           formData.append('image', file);
 
                           try {
-                            const res = await fetch('http://localhost:5000/api/upload', {
+                            const res = await fetch(`${API_URL}/api/upload`, {
                               method: 'POST',
                               body: formData
                             });

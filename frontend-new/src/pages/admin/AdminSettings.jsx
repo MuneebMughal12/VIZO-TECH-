@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useTheme } from '../../context/ThemeContext';
+import API_URL from '../../config/api';
 
 export const AdminSettings = () => {
   const { theme } = useTheme();
@@ -41,7 +42,7 @@ export const AdminSettings = () => {
     if (!file.name.toLowerCase().endsWith('.svg')) throw new Error('Please select a valid SVG file.');
     const formData = new FormData();
     formData.append('image', file);
-    const res = await fetch('http://localhost:5000/api/upload', {
+    const res = await fetch(`${API_URL}/api/upload`, {
       method: 'POST',
       body: formData,
     });
@@ -135,7 +136,7 @@ export const AdminSettings = () => {
   useEffect(() => {
     const fetchSettings = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/settings');
+        const res = await fetch(`${API_URL}/api/settings`);
         if (res.ok) {
           const data = await res.json();
           setAgencyName(data.agencyName || 'VIZO TECH');
@@ -159,7 +160,7 @@ export const AdminSettings = () => {
     setError('');
 
     try {
-      const res = await fetch('http://localhost:5000/api/settings', {
+      const res = await fetch(`${API_URL}/api/settings`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

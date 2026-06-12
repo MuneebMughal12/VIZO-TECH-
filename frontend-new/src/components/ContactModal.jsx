@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useTheme } from '../context/ThemeContext';
+import API_URL from '../config/api';
 
 export const ContactModal = ({ isOpen, onClose }) => {
   const { theme } = useTheme();
@@ -35,7 +36,7 @@ export const ContactModal = ({ isOpen, onClose }) => {
     setError('');
 
     try {
-      const response = await fetch('http://localhost:5000/api/inquiries', {
+      const response = await fetch(`${API_URL}/api/inquiries`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -242,7 +243,7 @@ export const ContactModal = ({ isOpen, onClose }) => {
                       formData.append('image', file);
 
                       try {
-                        const res = await fetch('http://localhost:5000/api/upload', {
+                        const res = await fetch(`${API_URL}/api/upload`, {
                           method: 'POST',
                           body: formData
                         });

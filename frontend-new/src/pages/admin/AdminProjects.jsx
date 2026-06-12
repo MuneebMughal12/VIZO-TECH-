@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTheme } from '../../context/ThemeContext';
+import API_URL from '../../config/api';
 
 export const AdminProjects = () => {
   const { theme } = useTheme();
@@ -35,7 +36,7 @@ export const AdminProjects = () => {
 
   const fetchProjects = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/projects');
+      const res = await fetch(`${API_URL}/api/projects`);
       if (res.ok) {
         const data = await res.json();
         setProjects(data);
@@ -99,7 +100,7 @@ export const AdminProjects = () => {
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to remove this project?')) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/projects/${id}`, {
+      const res = await fetch(`${API_URL}/api/projects/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -119,7 +120,7 @@ export const AdminProjects = () => {
   const handleTogglePin = async (proj) => {
     try {
       const updatedPin = !proj.isPinnedHome;
-      const res = await fetch(`http://localhost:5000/api/projects/${proj._id}`, {
+      const res = await fetch(`${API_URL}/api/projects/${proj._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -165,8 +166,8 @@ export const AdminProjects = () => {
 
     try {
       const url = editId 
-        ? `http://localhost:5000/api/projects/${editId}` 
-        : 'http://localhost:5000/api/projects';
+        ? `${API_URL}/api/projects/${editId}` 
+        : `${API_URL}/api/projects`;
       
       const method = editId ? 'PUT' : 'POST';
 
@@ -484,7 +485,7 @@ export const AdminProjects = () => {
                           formData.append('image', file);
                           
                           try {
-                            const res = await fetch('http://localhost:5000/api/upload', {
+                            const res = await fetch(`${API_URL}/api/upload`, {
                               method: 'POST',
                               headers: {
                                 'Authorization': `Bearer ${token}`

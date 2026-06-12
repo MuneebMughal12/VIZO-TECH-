@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTheme } from '../context/ThemeContext';
 import { ProjectModal } from '../components/ProjectModal';
+import API_URL from '../config/api';
 
 export const Projects = () => {
   const { theme } = useTheme();
@@ -12,7 +13,7 @@ export const Projects = () => {
 
   const fetchProjects = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/projects');
+      const res = await fetch(`${API_URL}/api/projects`);
       if (res.ok) {
         const data = await res.json();
         setProjects(data);

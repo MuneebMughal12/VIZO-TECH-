@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTheme } from '../../context/ThemeContext';
+import API_URL from '../../config/api';
 
 export const AdminDashboard = () => {
   const { theme } = useTheme();
@@ -16,21 +17,21 @@ export const AdminDashboard = () => {
         const headers = { 'Authorization': `Bearer ${token}` };
 
         // Projects
-        const pRes = await fetch('http://localhost:5000/api/projects');
+        const pRes = await fetch(`${API_URL}/api/projects`);
         if (pRes.ok) {
           const pData = await pRes.json();
           setProjects(pData);
         }
 
         // Team count
-        const tRes = await fetch('http://localhost:5000/api/team');
+        const tRes = await fetch(`${API_URL}/api/team`);
         if (tRes.ok) {
           const tData = await tRes.json();
           setTeamCount(tData.length);
         }
 
         // Analytics
-        const aRes = await fetch('http://localhost:5000/api/analytics/stats', { headers });
+        const aRes = await fetch(`${API_URL}/api/analytics/stats`, { headers });
         if (aRes.ok) {
           const aData = await aRes.json();
           setTotalVisits(aData.totalVisits);

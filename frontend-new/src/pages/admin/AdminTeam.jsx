@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTheme } from '../../context/ThemeContext';
+import API_URL from '../../config/api';
 
 export const AdminTeam = () => {
   const { theme } = useTheme();
@@ -21,7 +22,7 @@ export const AdminTeam = () => {
 
   const fetchTeam = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/team');
+      const res = await fetch(`${API_URL}/api/team`);
       if (res.ok) {
         const data = await res.json();
         setTeam(data);
@@ -64,7 +65,7 @@ export const AdminTeam = () => {
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to remove this team member?')) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/team/${id}`, {
+      const res = await fetch(`${API_URL}/api/team/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -83,7 +84,7 @@ export const AdminTeam = () => {
 
   const handleTogglePin = async (member) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/team/${member._id}`, {
+      const res = await fetch(`${API_URL}/api/team/${member._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -119,8 +120,8 @@ export const AdminTeam = () => {
 
     try {
       const url = editId 
-        ? `http://localhost:5000/api/team/${editId}` 
-        : 'http://localhost:5000/api/team';
+        ? `${API_URL}/api/team/${editId}` 
+        : `${API_URL}/api/team`;
       
       const method = editId ? 'PUT' : 'POST';
 
@@ -357,7 +358,7 @@ export const AdminTeam = () => {
                         formData.append('image', file);
                         
                         try {
-                          const res = await fetch('http://localhost:5000/api/upload', {
+                          const res = await fetch(`${API_URL}/api/upload`, {
                             method: 'POST',
                             headers: {
                               'Authorization': `Bearer ${token}`

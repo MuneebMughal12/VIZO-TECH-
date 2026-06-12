@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTheme } from '../../context/ThemeContext';
+import API_URL from '../../config/api';
 
 export const AdminReviews = () => {
   const { theme } = useTheme();
@@ -10,7 +11,7 @@ export const AdminReviews = () => {
 
   const fetchReviews = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/reviews/all', {
+      const res = await fetch(`${API_URL}/api/reviews/all`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (res.ok) {
@@ -30,7 +31,7 @@ export const AdminReviews = () => {
 
   const handleApprove = async (id) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/reviews/${id}`, {
+      const res = await fetch(`${API_URL}/api/reviews/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -54,7 +55,7 @@ export const AdminReviews = () => {
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to remove this review?')) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/reviews/${id}`, {
+      const res = await fetch(`${API_URL}/api/reviews/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });

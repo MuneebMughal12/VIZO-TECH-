@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTheme } from '../context/ThemeContext';
+import API_URL from '../config/api';
 
 export const Team = () => {
   const { theme } = useTheme();
@@ -7,7 +8,7 @@ export const Team = () => {
 
   const fetchTeam = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/team');
+      const res = await fetch(`${API_URL}/api/team`);
       if (res.ok) {
         const data = await res.json();
         setTeam(data);

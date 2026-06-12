@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useTheme } from '../context/ThemeContext';
+import API_URL from '../config/api';
 
 export const LeaveReviewModal = ({ isOpen, onClose }) => {
   const { theme } = useTheme();
@@ -24,7 +25,7 @@ export const LeaveReviewModal = ({ isOpen, onClose }) => {
     setError('');
 
     try {
-      const response = await fetch('http://localhost:5000/api/reviews', {
+      const response = await fetch(`${API_URL}/api/reviews`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

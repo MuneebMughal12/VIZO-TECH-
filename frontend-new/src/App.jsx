@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation, Link } from 'react-router-dom';
+import API_URL from './config/api';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
 import { Navbar } from './components/Navbar';
 import { ContactModal } from './components/ContactModal';
@@ -70,7 +71,7 @@ const AppContent = () => {
 
     const hasVisited = sessionStorage.getItem('vizo_session_visited');
     if (!hasVisited) {
-      fetch('http://localhost:5000/api/analytics/hit', {
+      fetch(`${API_URL}/api/analytics/hit`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ path: location.pathname })

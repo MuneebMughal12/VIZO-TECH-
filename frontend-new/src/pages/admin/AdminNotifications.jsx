@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTheme } from '../../context/ThemeContext';
+import API_URL from '../../config/api';
 
 export const AdminNotifications = () => {
   const { theme } = useTheme();
@@ -12,7 +13,7 @@ export const AdminNotifications = () => {
 
   const fetchInquiries = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/inquiries', {
+      const res = await fetch(`${API_URL}/api/inquiries`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (res.ok) {
@@ -37,7 +38,7 @@ export const AdminNotifications = () => {
 
   const markAsRead = async (id) => {
     try {
-      await fetch(`http://localhost:5000/api/inquiries/${id}`, {
+      await fetch(`${API_URL}/api/inquiries/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -65,7 +66,7 @@ export const AdminNotifications = () => {
 
     setSending(true);
     try {
-      const res = await fetch(`http://localhost:5000/api/inquiries/${selectedInquiry._id}/reply`, {
+      const res = await fetch(`${API_URL}/api/inquiries/${selectedInquiry._id}/reply`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
