@@ -8,12 +8,10 @@ connectDB();
 
 const app = express();
 
-const path = require('path');
-
 // Middleware
 app.use(cors());
 app.use(express.json());
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// Note: /uploads static serving removed - images are now hosted on Cloudinary CDN
 
 // Mount routers
 app.use('/api/admin', require('./routes/admin'));
