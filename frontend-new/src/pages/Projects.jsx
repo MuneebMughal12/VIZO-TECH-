@@ -10,19 +10,31 @@ export const Projects = () => {
 
   const categories = ['All', 'Design', 'AI', 'Development', 'Digital Marketing'];
 
+  const fetchProjects = async () => {
+    try {
+      const res = await fetch('http://localhost:5000/api/projects');
+      if (res.ok) {
+        const data = await res.json();
+        setProjects(data);
+      }
+    } catch (err) {
+      console.error('Error fetching projects:', err);
+    }
+  };
+
   useEffect(() => {
-    const fetchProjects = async () => {
-      try {
-        const res = await fetch('http://localhost:5000/api/projects');
-        if (res.ok) {
-          const data = await res.json();
-          setProjects(data);
-        }
-      } catch (err) {
-        console.error('Error fetching projects:', err);
+    fetchProjects();
+
+    const syncChannel = new BroadcastChannel('vizo_data_sync');
+    syncChannel.onmessage = (event) => {
+      if (event.data === 'refresh_projects') {
+        fetchProjects();
       }
     };
-    fetchProjects();
+
+    return () => {
+      syncChannel.close();
+    };
   }, []);
 
   const filteredProjects = activeCategory === 'All' 

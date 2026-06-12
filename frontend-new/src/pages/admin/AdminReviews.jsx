@@ -40,6 +40,11 @@ export const AdminReviews = () => {
       });
       if (res.ok) {
         fetchReviews();
+
+        // Broadcast data sync
+        const channel = new BroadcastChannel('vizo_data_sync');
+        channel.postMessage('refresh_reviews');
+        channel.close();
       }
     } catch (err) {
       console.error('Failed to approve review:', err);
@@ -55,6 +60,11 @@ export const AdminReviews = () => {
       });
       if (res.ok) {
         setReviews(prev => prev.filter(r => r._id !== id));
+
+        // Broadcast data sync
+        const channel = new BroadcastChannel('vizo_data_sync');
+        channel.postMessage('refresh_reviews');
+        channel.close();
       }
     } catch (err) {
       console.error('Failed to delete review:', err);

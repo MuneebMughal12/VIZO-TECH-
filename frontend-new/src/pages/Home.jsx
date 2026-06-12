@@ -30,34 +30,46 @@ export const Home = ({ onContactClick }) => {
   const [contactUploading, setContactUploading] = useState(false);
 
   // Fetch baseline data
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // Projects
-        const pRes = await fetch('http://localhost:5000/api/projects');
-        if (pRes.ok) {
-          const pData = await pRes.json();
-          setPinnedProjects(pData.filter(p => p.isPinnedHome === true));
-        }
-        
-        // Team
-        const tRes = await fetch('http://localhost:5000/api/team');
-        if (tRes.ok) {
-          const tData = await tRes.json();
-          setPinnedTeam(tData.filter(t => t.isPinnedHome === true));
-        }
+  const fetchData = async () => {
+    try {
+      // Projects
+      const pRes = await fetch('http://localhost:5000/api/projects');
+      if (pRes.ok) {
+        const pData = await pRes.json();
+        setPinnedProjects(pData.filter(p => p.isPinnedHome === true));
+      }
+      
+      // Team
+      const tRes = await fetch('http://localhost:5000/api/team');
+      if (tRes.ok) {
+        const tData = await tRes.json();
+        setPinnedTeam(tData.filter(t => t.isPinnedHome === true));
+      }
 
-        // Reviews
-        const rRes = await fetch('http://localhost:5000/api/reviews');
-        if (rRes.ok) {
-          const rData = await rRes.json();
-          setReviews(rData);
-        }
-      } catch (err) {
-        console.error('Failed to load homepage data:', err);
+      // Reviews
+      const rRes = await fetch('http://localhost:5000/api/reviews');
+      if (rRes.ok) {
+        const rData = await rRes.json();
+        setReviews(rData);
+      }
+    } catch (err) {
+      console.error('Failed to load homepage data:', err);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+
+    const syncChannel = new BroadcastChannel('vizo_data_sync');
+    syncChannel.onmessage = (event) => {
+      if (['refresh_team', 'refresh_projects', 'refresh_reviews'].includes(event.data)) {
+        fetchData();
       }
     };
-    fetchData();
+
+    return () => {
+      syncChannel.close();
+    };
   }, []);
 
   // Three.js 3D Background effect

@@ -70,6 +70,11 @@ export const AdminTeam = () => {
       });
       if (res.ok) {
         setTeam(prev => prev.filter(m => m._id !== id));
+        
+        // Broadcast data sync
+        const channel = new BroadcastChannel('vizo_data_sync');
+        channel.postMessage('refresh_team');
+        channel.close();
       }
     } catch (err) {
       console.error('Failed to delete team member:', err);
@@ -89,6 +94,11 @@ export const AdminTeam = () => {
       if (res.ok) {
         const updated = await res.json();
         setTeam(prev => prev.map(m => m._id === member._id ? updated : m));
+
+        // Broadcast data sync
+        const channel = new BroadcastChannel('vizo_data_sync');
+        channel.postMessage('refresh_team');
+        channel.close();
       }
     } catch (err) {
       console.error('Failed to toggle pin status:', err);
@@ -126,6 +136,11 @@ export const AdminTeam = () => {
       if (res.ok) {
         setShowModal(false);
         fetchTeam();
+
+        // Broadcast data sync
+        const channel = new BroadcastChannel('vizo_data_sync');
+        channel.postMessage('refresh_team');
+        channel.close();
       }
     } catch (err) {
       console.error('Failed to save team member:', err);

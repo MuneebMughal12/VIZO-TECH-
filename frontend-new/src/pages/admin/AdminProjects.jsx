@@ -105,6 +105,11 @@ export const AdminProjects = () => {
       });
       if (res.ok) {
         setProjects(prev => prev.filter(p => p._id !== id));
+
+        // Broadcast data sync
+        const channel = new BroadcastChannel('vizo_data_sync');
+        channel.postMessage('refresh_projects');
+        channel.close();
       }
     } catch (err) {
       console.error('Failed to delete project:', err);
@@ -124,6 +129,11 @@ export const AdminProjects = () => {
       });
       if (res.ok) {
         setProjects(prev => prev.map(p => p._id === proj._id ? { ...p, isPinnedHome: updatedPin } : p));
+
+        // Broadcast data sync
+        const channel = new BroadcastChannel('vizo_data_sync');
+        channel.postMessage('refresh_projects');
+        channel.close();
       }
     } catch (err) {
       console.error('Failed to toggle pin:', err);
@@ -172,6 +182,11 @@ export const AdminProjects = () => {
       if (res.ok) {
         setShowModal(false);
         fetchProjects();
+
+        // Broadcast data sync
+        const channel = new BroadcastChannel('vizo_data_sync');
+        channel.postMessage('refresh_projects');
+        channel.close();
       }
     } catch (err) {
       console.error('Failed to save project:', err);

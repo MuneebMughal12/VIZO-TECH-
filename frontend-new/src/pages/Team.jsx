@@ -5,19 +5,31 @@ export const Team = () => {
   const { theme } = useTheme();
   const [team, setTeam] = useState([]);
 
+  const fetchTeam = async () => {
+    try {
+      const res = await fetch('http://localhost:5000/api/team');
+      if (res.ok) {
+        const data = await res.json();
+        setTeam(data);
+      }
+    } catch (err) {
+      console.error('Error fetching team:', err);
+    }
+  };
+
   useEffect(() => {
-    const fetchTeam = async () => {
-      try {
-        const res = await fetch('http://localhost:5000/api/team');
-        if (res.ok) {
-          const data = await res.json();
-          setTeam(data);
-        }
-      } catch (err) {
-        console.error('Error fetching team:', err);
+    fetchTeam();
+
+    const syncChannel = new BroadcastChannel('vizo_data_sync');
+    syncChannel.onmessage = (event) => {
+      if (event.data === 'refresh_team') {
+        fetchTeam();
       }
     };
-    fetchTeam();
+
+    return () => {
+      syncChannel.close();
+    };
   }, []);
 
   return (
@@ -67,7 +79,7 @@ export const Team = () => {
                   }`}>
                     {member.role}
                   </p>
-                  <p className="text-xs text-on-surface-variant leading-relaxed line-clamp-3 mb-6">
+                  <p className="text-xs text-on-surface-variant leading-relaxed mb-6">
                     {member.bio}
                   </p>
                 </div>
