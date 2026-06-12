@@ -8,8 +8,22 @@ connectDB();
 
 const app = express();
 
-// Middleware
-app.use(cors());
+// CORS — allow frontend origin (set FRONTEND_URL in env for production)
+const allowedOrigins = [
+  process.env.FRONTEND_URL,         // e.g. https://vizo-tech-xyz.vercel.app
+  'http://localhost:5173',          // local dev
+  'http://localhost:3000',          // local dev alternative
+].filter(Boolean);
+
+app.use(cors({
+  origin: function (origin, callback) {
+    // Allow requests with no origin (mobile apps, Postman, etc.)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) return callback(null, true);
+    callback(new Error('Not allowed by CORS'));
+  },
+  credentials: true
+}));
 app.use(express.json());
 // Note: /uploads static serving removed - images are now hosted on Cloudinary CDN
 
