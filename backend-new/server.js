@@ -3,9 +3,6 @@ const cors = require('cors');
 require('dotenv').config();
 const connectDB = require('./db');
 
-// Initialize database
-connectDB();
-
 const app = express();
 
 // CORS — allow all origins (required for Vercel serverless)
@@ -20,6 +17,17 @@ app.use(cors({
 app.options('*', cors());
 
 app.use(express.json());
+
+// Connect to DB on each request (connection is cached/reused)
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (err) {
+    console.error('DB connection failed:', err.message);
+    res.status(500).json({ msg: 'Database connection failed' });
+  }
+});
 
 // Mount routers
 app.use('/api/admin', require('./routes/admin'));

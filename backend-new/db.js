@@ -1,49 +1,37 @@
 const mongoose = require('mongoose');
-const { MongoMemoryServer } = require('mongodb-memory-server');
 require('dotenv').config();
 
-let mongoServer;
+// Cache the connection across serverless function invocations
+let isConnected = false;
 
 const connectDB = async () => {
+  // If already connected, reuse the connection
+  if (isConnected && mongoose.connection.readyState === 1) {
+    console.log('Reusing existing MongoDB connection');
+    return;
+  }
+
   try {
-    const connURI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/vizo_tech';
-    
-    if (connURI.includes('127.0.0.1') || connURI.includes('localhost')) {
-      try {
-        console.log('Checking for existing local MongoDB instance...');
-        await mongoose.connect(connURI, { serverSelectionTimeoutMS: 2000 });
-        console.log('MongoDB Connected successfully to existing instance');
-        return;
-      } catch (err) {
-        console.log('Local MongoDB not detected. Starting in-memory MongoDB server on a random free port...');
-        
-        try {
-          mongoServer = await MongoMemoryServer.create({
-            instance: {
-              dbName: 'vizo_tech'
-            }
-          });
-          const serverUri = mongoServer.getUri();
-          console.log(`In-memory MongoDB Server active at: ${serverUri}`);
-          
-          await mongoose.disconnect();
-          await mongoose.connect(serverUri);
-          console.log('MongoDB Connected successfully to in-memory instance');
-          return;
-        } catch (memErr) {
-          console.error(`Failed to start in-memory MongoDB server: ${memErr.message}`);
-          throw memErr;
-        }
-      }
+    const connURI = process.env.MONGODB_URI;
+
+    if (!connURI) {
+      throw new Error('MONGODB_URI environment variable is not set');
     }
 
-    console.log(`Connecting to MongoDB at: ${connURI}`);
-    await mongoose.connect(connURI);
+    await mongoose.connect(connURI, {
+      serverSelectionTimeoutMS: 10000,
+      socketTimeoutMS: 45000,
+    });
+
+    isConnected = true;
     console.log('MongoDB Connected successfully');
   } catch (error) {
+    isConnected = false;
     console.error(`MongoDB connection error: ${error.message}`);
-    process.exit(1);
+    // Do NOT call process.exit() on Vercel — it kills the serverless function
+    throw error;
   }
 };
 
 module.exports = connectDB;
+
