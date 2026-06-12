@@ -8,24 +8,18 @@ connectDB();
 
 const app = express();
 
-// CORS — allow frontend origins
+// CORS — allow all origins (required for Vercel serverless)
 app.use(cors({
-  origin: function (origin, callback) {
-    // Allow: no origin (Postman/mobile), localhost, any vercel.app domain
-    if (
-      !origin ||
-      origin.includes('localhost') ||
-      origin.includes('vercel.app') ||
-      origin === process.env.FRONTEND_URL
-    ) {
-      return callback(null, true);
-    }
-    callback(new Error('Not allowed by CORS'));
-  },
-  credentials: true
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: false
 }));
+
+// Handle preflight OPTIONS requests
+app.options('*', cors());
+
 app.use(express.json());
-// Note: /uploads static serving removed - images are now hosted on Cloudinary CDN
 
 // Mount routers
 app.use('/api/admin', require('./routes/admin'));
@@ -42,9 +36,6 @@ app.get('/', (req, res) => {
   res.json({ msg: 'VIZO TECH API Operational' });
 });
 
-// Port configuration
-const PORT = process.env.PORT || 5000;
+// Export for Vercel serverless (do NOT use app.listen on Vercel)
+module.exports = app;
 
-app.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`);
-});
