@@ -300,7 +300,7 @@ export const Home = ({ onContactClick }) => {
           <h2 className="font-display-lg text-4xl md:text-display-lg font-bold">What we do</h2>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
           {/* Design */}
           <div className="glass-card p-10 group hover:-translate-y-2 transition-transform duration-500 rounded-2xl">
             <div className="w-16 h-16 rounded-2xl bg-[#00f0ff]/10 flex items-center justify-center mb-8 border border-[#00f0ff]/20">
@@ -331,6 +331,17 @@ export const Home = ({ onContactClick }) => {
             <h3 className="font-headline-lg text-2xl font-bold mb-4">Technical Development</h3>
             <p className="text-on-surface-variant leading-relaxed text-sm">
               High-performance engineering that scales. Robust backend architectures built for precision, speed, and absolute reliability.
+            </p>
+          </div>
+
+          {/* Digital Marketing */}
+          <div className="glass-card p-10 group hover:-translate-y-2 transition-transform duration-500 rounded-2xl">
+            <div className="w-16 h-16 rounded-2xl bg-orange-500/10 flex items-center justify-center mb-8 border border-orange-500/20">
+              <span className="material-symbols-outlined text-orange-400 text-3xl">trending_up</span>
+            </div>
+            <h3 className="font-headline-lg text-2xl font-bold mb-4">Digital Marketing</h3>
+            <p className="text-on-surface-variant leading-relaxed text-sm">
+              Accelerating brand authority and organic reach through data-driven SEO, strategic content marketing, and hyper-targeted conversion optimization.
             </p>
           </div>
         </div>
