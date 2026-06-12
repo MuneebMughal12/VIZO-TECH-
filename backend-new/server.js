@@ -23,6 +23,7 @@ app.use('/api/reviews', require('./routes/reviews'));
 app.use('/api/inquiries', require('./routes/inquiries'));
 app.use('/api/settings', require('./routes/settings'));
 app.use('/api/upload', require('./routes/upload'));
+app.use('/api/analytics', require('./routes/analytics'));
 
 // Base route for testing
 app.get('/', (req, res) => {

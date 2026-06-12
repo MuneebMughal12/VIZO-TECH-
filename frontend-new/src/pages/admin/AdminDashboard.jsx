@@ -5,6 +5,9 @@ export const AdminDashboard = () => {
   const { theme } = useTheme();
   const [projects, setProjects] = useState([]);
   const [teamCount, setTeamCount] = useState(0);
+  const [totalVisits, setTotalVisits] = useState(0);
+  const [weeklyTraffic, setWeeklyTraffic] = useState([0, 0, 0, 0, 0, 0, 0]);
+  const [daysLabel, setDaysLabel] = useState(['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,12 +28,50 @@ export const AdminDashboard = () => {
           const tData = await tRes.json();
           setTeamCount(tData.length);
         }
+
+        // Analytics
+        const aRes = await fetch('http://localhost:5000/api/analytics/stats', { headers });
+        if (aRes.ok) {
+          const aData = await aRes.json();
+          setTotalVisits(aData.totalVisits);
+          setWeeklyTraffic(aData.chartData);
+          setDaysLabel(aData.daysLabel);
+        }
       } catch (err) {
         console.error('Failed to load dashboard metrics:', err);
       }
     };
     fetchData();
   }, []);
+
+  const maxVisits = Math.max(...weeklyTraffic, 10);
+  const points = weeklyTraffic.map((count, index) => {
+    const x = Math.round((index / 6) * 800);
+    const y = Math.round(180 - (count / maxVisits) * 140); // Max height limit is Y=40 for peak traffic
+    return { x, y };
+  });
+
+  const pathD = points.reduce((acc, p, idx) => {
+    if (idx === 0) return `M${p.x},${p.y}`;
+    const prev = points[idx - 1];
+    const cpX1 = prev.x + 60;
+    const cpY1 = prev.y;
+    const cpX2 = p.x - 60;
+    const cpY2 = p.y;
+    return `${acc} C${cpX1},${cpY1} ${cpX2},${cpY2} ${p.x},${p.y}`;
+  }, '');
+
+  const pathReferralD = points.reduce((acc, p, idx) => {
+    const yRef = Math.min(180, Math.round(180 - (p.y * 0.1))); // Slightly offset/lower Referral line
+    if (idx === 0) return `M${p.x},${yRef}`;
+    const prev = points[idx - 1];
+    const prevYRef = Math.min(180, Math.round(180 - (prev.y * 0.1)));
+    const cpX1 = prev.x + 60;
+    const cpY1 = prevYRef;
+    const cpX2 = p.x - 60;
+    const cpY2 = yRef;
+    return `${acc} C${cpX1},${cpY1} ${cpX2},${cpY2} ${p.x},${yRef}`;
+  }, '');
 
   return (
     <div className="space-y-12">
@@ -76,7 +117,7 @@ export const AdminDashboard = () => {
           </div>
           <div className="mt-8">
             <h3 className="text-on-surface-variant font-label-sm text-[10px] uppercase tracking-widest">Site Visits</h3>
-            <p className="text-4xl font-extrabold mt-2">4.2k</p>
+            <p className="text-4xl font-extrabold mt-2">{totalVisits}</p>
           </div>
         </div>
 
@@ -114,34 +155,42 @@ export const AdminDashboard = () => {
               <line stroke="rgba(255,255,255,0.05)" strokeWidth="1" x1="0" x2="800" y1="120" y2="120" />
               <line stroke="rgba(255,255,255,0.05)" strokeWidth="1" x1="0" x2="800" y1="60" y2="60" />
               
-              <path 
-                className="drop-shadow-[0_0_8px_rgba(0,240,255,0.3)]" 
-                d="M0,150 Q100,140 200,80 T400,100 T600,40 T800,60" 
-                fill="none" 
-                stroke={theme === 'dark' ? '#00f0ff' : '#0052FF'} 
-                strokeLinecap="round" 
-                strokeWidth="4" 
-              />
-              <path 
-                d="M0,180 Q150,170 300,130 T500,150 T800,90" 
-                fill="none" 
-                stroke="#9d05ff" 
-                strokeDasharray="8 4" 
-                strokeLinecap="round" 
-                strokeWidth="2" 
-              />
-              <circle cx="200" cy="80" fill={theme === 'dark' ? '#00f0ff' : '#0052FF'} r="6" />
-              <circle cx="600" cy="40" fill={theme === 'dark' ? '#00f0ff' : '#0052FF'} r="6" />
+              {pathD && (
+                <path 
+                  className="drop-shadow-[0_0_8px_rgba(0,240,255,0.3)]" 
+                  d={pathD} 
+                  fill="none" 
+                  stroke={theme === 'dark' ? '#00f0ff' : '#0052FF'} 
+                  strokeLinecap="round" 
+                  strokeWidth="4" 
+                />
+              )}
+              {pathReferralD && (
+                <path 
+                  d={pathReferralD} 
+                  fill="none" 
+                  stroke="#9d05ff" 
+                  strokeDasharray="8 4" 
+                  strokeLinecap="round" 
+                  strokeWidth="2" 
+                />
+              )}
+              {points.map((p, idx) => (
+                <circle 
+                  key={idx} 
+                  cx={p.x} 
+                  cy={p.y} 
+                  fill={theme === 'dark' ? '#00f0ff' : '#0052FF'} 
+                  r="5" 
+                  title={`${weeklyTraffic[idx]} visits`}
+                />
+              ))}
             </svg>
           </div>
           <div className="flex justify-between mt-6 px-2 text-on-surface-variant font-label-sm text-[10px] uppercase tracking-wider">
-            <span>Mon</span>
-            <span>Tue</span>
-            <span>Wed</span>
-            <span>Thu</span>
-            <span>Fri</span>
-            <span>Sat</span>
-            <span>Sun</span>
+            {daysLabel.map((label, idx) => (
+              <span key={idx}>{label}</span>
+            ))}
           </div>
         </div>
 

@@ -64,6 +64,26 @@ const AppContent = () => {
   // Hide main Navbar on admin routes
   const isAdminRoute = location.pathname.startsWith('/admin');
 
+  // Track site visit once per session
+  useEffect(() => {
+    if (isAdminRoute) return;
+
+    const hasVisited = sessionStorage.getItem('vizo_session_visited');
+    if (!hasVisited) {
+      fetch('http://localhost:5000/api/analytics/hit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ path: location.pathname })
+      })
+      .then(res => {
+        if (res.ok) {
+          sessionStorage.setItem('vizo_session_visited', 'true');
+        }
+      })
+      .catch(err => console.error('Failed to log site visit:', err));
+    }
+  }, [location.pathname, isAdminRoute]);
+
   return (
     <div className={`min-h-screen transition-colors duration-500 ease-in-out ${theme === 'dark' ? 'bg-[#050505] text-[#e5e2e1]' : 'bg-[#ffffff] text-[#1a1c1c]'
       }`}>
