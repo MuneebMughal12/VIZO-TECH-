@@ -40,11 +40,21 @@ export const Navbar = ({ onContactClick }) => {
         refreshLogo();
       }
     };
+
+    // BroadcastChannel for cross-tab instant sync
+    const channel = new BroadcastChannel('vizo_branding');
+    channel.onmessage = (event) => {
+      if (event.data === 'update') {
+        refreshLogo();
+      }
+    };
+
     window.addEventListener('vizo_branding_updated', handleBrandingUpdate);
     window.addEventListener('storage', handleStorageChange);
     return () => {
       window.removeEventListener('vizo_branding_updated', handleBrandingUpdate);
       window.removeEventListener('storage', handleStorageChange);
+      channel.close();
     };
   }, []);
 
@@ -81,7 +91,7 @@ export const Navbar = ({ onContactClick }) => {
             <img
               src={customLogo}
               alt="VIZO TECH Logo"
-              className="h-9 max-w-[160px] object-contain"
+              className="h-12 md:h-14 max-w-[200px] object-contain"
               style={{ filter: theme === 'dark' ? 'brightness(1)' : 'brightness(0.9)' }}
             />
           ) : (

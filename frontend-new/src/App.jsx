@@ -40,11 +40,21 @@ const AppContent = () => {
     const handleStorageChange = (e) => {
       if (e.key === 'vizo_logo_dark' || e.key === 'vizo_logo_light' || e.key === null) refreshFooterLogo();
     };
+
+    // BroadcastChannel for cross-tab instant sync
+    const channel = new BroadcastChannel('vizo_branding');
+    channel.onmessage = (event) => {
+      if (event.data === 'update') {
+        refreshFooterLogo();
+      }
+    };
+
     window.addEventListener('vizo_branding_updated', handleBrandingUpdate);
     window.addEventListener('storage', handleStorageChange);
     return () => {
       window.removeEventListener('vizo_branding_updated', handleBrandingUpdate);
       window.removeEventListener('storage', handleStorageChange);
+      channel.close();
     };
   }, []);
 
@@ -97,7 +107,7 @@ const AppContent = () => {
                   <img
                     src={customFooterLogo}
                     alt="VIZO TECH Logo"
-                    className="h-8 max-w-[140px] object-contain brightness-100"
+                    className="h-11 md:h-12 max-w-[180px] object-contain brightness-100"
                     style={{ filter: 'brightness(1) invert(0)' }}
                   />
                 ) : (

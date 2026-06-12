@@ -66,11 +66,21 @@ export const ThemeProvider = ({ children }) => {
         applyFavicon();
       }
     };
+
+    // BroadcastChannel for cross-tab instant sync
+    const channel = new BroadcastChannel('vizo_branding');
+    channel.onmessage = (event) => {
+      if (event.data === 'update') {
+        applyFavicon();
+      }
+    };
+
     window.addEventListener('vizo_branding_updated', handleBrandingUpdate);
     window.addEventListener('storage', handleStorageChange);
     return () => {
       window.removeEventListener('vizo_branding_updated', handleBrandingUpdate);
       window.removeEventListener('storage', handleStorageChange);
+      channel.close();
     };
   }, []);
 

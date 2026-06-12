@@ -53,6 +53,17 @@ export const AdminSettings = () => {
     return data.fileUrl || data.imageUrl;
   };
 
+  const triggerBrandingUpdate = () => {
+    window.dispatchEvent(new Event('vizo_branding_updated'));
+    try {
+      const channel = new BroadcastChannel('vizo_branding');
+      channel.postMessage('update');
+      channel.close();
+    } catch (err) {
+      console.error('BroadcastChannel failed:', err);
+    }
+  };
+
   const makeLogoHandler = (lsKey, setter, label, ref) => async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -62,7 +73,7 @@ export const AdminSettings = () => {
       localStorage.setItem(lsKey, url);
       setter(url);
       showMsg(lsKey, label + ' logo uploaded successfully!');
-      window.dispatchEvent(new Event('vizo_branding_updated'));
+      triggerBrandingUpdate();
     } catch (err) {
       showMsg(lsKey, err.message, true);
     } finally {
@@ -75,7 +86,7 @@ export const AdminSettings = () => {
     setter('');
     if (ref.current) ref.current.value = '';
     showMsg(lsKey, label + ' logo reset to default.');
-    window.dispatchEvent(new Event('vizo_branding_updated'));
+    triggerBrandingUpdate();
   };
 
   const makeFavHandler = (lsKey, setter, label) => async (e) => {
@@ -87,7 +98,8 @@ export const AdminSettings = () => {
       localStorage.setItem(lsKey, url);
       setter(url);
       showMsg(lsKey, label + ' favicon uploaded! It will show in the browser tab.');
-      // Apply immediately if current theme matches
+      
+      // Apply immediately to current tab if current theme matches
       const currentTheme = localStorage.getItem('vizo_theme') || 'dark';
       const isDarkKey = lsKey.includes('dark');
       if ((currentTheme === 'dark') === isDarkKey) {
@@ -95,6 +107,7 @@ export const AdminSettings = () => {
         if (!link) { link = document.createElement('link'); link.rel = 'icon'; document.head.appendChild(link); }
         link.href = url;
       }
+      triggerBrandingUpdate();
     } catch (err) {
       showMsg(lsKey, err.message, true);
     } finally {
@@ -107,6 +120,7 @@ export const AdminSettings = () => {
     setter('');
     if (ref.current) ref.current.value = '';
     showMsg(lsKey, label + ' favicon reset to default.');
+    triggerBrandingUpdate();
   };
 
   const handleDarkLogoUpload    = makeLogoHandler('vizo_logo_dark',    setDarkLogo,    'Dark mode', darkLogoRef);
@@ -506,8 +520,7 @@ export const AdminSettings = () => {
             </div>
             <button
               onClick={() => {
-                // Dispatch event so Navbar + ThemeContext react immediately
-                window.dispatchEvent(new Event('vizo_branding_updated'));
+                triggerBrandingUpdate();
                 setBrandingSaved(true);
                 setTimeout(() => setBrandingSaved(false), 8000);
               }}
