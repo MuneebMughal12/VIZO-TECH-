@@ -107,7 +107,7 @@ const AppContent = () => {
                   <img
                     src={customFooterLogo}
                     alt="VIZO TECH Logo"
-                    className="h-11 md:h-12 max-w-[180px] object-contain brightness-100"
+                    className="h-16 md:h-20 max-w-[220px] object-contain -my-3 md:-my-4 brightness-100"
                     style={{ filter: 'brightness(1) invert(0)' }}
                   />
                 ) : (

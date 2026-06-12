@@ -91,7 +91,7 @@ export const Navbar = ({ onContactClick }) => {
             <img
               src={customLogo}
               alt="VIZO TECH Logo"
-              className="h-12 md:h-14 max-w-[200px] object-contain"
+              className="h-20 md:h-24 max-w-[250px] object-contain -my-4 md:-my-6"
               style={{ filter: theme === 'dark' ? 'brightness(1)' : 'brightness(0.9)' }}
             />
           ) : (

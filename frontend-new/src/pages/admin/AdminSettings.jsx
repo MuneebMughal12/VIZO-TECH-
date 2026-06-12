@@ -383,10 +383,10 @@ export const AdminSettings = () => {
                 <h4 className="font-bold text-sm mb-4">{label}</h4>
 
                 {/* Preview box with themed background */}
-                <div className="w-full h-20 rounded-2xl border-2 border-dashed mb-4 flex items-center justify-center overflow-hidden"
+                <div className="w-full h-28 rounded-2xl border-2 border-dashed mb-4 flex items-center justify-center overflow-hidden"
                   style={{ borderColor: theme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)', background: bg }}>
                   {value
-                    ? <img src={value} alt={label} className="max-h-14 max-w-full object-contain" />
+                    ? <img src={value} alt={label} className="max-h-24 max-w-full object-contain" />
                     : <span className="text-xs" style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)' }}>No logo — using default</span>
                   }
                 </div>
