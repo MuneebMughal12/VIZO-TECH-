@@ -99,7 +99,11 @@ const AppContent = () => {
 
       {/* Global Footer (Client side only) */}
       {!isAdminRoute && (
-        <footer className="w-full mt-section-gap border-t border-black/10 dark:border-white/10 bg-[#050505] text-white">
+        <footer className={`w-full mt-section-gap border-t transition-colors duration-500 ${
+          theme === 'dark'
+            ? 'bg-[#050505] text-[#e5e2e1] border-white/10'
+            : 'bg-[#f8f9fa] text-[#1a1c1c] border-black/10'
+        }`}>
           <div className="max-w-container-max mx-auto px-margin-desktop py-16 grid grid-cols-1 md:grid-cols-4 gap-gutter">
             <div className="col-span-1 md:col-span-2">
               <div className="flex items-center gap-2 select-none mb-6">
@@ -112,44 +116,50 @@ const AppContent = () => {
                   />
                 ) : (
                   <>
-                    <span className="font-display-lg text-[22px] font-extrabold tracking-[0.15em] text-white">
+                    <span className={`font-display-lg text-[22px] font-extrabold tracking-[0.15em] ${
+                      theme === 'dark' ? 'text-white' : 'text-[#1a1c1c]'
+                    }`}>
                       V
                       <span className="relative inline-block px-[2px]">
                         I
-                        <span className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-[6px] h-[6px] rounded-sm bg-[#00E5FF] shadow-[0_0_8px_#00E5FF]" />
+                        <span className={`absolute -top-1.5 left-1/2 -translate-x-1/2 w-[6px] h-[6px] rounded-sm ${
+                          theme === 'dark' ? 'bg-[#00E5FF] shadow-[0_0_8px_#00E5FF]' : 'bg-[#0052FF]'
+                        }`} />
                       </span>
                       ZO
                     </span>
-                    <span className="text-[12px] font-bold tracking-widest uppercase ml-1 px-2 py-0.5 rounded bg-[#00E5FF]/10 text-[#00E5FF]">
+                    <span className={`text-[12px] font-bold tracking-widest uppercase ml-1 px-2 py-0.5 rounded ${
+                      theme === 'dark' ? 'bg-[#00E5FF]/10 text-[#00E5FF]' : 'bg-[#0052FF]/10 text-[#0052FF]'
+                    }`}>
                       TECH
                     </span>
                   </>
                 )}
               </div>
-              <p className="text-gray-400 text-sm max-w-sm mb-8 leading-relaxed">
+              <p className="text-gray-600 dark:text-gray-400 text-sm max-w-sm mb-8 leading-relaxed">
                 Leading the international standard for engineering excellence and luxury digital transformation. Redefining what's possible through code.
               </p>
-              <div className="flex gap-4 text-gray-400">
-                <span className="material-symbols-outlined p-2 rounded-full border border-white/10 cursor-pointer hover:bg-white/10 hover:text-white" title="Global Connectivity">public</span>
-                <span className="material-symbols-outlined p-2 rounded-full border border-white/10 cursor-pointer hover:bg-white/10 hover:text-white" title="Distributed Node Hub">hub</span>
+              <div className="flex gap-4 text-gray-600 dark:text-gray-400">
+                <span className="material-symbols-outlined p-2 rounded-full border border-black/10 dark:border-white/10 cursor-pointer hover:bg-black/5 dark:hover:bg-white/10 hover:text-black dark:hover:text-white" title="Global Connectivity">public</span>
+                <span className="material-symbols-outlined p-2 rounded-full border border-black/10 dark:border-white/10 cursor-pointer hover:bg-black/5 dark:hover:bg-white/10 hover:text-black dark:hover:text-white" title="Distributed Node Hub">hub</span>
               </div>
             </div>
             
             <div className="flex flex-col gap-4">
-              <h5 className="font-label-sm text-xs font-extrabold text-gray-300 uppercase tracking-widest">Navigation</h5>
-              <Link to="/team" className="text-gray-400 hover:text-white text-sm transition-colors">Our Team</Link>
-              <Link to="/projects" className="text-gray-400 hover:text-white text-sm transition-colors">Project Archive</Link>
-              <Link to="/about" className="text-gray-400 hover:text-white text-sm transition-colors">Service Suite</Link>
+              <h5 className="font-label-sm text-xs font-extrabold text-gray-800 dark:text-gray-300 uppercase tracking-widest">Navigation</h5>
+              <Link to="/team" className="text-gray-600 hover:text-black dark:text-gray-400 dark:hover:text-white text-sm transition-colors">Our Team</Link>
+              <Link to="/projects" className="text-gray-600 hover:text-black dark:text-gray-400 dark:hover:text-white text-sm transition-colors">Project Archive</Link>
+              <Link to="/about" className="text-gray-600 hover:text-black dark:text-gray-400 dark:hover:text-white text-sm transition-colors">Service Suite</Link>
             </div>
             
             <div className="flex flex-col gap-4">
-              <h5 className="font-label-sm text-xs font-extrabold text-gray-300 uppercase tracking-widest">Legal</h5>
-              <a href="#" className="text-gray-400 hover:text-white text-sm transition-colors">Privacy Policy</a>
-              <a href="#" className="text-gray-400 hover:text-white text-sm transition-colors">Terms of Service</a>
-              <a href="#" className="text-gray-400 hover:text-white text-sm transition-colors">Cookie Policy</a>
+              <h5 className="font-label-sm text-xs font-extrabold text-gray-800 dark:text-gray-300 uppercase tracking-widest">Legal</h5>
+              <a href="#" className="text-gray-600 hover:text-black dark:text-gray-400 dark:hover:text-white text-sm transition-colors">Privacy Policy</a>
+              <a href="#" className="text-gray-600 hover:text-black dark:text-gray-400 dark:hover:text-white text-sm transition-colors">Terms of Service</a>
+              <a href="#" className="text-gray-600 hover:text-black dark:text-gray-400 dark:hover:text-white text-sm transition-colors">Cookie Policy</a>
             </div>
           </div>
-          <div className="max-w-container-max mx-auto px-margin-desktop py-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center text-gray-400 text-xs gap-4">
+          <div className="max-w-container-max mx-auto px-margin-desktop py-8 border-t border-black/5 dark:border-white/5 flex flex-col md:flex-row justify-between items-center text-gray-500 dark:text-gray-400 text-xs gap-4">
             <span>© 2024 VIZO TECH. Engineering Excellence.</span>
             <span>Based in Zurich • Serving the Globe</span>
           </div>
