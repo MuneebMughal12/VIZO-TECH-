@@ -65,9 +65,8 @@ const AppContent = () => {
   const isAdminRoute = location.pathname.startsWith('/admin');
 
   return (
-    <div className={`min-h-screen transition-colors duration-500 ease-in-out ${
-      theme === 'dark' ? 'bg-[#050505] text-[#e5e2e1]' : 'bg-[#ffffff] text-[#1a1c1c]'
-    }`}>
+    <div className={`min-h-screen transition-colors duration-500 ease-in-out ${theme === 'dark' ? 'bg-[#050505] text-[#e5e2e1]' : 'bg-[#ffffff] text-[#1a1c1c]'
+      }`}>
       {!isAdminRoute && (
         <Navbar onContactClick={() => setIsContactOpen(true)} />
       )}
@@ -92,18 +91,17 @@ const AppContent = () => {
       </Routes>
 
       {/* Global Inquiries Overlay Modal */}
-      <ContactModal 
-        isOpen={isContactOpen} 
-        onClose={() => setIsContactOpen(false)} 
+      <ContactModal
+        isOpen={isContactOpen}
+        onClose={() => setIsContactOpen(false)}
       />
 
       {/* Global Footer (Client side only) */}
       {!isAdminRoute && (
-        <footer className={`w-full mt-section-gap border-t transition-colors duration-500 ${
-          theme === 'dark'
-            ? 'bg-[#050505] text-[#e5e2e1] border-white/10'
-            : 'bg-[#f8f9fa] text-[#1a1c1c] border-black/10'
-        }`}>
+        <footer className={`w-full mt-section-gap border-t transition-colors duration-500 ${theme === 'dark'
+          ? 'bg-[#050505] text-[#e5e2e1] border-white/10'
+          : 'bg-[#f8f9fa] text-[#1a1c1c] border-black/10'
+          }`}>
           <div className="max-w-container-max mx-auto px-margin-desktop py-16 grid grid-cols-1 md:grid-cols-4 gap-gutter">
             <div className="col-span-1 md:col-span-2">
               <div className="flex items-center gap-2 select-none mb-6">
@@ -116,21 +114,18 @@ const AppContent = () => {
                   />
                 ) : (
                   <>
-                    <span className={`font-display-lg text-[22px] font-extrabold tracking-[0.15em] ${
-                      theme === 'dark' ? 'text-white' : 'text-[#1a1c1c]'
-                    }`}>
+                    <span className={`font-display-lg text-[22px] font-extrabold tracking-[0.15em] ${theme === 'dark' ? 'text-white' : 'text-[#1a1c1c]'
+                      }`}>
                       V
                       <span className="relative inline-block px-[2px]">
                         I
-                        <span className={`absolute -top-1.5 left-1/2 -translate-x-1/2 w-[6px] h-[6px] rounded-sm ${
-                          theme === 'dark' ? 'bg-[#00E5FF] shadow-[0_0_8px_#00E5FF]' : 'bg-[#0052FF]'
-                        }`} />
+                        <span className={`absolute -top-1.5 left-1/2 -translate-x-1/2 w-[6px] h-[6px] rounded-sm ${theme === 'dark' ? 'bg-[#00E5FF] shadow-[0_0_8px_#00E5FF]' : 'bg-[#0052FF]'
+                          }`} />
                       </span>
                       ZO
                     </span>
-                    <span className={`text-[12px] font-bold tracking-widest uppercase ml-1 px-2 py-0.5 rounded ${
-                      theme === 'dark' ? 'bg-[#00E5FF]/10 text-[#00E5FF]' : 'bg-[#0052FF]/10 text-[#0052FF]'
-                    }`}>
+                    <span className={`text-[12px] font-bold tracking-widest uppercase ml-1 px-2 py-0.5 rounded ${theme === 'dark' ? 'bg-[#00E5FF]/10 text-[#00E5FF]' : 'bg-[#0052FF]/10 text-[#0052FF]'
+                      }`}>
                       TECH
                     </span>
                   </>
@@ -144,14 +139,14 @@ const AppContent = () => {
                 <span className="material-symbols-outlined p-2 rounded-full border border-black/10 dark:border-white/10 cursor-pointer hover:bg-black/5 dark:hover:bg-white/10 hover:text-black dark:hover:text-white" title="Distributed Node Hub">hub</span>
               </div>
             </div>
-            
+
             <div className="flex flex-col gap-4">
               <h5 className="font-label-sm text-xs font-extrabold text-gray-800 dark:text-gray-300 uppercase tracking-widest">Navigation</h5>
               <Link to="/team" className="text-gray-600 hover:text-black dark:text-gray-400 dark:hover:text-white text-sm transition-colors">Our Team</Link>
               <Link to="/projects" className="text-gray-600 hover:text-black dark:text-gray-400 dark:hover:text-white text-sm transition-colors">Project Archive</Link>
               <Link to="/about" className="text-gray-600 hover:text-black dark:text-gray-400 dark:hover:text-white text-sm transition-colors">Service Suite</Link>
             </div>
-            
+
             <div className="flex flex-col gap-4">
               <h5 className="font-label-sm text-xs font-extrabold text-gray-800 dark:text-gray-300 uppercase tracking-widest">Legal</h5>
               <a href="#" className="text-gray-600 hover:text-black dark:text-gray-400 dark:hover:text-white text-sm transition-colors">Privacy Policy</a>
@@ -160,8 +155,8 @@ const AppContent = () => {
             </div>
           </div>
           <div className="max-w-container-max mx-auto px-margin-desktop py-8 border-t border-black/5 dark:border-white/5 flex flex-col md:flex-row justify-between items-center text-gray-500 dark:text-gray-400 text-xs gap-4">
-            <span>© 2024 VIZO TECH. Engineering Excellence.</span>
-            <span>Based in Zurich • Serving the Globe</span>
+            <span>© 2026 VIZO TECH. Engineering Excellence.</span>
+            {/* <span>Based in Zurich • Serving the Globe</span> */}
           </div>
         </footer>
       )}

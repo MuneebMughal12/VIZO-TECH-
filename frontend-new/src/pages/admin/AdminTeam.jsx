@@ -76,6 +76,25 @@ export const AdminTeam = () => {
     }
   };
 
+  const handleTogglePin = async (member) => {
+    try {
+      const res = await fetch(`http://localhost:5000/api/team/${member._id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ isPinnedHome: !member.isPinnedHome })
+      });
+      if (res.ok) {
+        const updated = await res.json();
+        setTeam(prev => prev.map(m => m._id === member._id ? updated : m));
+      }
+    } catch (err) {
+      console.error('Failed to toggle pin status:', err);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const payload = {
@@ -191,6 +210,17 @@ export const AdminTeam = () => {
               </div>
 
               <div className="flex flex-col gap-2">
+                <button 
+                  onClick={() => handleTogglePin(member)}
+                  className={`p-2.5 rounded-xl border transition-all flex items-center justify-center ${
+                    member.isPinnedHome 
+                      ? 'bg-amber-500/20 border-amber-500/40 text-amber-400 hover:bg-amber-500/30' 
+                      : 'border-white/10 hover:bg-white/5 text-on-surface-variant hover:text-white'
+                  }`}
+                  title={member.isPinnedHome ? "Unpin from Homepage" : "Pin to Homepage"}
+                >
+                  <span className={`material-symbols-outlined text-[18px] ${member.isPinnedHome ? 'fill-1' : ''}`}>push_pin</span>
+                </button>
                 <button 
                   onClick={() => handleOpenEdit(member)}
                   className="p-2.5 rounded-xl border border-white/10 hover:bg-secondary-container hover:text-on-secondary-container transition-all flex items-center justify-center"
