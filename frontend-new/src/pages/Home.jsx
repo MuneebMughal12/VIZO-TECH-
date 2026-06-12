@@ -65,8 +65,8 @@ export const Home = ({ onContactClick }) => {
     if (!mountRef.current) return;
 
     const container = mountRef.current;
-    const width = container.clientWidth;
-    const height = container.clientHeight;
+    const width = container.clientWidth || window.innerWidth;
+    const height = container.clientHeight || window.innerHeight;
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
@@ -80,24 +80,56 @@ export const Home = ({ onContactClick }) => {
     container.innerHTML = '';
     container.appendChild(renderer.domElement);
 
-    // Geometry: Abstract Icosahedron mesh
-    const geometry = new THREE.IcosahedronGeometry(2.2, 10);
-    
+    // Group to hold all neural components
+    const group = new THREE.Group();
+
     // Glowing accent color
     const themeColor = theme === 'dark' ? 0x00f0ff : 0x0052ff;
 
-    const material = new THREE.MeshPhongMaterial({
+    // 1. Outer Icosahedron Wireframe (Technical Grid)
+    const outerGeo = new THREE.IcosahedronGeometry(2.1, 1);
+    const outerMat = new THREE.MeshPhongMaterial({
       color: themeColor,
       wireframe: true,
       transparent: true,
-      opacity: theme === 'dark' ? 0.22 : 0.12,
+      opacity: theme === 'dark' ? 0.3 : 0.18,
       shininess: 100
     });
+    const outerMesh = new THREE.Mesh(outerGeo, outerMat);
+    group.add(outerMesh);
 
-    const mesh = new THREE.Mesh(geometry, material);
-    scene.add(mesh);
+    // 2. Inner Glowing Core (Metallic Purple Sphere)
+    const innerGeo = new THREE.IcosahedronGeometry(1.2, 0);
+    const innerMat = new THREE.MeshStandardMaterial({
+      color: 0x9d00ff,
+      metalness: 0.8,
+      roughness: 0.2,
+      emissive: 0x5a009d,
+      emissiveIntensity: 0.4
+    });
+    const innerMesh = new THREE.Mesh(innerGeo, innerMat);
+    group.add(innerMesh);
 
-    // Particles
+    // 3. Floating Nodes (Orbiting Spheres)
+    const nodeGeo = new THREE.SphereGeometry(0.04, 16, 16);
+    const nodeMat = new THREE.MeshBasicMaterial({
+      color: theme === 'dark' ? 0xffffff : themeColor
+    });
+    for (let i = 0; i < 20; i++) {
+      const node = new THREE.Mesh(nodeGeo, nodeMat);
+      const angle = Math.random() * Math.PI * 2;
+      const radius = 2.4 + Math.random() * 0.4;
+      node.position.set(
+        Math.cos(angle) * radius,
+        Math.sin(angle) * radius,
+        (Math.random() - 0.5) * 2
+      );
+      group.add(node);
+    }
+
+    scene.add(group);
+
+    // Particles (Background field)
     const partGeo = new THREE.BufferGeometry();
     const partCount = 1000;
     const posArray = new Float32Array(partCount * 3);
@@ -114,11 +146,16 @@ export const Home = ({ onContactClick }) => {
     const particles = new THREE.Points(partGeo, partMat);
     scene.add(particles);
 
-    // Light
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    // Lighting
+    const ambientLight = new THREE.AmbientLight(theme === 'dark' ? 0x404040 : 0x808080);
     scene.add(ambientLight);
+
+    const dirLight = new THREE.DirectionalLight(0xffffff, 1);
+    dirLight.position.set(5, 5, 5);
+    scene.add(dirLight);
+
     const pointLight = new THREE.PointLight(themeColor, 1.2);
-    pointLight.position.set(5, 5, 5);
+    pointLight.position.set(-5, 5, -5);
     scene.add(pointLight);
 
     // Interaction mouse tracker
@@ -136,12 +173,15 @@ export const Home = ({ onContactClick }) => {
     const animate = () => {
       reqId = requestAnimationFrame(animate);
       
-      mesh.rotation.y += 0.001;
-      mesh.rotation.x += 0.0005;
+      group.rotation.y += 0.002;
+      group.rotation.x += 0.001;
 
       // Mouse inertia follow
-      mesh.rotation.x += (mouseY * 0.05 - mesh.rotation.x) * 0.05;
-      mesh.rotation.y += (mouseX * 0.05 - mesh.rotation.y) * 0.05;
+      group.rotation.x += (mouseY * 0.1 - group.rotation.x) * 0.05;
+      group.rotation.y += (mouseX * 0.1 - group.rotation.y) * 0.05;
+
+      // Bouncing / Floating effect
+      group.position.y = Math.sin(Date.now() * 0.001) * 0.15;
 
       particles.rotation.y -= 0.0002;
 
@@ -225,7 +265,7 @@ export const Home = ({ onContactClick }) => {
       {/* 1. Hero Section */}
       <section className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-transparent">
         {/* ThreeJS Container */}
-        <div ref={mountRef} className="absolute inset-0 w-full h-full bg-transparent -z-10" />
+        <div ref={mountRef} className="absolute inset-0 w-full h-full bg-transparent z-0 pointer-events-none" />
 
         <div className="relative z-20 max-w-container-max mx-auto px-margin-desktop text-center">
           <h1 className="font-display-xl text-[48px] md:text-display-xl text-gradient mb-8 max-w-4xl mx-auto drop-shadow-2xl">
