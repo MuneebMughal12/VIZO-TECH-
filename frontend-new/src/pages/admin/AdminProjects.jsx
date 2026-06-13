@@ -87,13 +87,13 @@ export const AdminProjects = () => {
     setImpact(proj.impact || '');
     setTechStack(Array.isArray(proj.techStack) ? proj.techStack.join(', ') : proj.techStack || '');
     setIsPinnedHome(proj.isPinnedHome || false);
-    
+
     // Metrics fallbacks
     setLatency(proj.metrics?.latency || '12ms');
     setDailyTxs(proj.metrics?.dailyTxs || '450k');
     setUptime(proj.metrics?.uptime || '99.99%');
     setRoi(proj.metrics?.roi || '5.4x');
-    
+
     setShowModal(true);
   };
 
@@ -165,10 +165,10 @@ export const AdminProjects = () => {
     };
 
     try {
-      const url = editId 
-        ? `${API_URL}/api/projects/${editId}` 
+      const url = editId
+        ? `${API_URL}/api/projects/${editId}`
         : `${API_URL}/api/projects`;
-      
+
       const method = editId ? 'PUT' : 'POST';
 
       const res = await fetch(url, {
@@ -195,9 +195,9 @@ export const AdminProjects = () => {
   };
 
   const filteredProjects = projects.filter(p => {
-    const matchesSearch = p.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                          p.client?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          p.category.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch = p.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      p.client?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      p.category.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = selectedCategory === 'All' || p.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
@@ -212,7 +212,7 @@ export const AdminProjects = () => {
             Centralized management of active and archived engineering ventures. Control visibility and track deployment status.
           </p>
         </div>
-        <button 
+        <button
           onClick={handleOpenAdd}
           className="bg-gradient-to-r from-[#00dbe9] to-[#9d05ff] text-white px-8 py-3.5 rounded-xl font-bold flex items-center gap-2 shadow-xl hover:scale-[1.02] active:scale-95 transition-all duration-200"
         >
@@ -225,14 +225,13 @@ export const AdminProjects = () => {
       <div className="glass-card rounded-2xl p-6 flex flex-col md:flex-row gap-4 justify-between items-center">
         <div className="relative flex-grow w-full max-w-lg">
           <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
-          <input 
+          <input
             type="text"
             placeholder="Search projects by name, technology, or client..."
-            className={`w-full border rounded-xl py-3 pl-12 pr-4 text-sm focus:outline-none transition-all ${
-              theme === 'dark' 
-                ? 'bg-white/5 border-white/10 text-white focus:border-[#00f0ff]' 
+            className={`w-full border rounded-xl py-3 pl-12 pr-4 text-sm focus:outline-none transition-all ${theme === 'dark'
+                ? 'bg-white/5 border-white/10 text-white focus:border-[#00f0ff]'
                 : 'bg-[#f8f9fa] border-black/10 text-black focus:border-[#0052FF]'
-            }`}
+              }`}
             value={searchTerm}
             onChange={e => setSearchTerm(e.target.value)}
           />
@@ -243,11 +242,10 @@ export const AdminProjects = () => {
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
-              className={`px-4 py-2 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
-                selectedCategory === cat
+              className={`px-4 py-2 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${selectedCategory === cat
                   ? 'bg-secondary-container text-on-secondary-container shadow-md'
                   : 'text-on-surface-variant hover:bg-white/5'
-              }`}
+                }`}
             >
               {cat}
             </button>
@@ -276,7 +274,7 @@ export const AdminProjects = () => {
                   <tr key={proj._id} className="group hover:bg-white/5 transition-colors">
                     <td className="px-8 py-6">
                       <label className="relative inline-flex items-center cursor-pointer select-none">
-                        <input 
+                        <input
                           type="checkbox"
                           checked={proj.isPinnedHome || false}
                           onChange={() => handleTogglePin(proj)}
@@ -307,35 +305,34 @@ export const AdminProjects = () => {
                     </td>
                     <td className="px-8 py-6">
                       <div className="flex items-center gap-2">
-                        <span className={`w-2 h-2 rounded-full ${
-                          proj.status === 'Production' 
-                            ? 'bg-[#00f0ff] animate-pulse' 
-                            : proj.status === 'Staging' 
-                              ? 'bg-purple-500' 
-                              : proj.status === 'Delivered' 
-                                ? 'bg-green-500' 
+                        <span className={`w-2 h-2 rounded-full ${proj.status === 'Production'
+                            ? 'bg-[#00f0ff] animate-pulse'
+                            : proj.status === 'Staging'
+                              ? 'bg-purple-500'
+                              : proj.status === 'Delivered'
+                                ? 'bg-green-500'
                                 : 'bg-gray-500'
-                        }`} />
+                          }`} />
                         <span className="text-xs font-semibold">
-                          {proj.status === 'Production' 
-                            ? 'In Production' 
-                            : proj.status === 'Staging' 
-                              ? 'Staging' 
-                              : proj.status === 'Delivered' 
-                                ? 'Delivered' 
+                          {proj.status === 'Production'
+                            ? 'In Production'
+                            : proj.status === 'Staging'
+                              ? 'Staging'
+                              : proj.status === 'Delivered'
+                                ? 'Delivered'
                                 : 'Concept'}
                         </span>
                       </div>
                     </td>
                     <td className="px-8 py-6 text-right">
                       <div className="flex justify-end gap-3">
-                        <button 
+                        <button
                           onClick={() => handleOpenEdit(proj)}
                           className="w-9 h-9 rounded-lg flex items-center justify-center text-on-surface-variant hover:text-white hover:bg-white/5 transition-all"
                         >
                           <span className="material-symbols-outlined text-[18px]">edit</span>
                         </button>
-                        <button 
+                        <button
                           onClick={() => handleDelete(proj._id)}
                           className="w-9 h-9 rounded-lg flex items-center justify-center text-on-surface-variant hover:text-red-500 hover:bg-red-500/10 transition-all"
                         >
@@ -352,42 +349,12 @@ export const AdminProjects = () => {
       )}
 
       {/* System Stats Footer */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div className="glass-card p-6 rounded-2xl flex flex-col gap-2">
-          <span className="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Active Builds</span>
-          <p className="text-3xl font-extrabold text-[#00f0ff]">12</p>
-          <div className="w-full bg-white/10 h-1.5 rounded-full mt-2 overflow-hidden">
-            <div className="bg-[#00f0ff] h-full w-3/4" />
-          </div>
-        </div>
-        <div className="glass-card p-6 rounded-2xl flex flex-col gap-2">
-          <span className="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Team Capacity</span>
-          <p className="text-3xl font-extrabold text-[#9d05ff]">88%</p>
-          <div className="w-full bg-white/10 h-1.5 rounded-full mt-2 overflow-hidden">
-            <div className="bg-[#9d05ff] h-full w-[88%]" />
-          </div>
-        </div>
-        <div className="glass-card p-6 rounded-2xl flex flex-col gap-2">
-          <span className="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Total Value</span>
-          <p className="text-3xl font-extrabold">$2.4M</p>
-          <p className="text-[11px] text-[#00f0ff] font-bold flex items-center gap-1">
-            <span className="material-symbols-outlined text-xs">trending_up</span>
-            +12% this quarter
-          </p>
-        </div>
-        <div className="glass-card p-6 rounded-2xl flex flex-col gap-2">
-          <span className="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">System Health</span>
-          <p className="text-3xl font-extrabold text-emerald-400">99.9%</p>
-          <p className="text-[11px] text-on-surface-variant">Last ping 2s ago</p>
-        </div>
-      </div>
 
       {/* CRUD Modal */}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-          <div className={`glass-card rounded-[2rem] p-8 max-w-3xl w-full max-h-[85vh] overflow-y-auto ${
-            theme === 'light' ? 'bg-white text-black' : 'bg-[#131313] text-[#e5e2e1]'
-          }`}>
+          <div className={`glass-card rounded-[2rem] p-8 max-w-3xl w-full max-h-[85vh] overflow-y-auto ${theme === 'light' ? 'bg-white text-black' : 'bg-[#131313] text-[#e5e2e1]'
+            }`}>
             <div className="flex justify-between items-center mb-6">
               <h3 className="text-xl font-bold">{editId ? 'Edit Project' : 'Add New Project'}</h3>
               <button onClick={() => setShowModal(false)} className="text-on-surface-variant hover:text-white">
@@ -399,25 +366,23 @@ export const AdminProjects = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-wider mb-2">Project Title</label>
-                  <input 
-                    type="text" 
+                  <input
+                    type="text"
                     required
-                    className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none transition-all ${
-                      theme === 'dark' ? 'bg-white/5 border-white/10 focus:border-[#00f0ff]' : 'bg-[#f8f9fa] border-black/10 focus:border-[#0052FF]'
-                    }`}
-                    value={title} 
-                    onChange={e => setTitle(e.target.value)} 
+                    className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none transition-all ${theme === 'dark' ? 'bg-white/5 border-white/10 focus:border-[#00f0ff]' : 'bg-[#f8f9fa] border-black/10 focus:border-[#0052FF]'
+                      }`}
+                    value={title}
+                    onChange={e => setTitle(e.target.value)}
                   />
                 </div>
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-wider mb-2">Client Name</label>
-                  <input 
-                    type="text" 
-                    className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none transition-all ${
-                      theme === 'dark' ? 'bg-white/5 border-white/10 focus:border-[#00f0ff]' : 'bg-[#f8f9fa] border-black/10 focus:border-[#0052FF]'
-                    }`}
-                    value={client} 
-                    onChange={e => setClient(e.target.value)} 
+                  <input
+                    type="text"
+                    className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none transition-all ${theme === 'dark' ? 'bg-white/5 border-white/10 focus:border-[#00f0ff]' : 'bg-[#f8f9fa] border-black/10 focus:border-[#0052FF]'
+                      }`}
+                    value={client}
+                    onChange={e => setClient(e.target.value)}
                   />
                 </div>
               </div>
@@ -425,11 +390,10 @@ export const AdminProjects = () => {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-wider mb-2">Category</label>
-                  <select 
-                    className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none transition-all ${
-                      theme === 'dark' ? 'bg-[#131313] border-white/10 focus:border-[#00f0ff]' : 'bg-white border-black/10 focus:border-[#0052FF]'
-                    }`}
-                    value={category} 
+                  <select
+                    className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none transition-all ${theme === 'dark' ? 'bg-[#131313] border-white/10 focus:border-[#00f0ff]' : 'bg-white border-black/10 focus:border-[#0052FF]'
+                      }`}
+                    value={category}
                     onChange={e => setCategory(e.target.value)}
                   >
                     {categories.filter(c => c !== 'All').map(cat => (
@@ -439,11 +403,10 @@ export const AdminProjects = () => {
                 </div>
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-wider mb-2">Status</label>
-                  <select 
-                    className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none transition-all ${
-                      theme === 'dark' ? 'bg-[#131313] border-white/10 focus:border-[#00f0ff]' : 'bg-white border-black/10 focus:border-[#0052FF]'
-                    }`}
-                    value={status} 
+                  <select
+                    className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none transition-all ${theme === 'dark' ? 'bg-[#131313] border-white/10 focus:border-[#00f0ff]' : 'bg-white border-black/10 focus:border-[#0052FF]'
+                      }`}
+                    value={status}
                     onChange={e => setStatus(e.target.value)}
                   >
                     <option value="Production">Production</option>
@@ -456,7 +419,7 @@ export const AdminProjects = () => {
                   <label className="block text-xs font-bold uppercase tracking-wider mb-2">Pin to Homepage</label>
                   <div className="pt-3">
                     <label className="relative inline-flex items-center cursor-pointer select-none">
-                      <input 
+                      <input
                         type="checkbox"
                         checked={isPinnedHome}
                         onChange={e => setIsPinnedHome(e.target.checked)}
@@ -472,33 +435,31 @@ export const AdminProjects = () => {
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-wider mb-2">Image (Upload or Link)</label>
                   <div className="flex gap-2">
-                    <input 
-                      type="text" 
+                    <input
+                      type="text"
                       placeholder="Paste image URL..."
-                      className={`flex-grow border rounded-xl px-4 py-3 text-sm focus:outline-none transition-all ${
-                        theme === 'dark' ? 'bg-white/5 border-white/10 focus:border-[#00f0ff]' : 'bg-[#f8f9fa] border-black/10 focus:border-[#0052FF]'
-                      }`}
-                      value={imageUrl} 
-                      onChange={e => setImageUrl(e.target.value)} 
+                      className={`flex-grow border rounded-xl px-4 py-3 text-sm focus:outline-none transition-all ${theme === 'dark' ? 'bg-white/5 border-white/10 focus:border-[#00f0ff]' : 'bg-[#f8f9fa] border-black/10 focus:border-[#0052FF]'
+                        }`}
+                      value={imageUrl}
+                      onChange={e => setImageUrl(e.target.value)}
                     />
-                    <label className={`shrink-0 cursor-pointer border rounded-xl px-4 py-3 text-sm font-semibold flex items-center justify-center transition-all ${
-                      theme === 'dark' 
-                        ? 'bg-white/5 border-white/10 text-white hover:bg-white/10' 
+                    <label className={`shrink-0 cursor-pointer border rounded-xl px-4 py-3 text-sm font-semibold flex items-center justify-center transition-all ${theme === 'dark'
+                        ? 'bg-white/5 border-white/10 text-white hover:bg-white/10'
                         : 'bg-black/5 border-black/10 text-black hover:bg-black/10'
-                    }`}>
+                      }`}>
                       <span className="material-symbols-outlined text-[18px] mr-1">cloud_upload</span>
                       Upload
-                      <input 
+                      <input
                         type="file"
                         accept="image/*"
                         className="hidden"
                         onChange={async (e) => {
                           const file = e.target.files[0];
                           if (!file) return;
-                          
+
                           const formData = new FormData();
                           formData.append('image', file);
-                          
+
                           try {
                             const res = await fetch(`${API_URL}/api/upload`, {
                               method: 'POST',
@@ -507,7 +468,7 @@ export const AdminProjects = () => {
                               },
                               body: formData
                             });
-                            
+
                             if (res.ok) {
                               const data = await res.json();
                               setImageUrl(data.imageUrl);
@@ -526,40 +487,37 @@ export const AdminProjects = () => {
                 </div>
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-wider mb-2">Project External Link</label>
-                  <input 
-                    type="text" 
-                    className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none transition-all ${
-                      theme === 'dark' ? 'bg-white/5 border-white/10 focus:border-[#00f0ff]' : 'bg-[#f8f9fa] border-black/10 focus:border-[#0052FF]'
-                    }`}
-                    value={projectLink} 
-                    onChange={e => setProjectLink(e.target.value)} 
+                  <input
+                    type="text"
+                    className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none transition-all ${theme === 'dark' ? 'bg-white/5 border-white/10 focus:border-[#00f0ff]' : 'bg-[#f8f9fa] border-black/10 focus:border-[#0052FF]'
+                      }`}
+                    value={projectLink}
+                    onChange={e => setProjectLink(e.target.value)}
                   />
                 </div>
               </div>
 
               <div>
                 <label className="block text-xs font-bold uppercase tracking-wider mb-2">Tech Stack (comma-separated)</label>
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   placeholder="e.g. React, Three.js, Tailwind CSS"
-                  className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none transition-all ${
-                    theme === 'dark' ? 'bg-white/5 border-white/10 focus:border-[#00f0ff]' : 'bg-[#f8f9fa] border-black/10 focus:border-[#0052FF]'
-                  }`}
-                  value={techStack} 
-                  onChange={e => setTechStack(e.target.value)} 
+                  className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none transition-all ${theme === 'dark' ? 'bg-white/5 border-white/10 focus:border-[#00f0ff]' : 'bg-[#f8f9fa] border-black/10 focus:border-[#0052FF]'
+                    }`}
+                  value={techStack}
+                  onChange={e => setTechStack(e.target.value)}
                 />
               </div>
 
               <div>
                 <label className="block text-xs font-bold uppercase tracking-wider mb-2">Description</label>
-                <textarea 
+                <textarea
                   required
                   rows={2}
-                  className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none transition-all ${
-                    theme === 'dark' ? 'bg-white/5 border-white/10 focus:border-[#00f0ff]' : 'bg-[#f8f9fa] border-black/10 focus:border-[#0052FF]'
-                  }`}
-                  value={description} 
-                  onChange={e => setDescription(e.target.value)} 
+                  className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none transition-all ${theme === 'dark' ? 'bg-white/5 border-white/10 focus:border-[#00f0ff]' : 'bg-[#f8f9fa] border-black/10 focus:border-[#0052FF]'
+                    }`}
+                  value={description}
+                  onChange={e => setDescription(e.target.value)}
                 />
               </div>
 
@@ -569,46 +527,42 @@ export const AdminProjects = () => {
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   <div>
                     <label className="block text-[10px] font-bold uppercase tracking-wider mb-1">Latency</label>
-                    <input 
-                      type="text" 
-                      className={`w-full border rounded-xl px-3 py-2 text-xs focus:outline-none ${
-                        theme === 'dark' ? 'bg-white/5 border-white/10 focus:border-[#00f0ff]' : 'bg-[#f8f9fa] border-black/10 focus:border-[#0052FF]'
-                      }`}
-                      value={latency} 
-                      onChange={e => setLatency(e.target.value)} 
+                    <input
+                      type="text"
+                      className={`w-full border rounded-xl px-3 py-2 text-xs focus:outline-none ${theme === 'dark' ? 'bg-white/5 border-white/10 focus:border-[#00f0ff]' : 'bg-[#f8f9fa] border-black/10 focus:border-[#0052FF]'
+                        }`}
+                      value={latency}
+                      onChange={e => setLatency(e.target.value)}
                     />
                   </div>
                   <div>
                     <label className="block text-[10px] font-bold uppercase tracking-wider mb-1">Daily Txs</label>
-                    <input 
-                      type="text" 
-                      className={`w-full border rounded-xl px-3 py-2 text-xs focus:outline-none ${
-                        theme === 'dark' ? 'bg-white/5 border-white/10 focus:border-[#00f0ff]' : 'bg-[#f8f9fa] border-black/10 focus:border-[#0052FF]'
-                      }`}
-                      value={dailyTxs} 
-                      onChange={e => setDailyTxs(e.target.value)} 
+                    <input
+                      type="text"
+                      className={`w-full border rounded-xl px-3 py-2 text-xs focus:outline-none ${theme === 'dark' ? 'bg-white/5 border-white/10 focus:border-[#00f0ff]' : 'bg-[#f8f9fa] border-black/10 focus:border-[#0052FF]'
+                        }`}
+                      value={dailyTxs}
+                      onChange={e => setDailyTxs(e.target.value)}
                     />
                   </div>
                   <div>
                     <label className="block text-[10px] font-bold uppercase tracking-wider mb-1">Uptime</label>
-                    <input 
-                      type="text" 
-                      className={`w-full border rounded-xl px-3 py-2 text-xs focus:outline-none ${
-                        theme === 'dark' ? 'bg-white/5 border-white/10 focus:border-[#00f0ff]' : 'bg-[#f8f9fa] border-black/10 focus:border-[#0052FF]'
-                      }`}
-                      value={uptime} 
-                      onChange={e => setUptime(e.target.value)} 
+                    <input
+                      type="text"
+                      className={`w-full border rounded-xl px-3 py-2 text-xs focus:outline-none ${theme === 'dark' ? 'bg-white/5 border-white/10 focus:border-[#00f0ff]' : 'bg-[#f8f9fa] border-black/10 focus:border-[#0052FF]'
+                        }`}
+                      value={uptime}
+                      onChange={e => setUptime(e.target.value)}
                     />
                   </div>
                   <div>
                     <label className="block text-[10px] font-bold uppercase tracking-wider mb-1">ROI Multiplier</label>
-                    <input 
-                      type="text" 
-                      className={`w-full border rounded-xl px-3 py-2 text-xs focus:outline-none ${
-                        theme === 'dark' ? 'bg-white/5 border-white/10 focus:border-[#00f0ff]' : 'bg-[#f8f9fa] border-black/10 focus:border-[#0052FF]'
-                      }`}
-                      value={roi} 
-                      onChange={e => setRoi(e.target.value)} 
+                    <input
+                      type="text"
+                      className={`w-full border rounded-xl px-3 py-2 text-xs focus:outline-none ${theme === 'dark' ? 'bg-white/5 border-white/10 focus:border-[#00f0ff]' : 'bg-[#f8f9fa] border-black/10 focus:border-[#0052FF]'
+                        }`}
+                      value={roi}
+                      onChange={e => setRoi(e.target.value)}
                     />
                   </div>
                 </div>
@@ -620,49 +574,46 @@ export const AdminProjects = () => {
                 <div className="space-y-4">
                   <div>
                     <label className="block text-[10px] font-bold uppercase tracking-wider mb-1">Challenge</label>
-                    <textarea 
+                    <textarea
                       rows={2}
-                      className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none ${
-                        theme === 'dark' ? 'bg-white/5 border-white/10 focus:border-[#00f0ff]' : 'bg-[#f8f9fa] border-black/10 focus:border-[#0052FF]'
-                      }`}
-                      value={challenge} 
-                      onChange={e => setChallenge(e.target.value)} 
+                      className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none ${theme === 'dark' ? 'bg-white/5 border-white/10 focus:border-[#00f0ff]' : 'bg-[#f8f9fa] border-black/10 focus:border-[#0052FF]'
+                        }`}
+                      value={challenge}
+                      onChange={e => setChallenge(e.target.value)}
                     />
                   </div>
                   <div>
                     <label className="block text-[10px] font-bold uppercase tracking-wider mb-1">Solution</label>
-                    <textarea 
+                    <textarea
                       rows={2}
-                      className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none ${
-                        theme === 'dark' ? 'bg-white/5 border-white/10 focus:border-[#00f0ff]' : 'bg-[#f8f9fa] border-black/10 focus:border-[#0052FF]'
-                      }`}
-                      value={solution} 
-                      onChange={e => setSolution(e.target.value)} 
+                      className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none ${theme === 'dark' ? 'bg-white/5 border-white/10 focus:border-[#00f0ff]' : 'bg-[#f8f9fa] border-black/10 focus:border-[#0052FF]'
+                        }`}
+                      value={solution}
+                      onChange={e => setSolution(e.target.value)}
                     />
                   </div>
                   <div>
                     <label className="block text-[10px] font-bold uppercase tracking-wider mb-1">Impact</label>
-                    <textarea 
+                    <textarea
                       rows={2}
-                      className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none ${
-                        theme === 'dark' ? 'bg-white/5 border-white/10 focus:border-[#00f0ff]' : 'bg-[#f8f9fa] border-black/10 focus:border-[#0052FF]'
-                      }`}
-                      value={impact} 
-                      onChange={e => setImpact(e.target.value)} 
+                      className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none ${theme === 'dark' ? 'bg-white/5 border-white/10 focus:border-[#00f0ff]' : 'bg-[#f8f9fa] border-black/10 focus:border-[#0052FF]'
+                        }`}
+                      value={impact}
+                      onChange={e => setImpact(e.target.value)}
                     />
                   </div>
                 </div>
               </div>
 
               <div className="flex justify-end gap-4 border-t border-white/5 pt-6">
-                <button 
-                  type="button" 
+                <button
+                  type="button"
                   onClick={() => setShowModal(false)}
                   className="px-6 py-3 rounded-xl border border-white/10 hover:bg-white/5 text-xs font-bold uppercase tracking-wider"
                 >
                   Cancel
                 </button>
-                <button 
+                <button
                   type="submit"
                   className="px-8 py-3 rounded-xl bg-gradient-to-r from-[#00dbe9] to-[#9d05ff] text-white hover:opacity-90 text-xs font-bold uppercase tracking-wider"
                 >
