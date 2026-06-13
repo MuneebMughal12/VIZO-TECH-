@@ -13,10 +13,12 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: async (req, file) => {
+    const isSvg = file.originalname.toLowerCase().endsWith('.svg') || file.mimetype === 'image/svg+xml';
     return {
       folder: 'vizo-tech',           // All uploads go into "vizo-tech" folder on Cloudinary
-      allowed_formats: ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'],
-      transformation: [{ width: 1200, crop: 'limit', quality: 'auto', fetch_format: 'auto' }],
+      // For SVG, do not apply raster transformations, and specify format as 'svg'
+      transformation: isSvg ? undefined : [{ width: 1200, crop: 'limit', quality: 'auto', fetch_format: 'auto' }],
+      format: isSvg ? 'svg' : undefined,
       public_id: `${Date.now()}-${Math.round(Math.random() * 1e9)}`,
     };
   },
