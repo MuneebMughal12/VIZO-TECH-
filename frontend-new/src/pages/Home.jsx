@@ -329,7 +329,7 @@ export const Home = ({ onContactClick }) => {
           <h2 className="font-display-lg text-4xl md:text-display-lg font-bold">What we do</h2>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-gutter">
           {/* Design */}
           <div className="glass-card p-10 group hover:-translate-y-2 transition-transform duration-500 rounded-2xl">
             <div className="w-16 h-16 rounded-2xl bg-[#00f0ff]/10 flex items-center justify-center mb-8 border border-[#00f0ff]/20">
@@ -371,6 +371,17 @@ export const Home = ({ onContactClick }) => {
             <h3 className="font-headline-lg text-2xl font-bold mb-4">Digital Marketing</h3>
             <p className="text-on-surface-variant leading-relaxed text-sm">
               Accelerating brand authority and organic reach through data-driven SEO, strategic content marketing, and hyper-targeted conversion optimization.
+            </p>
+          </div>
+
+          {/* Video Editing */}
+          <div className="glass-card p-10 group hover:-translate-y-2 transition-transform duration-500 rounded-2xl">
+            <div className="w-16 h-16 rounded-2xl bg-rose-500/10 flex items-center justify-center mb-8 border border-rose-500/20">
+              <span className="material-symbols-outlined text-rose-400 text-3xl">video_camera_back</span>
+            </div>
+            <h3 className="font-headline-lg text-2xl font-bold mb-4">Video Editing</h3>
+            <p className="text-on-surface-variant leading-relaxed text-sm">
+              Creating high-impact visual narratives, corporate showcase reels, and social media campaigns with cinematic editing, sound design, and color grading.
             </p>
           </div>
         </div>

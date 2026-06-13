@@ -4,7 +4,7 @@ const ProjectSchema = new mongoose.Schema({
   category: {
     type: String,
     required: true,
-    enum: ['Development', 'Design', 'AI', 'Digital Marketing']
+    enum: ['Development', 'Design', 'AI', 'Digital Marketing', 'Video Editing']
   },
   title: {
     type: String,
