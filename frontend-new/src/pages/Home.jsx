@@ -384,6 +384,17 @@ export const Home = ({ onContactClick }) => {
               Creating high-impact visual narratives, corporate showcase reels, and social media campaigns with cinematic editing, sound design, and color grading.
             </p>
           </div>
+
+          {/* Shopify */}
+          <div className="glass-card p-10 group hover:-translate-y-2 transition-transform duration-500 rounded-2xl">
+            <div className="w-16 h-16 rounded-2xl bg-[#96bf48]/10 flex items-center justify-center mb-8 border border-[#96bf48]/20">
+              <span className="material-symbols-outlined text-[#96bf48] text-3xl">storefront</span>
+            </div>
+            <h3 className="font-headline-lg text-2xl font-bold mb-4">Shopify Development</h3>
+            <p className="text-on-surface-variant leading-relaxed text-sm">
+              Custom e-commerce architectures, bespoke theme development, app integrations, and conversion-optimized storefronts designed to scale your global sales.
+            </p>
+          </div>
         </div>
       </section>
 

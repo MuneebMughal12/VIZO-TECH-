@@ -9,7 +9,7 @@ export const Projects = () => {
   const [activeCategory, setActiveCategory] = useState('All');
   const [selectedProject, setSelectedProject] = useState(null);
 
-  const categories = ['All', 'Design', 'AI', 'Development', 'Digital Marketing', 'Video Editing'];
+  const categories = ['All', 'Design', 'AI', 'Development', 'Digital Marketing', 'Video Editing', 'Shopify'];
 
   const fetchProjects = async () => {
     try {

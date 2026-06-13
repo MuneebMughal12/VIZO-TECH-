@@ -15,7 +15,7 @@ export const ContactModal = ({ isOpen, onClose }) => {
   const [attachmentUrl, setAttachmentUrl] = useState('');
   const [uploadingAttachment, setUploadingAttachment] = useState(false);
 
-  const services = ['Design', 'AI Integration', 'Technical Development', 'Digital Marketing', 'Video Editing'];
+  const services = ['Design', 'AI Integration', 'Technical Development', 'Digital Marketing', 'Video Editing', 'Shopify'];
 
   const toggleService = (service) => {
     if (selectedServices.includes(service)) {

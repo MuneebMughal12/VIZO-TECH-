@@ -32,7 +32,7 @@ export const AdminProjects = () => {
   const [roi, setRoi] = useState('');
 
   const token = localStorage.getItem('vizo_admin_token');
-  const categories = ['All', 'Design', 'AI', 'Development', 'Digital Marketing', 'Video Editing'];
+  const categories = ['All', 'Design', 'AI', 'Development', 'Digital Marketing', 'Video Editing', 'Shopify'];
 
   const fetchProjects = async () => {
     try {
