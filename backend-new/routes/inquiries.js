@@ -67,12 +67,18 @@ router.post('/:id/reply', auth, async (req, res) => {
 
     await inquiry.save();
 
-    // Trigger notification dispatches asynchronously
+    // Trigger notification dispatches and await them so serverless functions (Vercel) don't terminate before they complete
     const { sendEmailNotification, sendWhatsAppNotification } = require('../utils/notifier');
-    sendEmailNotification(inquiry.email, inquiry.name, message).catch(console.error);
+    
+    const notifications = [
+      sendEmailNotification(inquiry.email, inquiry.name, message)
+    ];
+    
     if (inquiry.whatsapp) {
-      sendWhatsAppNotification(inquiry.whatsapp, inquiry.name, message).catch(console.error);
+      notifications.push(sendWhatsAppNotification(inquiry.whatsapp, inquiry.name, message));
     }
+    
+    await Promise.allSettled(notifications);
 
     res.json(inquiry);
   } catch (err) {
