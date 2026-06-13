@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 require('dotenv').config();
 const connectDB = require('./db');
 
@@ -17,6 +18,9 @@ app.use(cors({
 app.options('*', cors());
 
 app.use(express.json());
+
+// Serve static uploads folder (fallback for local development)
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Connect to DB on each request (connection is cached/reused)
 app.use(async (req, res, next) => {

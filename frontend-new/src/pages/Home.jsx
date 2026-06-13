@@ -12,7 +12,22 @@ export const Home = ({ onContactClick }) => {
   // States
   const [pinnedProjects, setPinnedProjects] = useState([]);
   const [pinnedTeam, setPinnedTeam] = useState([]);
-  const [reviews, setReviews] = useState([]);
+  const [reviews, setReviews] = useState([
+    {
+      _id: 'default-1',
+      name: 'Jonathan Reeve',
+      companyWebsite: 'CTO, NexaCorp',
+      rating: 5,
+      feedback: 'VIZO TECH transformed our legacy architecture into a high-performance ecosystem. Their attention to technical detail is unparalleled.'
+    },
+    {
+      _id: 'default-2',
+      name: 'Sarah Jenkins',
+      companyWebsite: 'Creative Lead, Luminous',
+      rating: 5,
+      feedback: 'The design team at VIZO TECH understood our brand aesthetic perfectly. The resulting UI is both futuristic and incredibly intuitive.'
+    }
+  ]);
   const [currentReviewIdx, setCurrentReviewIdx] = useState(0);
   const [faqActive, setFaqActive] = useState([true, false, false]);
 
@@ -51,7 +66,9 @@ export const Home = ({ onContactClick }) => {
       const rRes = await fetch(`${API_URL}/api/reviews`);
       if (rRes.ok) {
         const rData = await rRes.json();
-        setReviews(rData);
+        if (rData && rData.length > 0) {
+          setReviews(rData);
+        }
       }
     } catch (err) {
       console.error('Failed to load homepage data:', err);
@@ -512,7 +529,7 @@ export const Home = ({ onContactClick }) => {
               <div>
                 <span className={`font-label-sm uppercase tracking-[0.2em] mb-4 block ${theme === 'dark' ? 'text-[#00f0ff]' : 'text-[#0052FF]'
                   }`}>Feedback</span>
-                <h2 className="font-display-lg text-4xl md:text-display-lg font-bold">Client Testimonials</h2>
+                <h2 className="font-display-lg text-4xl md:text-display-lg font-bold">Client Testimonials & Review Center</h2>
               </div>
               <div className="flex gap-4">
                 <button
