@@ -15,6 +15,7 @@ export const AdminTeam = () => {
   const [imageUrl, setImageUrl] = useState('');
   const [bio, setBio] = useState('');
   const [isPinnedHome, setIsPinnedHome] = useState(false);
+  const [isTopMember, setIsTopMember] = useState(false);
   const [techStack, setTechStack] = useState('');
   const [status, setStatus] = useState('Active'); // Active, Away, On Leave
   const [experience, setExperience] = useState('');
@@ -46,6 +47,7 @@ export const AdminTeam = () => {
     setImageUrl('');
     setBio('');
     setIsPinnedHome(false);
+    setIsTopMember(false);
     setTechStack('');
     setStatus('Active');
     setExperience('');
@@ -59,6 +61,7 @@ export const AdminTeam = () => {
     setImageUrl(member.imageUrl || '');
     setBio(member.bio || '');
     setIsPinnedHome(member.isPinnedHome || false);
+    setIsTopMember(member.isTopMember || false);
     setTechStack(Array.isArray(member.techStack) ? member.techStack.join(', ') : member.techStack || '');
     setStatus(member.status || 'Active');
     setExperience(member.experience || '');
@@ -109,6 +112,29 @@ export const AdminTeam = () => {
     }
   };
 
+  const handleToggleTopMember = async (member) => {
+    try {
+      const res = await fetch(`${API_URL}/api/team/${member._id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ isTopMember: !member.isTopMember })
+      });
+      if (res.ok) {
+        fetchTeam();
+
+        // Broadcast data sync
+        const channel = new BroadcastChannel('vizo_data_sync');
+        channel.postMessage('refresh_team');
+        channel.close();
+      }
+    } catch (err) {
+      console.error('Failed to toggle top member status:', err);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const payload = {
@@ -117,6 +143,7 @@ export const AdminTeam = () => {
       imageUrl,
       bio,
       isPinnedHome,
+      isTopMember,
       status,
       experience,
       techStack: techStack.split(',').map(s => s.trim()).filter(Boolean)
@@ -245,6 +272,17 @@ export const AdminTeam = () => {
                   <span className={`material-symbols-outlined text-[18px] ${member.isPinnedHome ? 'fill-1' : ''}`}>push_pin</span>
                 </button>
                 <button 
+                  onClick={() => handleToggleTopMember(member)}
+                  className={`p-2.5 rounded-xl border transition-all flex items-center justify-center ${
+                    member.isTopMember 
+                      ? 'bg-purple-500/20 border-purple-500/40 text-purple-400 hover:bg-purple-500/30' 
+                      : 'border-white/10 hover:bg-white/5 text-on-surface-variant hover:text-white'
+                  }`}
+                  title={member.isTopMember ? "Remove from Top of Team" : "Set to Top of Team"}
+                >
+                  <span className={`material-symbols-outlined text-[18px] ${member.isTopMember ? 'fill-1' : ''}`}>vertical_align_top</span>
+                </button>
+                <button 
                   onClick={() => handleOpenEdit(member)}
                   className="p-2.5 rounded-xl border border-white/10 hover:bg-secondary-container hover:text-on-secondary-container transition-all flex items-center justify-center"
                 >
@@ -303,7 +341,7 @@ export const AdminTeam = () => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-wider mb-2">Status</label>
                   <select 
@@ -338,6 +376,20 @@ export const AdminTeam = () => {
                         type="checkbox"
                         checked={isPinnedHome}
                         onChange={e => setIsPinnedHome(e.target.checked)}
+                        className="sr-only peer"
+                      />
+                      <div className="w-11 h-6 bg-white/10 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[4px] after:left-[4px] after:bg-gray-400 after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-secondary-container" />
+                    </label>
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider mb-2">Set to Top of Team</label>
+                  <div className="pt-3">
+                    <label className="relative inline-flex items-center cursor-pointer select-none">
+                      <input 
+                        type="checkbox"
+                        checked={isTopMember}
+                        onChange={e => setIsTopMember(e.target.checked)}
                         className="sr-only peer"
                       />
                       <div className="w-11 h-6 bg-white/10 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[4px] after:left-[4px] after:bg-gray-400 after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-secondary-container" />

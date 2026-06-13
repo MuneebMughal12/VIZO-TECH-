@@ -26,7 +26,18 @@ const TeamMemberSchema = new mongoose.Schema({
   experience: {
     type: String,
     default: ''
-  }
+  },
+  isTopMember: {
+    type: Boolean,
+    default: false
+  },
+  status: {
+    type: String,
+    default: 'Active'
+  },
+  techStack: [{
+    type: String
+  }]
 }, { timestamps: true });
 
 module.exports = mongoose.model('TeamMember', TeamMemberSchema);
