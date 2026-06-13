@@ -1,5 +1,4 @@
 const nodemailer = require('nodemailer');
-const twilio = require('twilio');
 
 // Load env vars
 const {
@@ -7,10 +6,7 @@ const {
   SMTP_PORT,
   SMTP_USER,
   SMTP_PASS,
-  SMTP_FROM,
-  TWILIO_ACCOUNT_SID,
-  TWILIO_AUTH_TOKEN,
-  TWILIO_WHATSAPP_FROM
+  SMTP_FROM
 } = process.env;
 
 /**
@@ -69,47 +65,6 @@ async function sendEmailNotification(toEmail, clientName, replyMessage) {
   }
 }
 
-/**
- * Sends WhatsApp notification to client using Twilio
- */
-async function sendWhatsAppNotification(toPhone, clientName, replyMessage) {
-  const isTwilioConfigured = TWILIO_ACCOUNT_SID && TWILIO_AUTH_TOKEN && TWILIO_WHATSAPP_FROM &&
-    !TWILIO_ACCOUNT_SID.includes('ACXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX') &&
-    !TWILIO_AUTH_TOKEN.includes('your_twilio_auth_token');
-
-  // Clean phone number (remove non-digits except +)
-  let cleanPhone = toPhone.trim().replace(/[^\d+]/g, '');
-  if (!cleanPhone.startsWith('+')) {
-    // Add plus if it's missing (assume country code prefix or provide standard format)
-    cleanPhone = '+' + cleanPhone;
-  }
-
-  const messageText = `Hello ${clientName}, VIZO TECH has replied to your inquiry: "${replyMessage}"`;
-
-  if (isTwilioConfigured) {
-    try {
-      const client = twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
-
-      const response = await client.messages.create({
-        body: messageText,
-        from: TWILIO_WHATSAPP_FROM, // e.g. 'whatsapp:+14155238886'
-        to: `whatsapp:${cleanPhone}`
-      });
-
-      console.log(`[WHATSAPP] Successfully sent message to ${cleanPhone}. SID: ${response.sid}`);
-    } catch (err) {
-      console.error('[WHATSAPP ERROR] Failed to send WhatsApp via Twilio:', err.message);
-    }
-  } else {
-    console.log(`\n======================================================`);
-    console.log(`[WHATSAPP NOTIFICATION MOCK]`);
-    console.log(`To: whatsapp:${cleanPhone}`);
-    console.log(`Message: ${messageText}`);
-    console.log(`======================================================\n`);
-  }
-}
-
 module.exports = {
-  sendEmailNotification,
-  sendWhatsAppNotification
+  sendEmailNotification
 };
