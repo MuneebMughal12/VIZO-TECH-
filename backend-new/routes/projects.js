@@ -16,12 +16,14 @@ router.get('/', async (req, res) => {
 
 // POST /api/projects (Protected)
 router.post('/', auth, async (req, res) => {
-  const { category, title, description, imageUrl, projectLink, isPinnedHome, challenge, solution, impact, metrics, techStack } = req.body;
+  const { category, title, client, status, description, imageUrl, projectLink, isPinnedHome, challenge, solution, impact, metrics, techStack } = req.body;
 
   try {
     const newProject = new Project({
       category,
       title,
+      client,
+      status,
       description,
       imageUrl,
       projectLink,

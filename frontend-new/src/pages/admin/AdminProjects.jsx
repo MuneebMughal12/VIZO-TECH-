@@ -308,9 +308,23 @@ export const AdminProjects = () => {
                     <td className="px-8 py-6">
                       <div className="flex items-center gap-2">
                         <span className={`w-2 h-2 rounded-full ${
-                          proj.status === 'Production' ? 'bg-[#00f0ff] animate-pulse' : proj.status === 'Staging' ? 'bg-purple-500' : 'bg-gray-500'
+                          proj.status === 'Production' 
+                            ? 'bg-[#00f0ff] animate-pulse' 
+                            : proj.status === 'Staging' 
+                              ? 'bg-purple-500' 
+                              : proj.status === 'Delivered' 
+                                ? 'bg-green-500' 
+                                : 'bg-gray-500'
                         }`} />
-                        <span className="text-xs font-semibold">{proj.status === 'Production' ? 'In Production' : proj.status === 'Staging' ? 'Staging' : 'Concept'}</span>
+                        <span className="text-xs font-semibold">
+                          {proj.status === 'Production' 
+                            ? 'In Production' 
+                            : proj.status === 'Staging' 
+                              ? 'Staging' 
+                              : proj.status === 'Delivered' 
+                                ? 'Delivered' 
+                                : 'Concept'}
+                        </span>
                       </div>
                     </td>
                     <td className="px-8 py-6 text-right">
@@ -435,6 +449,7 @@ export const AdminProjects = () => {
                     <option value="Production">Production</option>
                     <option value="Staging">Staging</option>
                     <option value="Concept">Concept</option>
+                    <option value="Delivered">Delivered</option>
                   </select>
                 </div>
                 <div>

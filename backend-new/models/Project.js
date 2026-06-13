@@ -11,6 +11,15 @@ const ProjectSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
+  client: {
+    type: String,
+    default: ''
+  },
+  status: {
+    type: String,
+    enum: ['Production', 'Staging', 'Concept', 'Delivered'],
+    default: 'Production'
+  },
   description: {
     type: String,
     required: true

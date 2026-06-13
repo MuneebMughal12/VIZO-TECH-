@@ -10,6 +10,8 @@ export const ProjectModal = ({ isOpen, onClose, project }) => {
   const {
     title = '',
     category = '',
+    client = '',
+    status = 'Production',
     imageUrl = '',
     challenge = '',
     solution = '',
@@ -39,6 +41,26 @@ export const ProjectModal = ({ isOpen, onClose, project }) => {
               {category}
             </span>
             <h3 className="text-2xl md:text-3xl font-extrabold mt-3 tracking-tight">{title}</h3>
+            <div className="flex flex-wrap gap-3 items-center mt-2 text-xs text-on-surface-variant font-medium">
+              {client && (
+                <>
+                  <span>Client: <strong className={theme === 'dark' ? 'text-white' : 'text-black'}>{client}</strong></span>
+                  <span className="opacity-30">•</span>
+                </>
+              )}
+              <span className="inline-flex items-center gap-1.5">
+                <span className={`w-1.5 h-1.5 rounded-full ${
+                  status === 'Production' 
+                    ? 'bg-[#00f0ff] animate-pulse' 
+                    : status === 'Staging' 
+                      ? 'bg-purple-500' 
+                      : status === 'Delivered' 
+                        ? 'bg-green-500' 
+                        : 'bg-gray-500'
+                }`} />
+                {status === 'Production' ? 'In Production' : status === 'Staging' ? 'Staging' : status === 'Delivered' ? 'Delivered' : 'Concept'}
+              </span>
+            </div>
           </div>
           <button 
             className="material-symbols-outlined hover:scale-110 hover:text-red-500 transition-all cursor-pointer p-1 rounded-full bg-white/5"
