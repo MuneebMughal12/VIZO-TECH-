@@ -18,8 +18,8 @@ const {
  */
 async function sendEmailNotification(toEmail, clientName, replyMessage) {
   const isSmtpConfigured = SMTP_HOST && SMTP_PORT && SMTP_USER && SMTP_PASS &&
-                           !SMTP_USER.includes('your-email@gmail.com') &&
-                           !SMTP_PASS.includes('your-email-app-password');
+    !SMTP_USER.includes('your-email@gmail.com') &&
+    !SMTP_PASS.includes('your-email-app-password');
 
   const subject = `New Message from VIZO TECH Support`;
   const textContent = `Hello ${clientName},\n\nOur administrator has replied to your inquiry:\n\n"${replyMessage}"\n\nBest regards,\nVIZO TECH Engineering Team`;
@@ -74,9 +74,9 @@ async function sendEmailNotification(toEmail, clientName, replyMessage) {
  */
 async function sendWhatsAppNotification(toPhone, clientName, replyMessage) {
   const isTwilioConfigured = TWILIO_ACCOUNT_SID && TWILIO_AUTH_TOKEN && TWILIO_WHATSAPP_FROM &&
-                             !TWILIO_ACCOUNT_SID.includes('ACXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX') &&
-                             !TWILIO_AUTH_TOKEN.includes('your_twilio_auth_token');
-  
+    !TWILIO_ACCOUNT_SID.includes('ACXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX') &&
+    !TWILIO_AUTH_TOKEN.includes('your_twilio_auth_token');
+
   // Clean phone number (remove non-digits except +)
   let cleanPhone = toPhone.trim().replace(/[^\d+]/g, '');
   if (!cleanPhone.startsWith('+')) {
@@ -89,7 +89,7 @@ async function sendWhatsAppNotification(toPhone, clientName, replyMessage) {
   if (isTwilioConfigured) {
     try {
       const client = twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
-      
+
       const response = await client.messages.create({
         body: messageText,
         from: TWILIO_WHATSAPP_FROM, // e.g. 'whatsapp:+14155238886'
