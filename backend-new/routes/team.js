@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
 
 // POST /api/team (Protected)
 router.post('/', auth, async (req, res) => {
-  const { imageUrl, name, role, bio, isPinnedHome } = req.body;
+  const { imageUrl, name, role, bio, isPinnedHome, experience } = req.body;
 
   try {
     const newMember = new TeamMember({
@@ -24,7 +24,8 @@ router.post('/', auth, async (req, res) => {
       name,
       role,
       bio,
-      isPinnedHome
+      isPinnedHome,
+      experience
     });
 
     const member = await newMember.save();

@@ -22,6 +22,10 @@ const TeamMemberSchema = new mongoose.Schema({
   isPinnedHome: {
     type: Boolean,
     default: false
+  },
+  experience: {
+    type: String,
+    default: ''
   }
 }, { timestamps: true });
 

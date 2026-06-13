@@ -17,6 +17,7 @@ export const AdminTeam = () => {
   const [isPinnedHome, setIsPinnedHome] = useState(false);
   const [techStack, setTechStack] = useState('');
   const [status, setStatus] = useState('Active'); // Active, Away, On Leave
+  const [experience, setExperience] = useState('');
 
   const token = localStorage.getItem('vizo_admin_token');
 
@@ -47,6 +48,7 @@ export const AdminTeam = () => {
     setIsPinnedHome(false);
     setTechStack('');
     setStatus('Active');
+    setExperience('');
     setShowModal(true);
   };
 
@@ -59,6 +61,7 @@ export const AdminTeam = () => {
     setIsPinnedHome(member.isPinnedHome || false);
     setTechStack(Array.isArray(member.techStack) ? member.techStack.join(', ') : member.techStack || '');
     setStatus(member.status || 'Active');
+    setExperience(member.experience || '');
     setShowModal(true);
   };
 
@@ -115,6 +118,7 @@ export const AdminTeam = () => {
       bio,
       isPinnedHome,
       status,
+      experience,
       techStack: techStack.split(',').map(s => s.trim()).filter(Boolean)
     };
 
@@ -211,7 +215,10 @@ export const AdminTeam = () => {
                 </div>
                 <div>
                   <h3 className="text-lg font-bold mb-1">{member.name}</h3>
-                  <p className="text-xs font-semibold text-[#00f0ff] uppercase tracking-wider mb-2">{member.role}</p>
+                  <p className="text-xs font-semibold text-[#00f0ff] uppercase tracking-wider mb-1">{member.role}</p>
+                  {member.experience && (
+                    <p className="text-[11px] text-on-surface-variant font-medium mb-2">Exp: {member.experience}</p>
+                  )}
                   
                   {member.techStack && member.techStack.length > 0 && (
                     <div className="flex flex-wrap gap-1.5 mt-2">
@@ -310,6 +317,18 @@ export const AdminTeam = () => {
                     <option value="Away">Away</option>
                     <option value="On Leave">On Leave</option>
                   </select>
+                </div>
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider mb-2">Experience</label>
+                  <input 
+                    type="text" 
+                    placeholder="e.g. 5+ Years"
+                    className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none transition-all ${
+                      theme === 'dark' ? 'bg-white/5 border-white/10 focus:border-[#00f0ff]' : 'bg-[#f8f9fa] border-black/10 focus:border-[#0052FF]'
+                    }`}
+                    value={experience} 
+                    onChange={e => setExperience(e.target.value)} 
+                  />
                 </div>
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-wider mb-2">Pin to Homepage</label>

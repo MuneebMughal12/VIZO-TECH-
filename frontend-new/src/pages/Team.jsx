@@ -85,11 +85,13 @@ export const Team = () => {
                   </p>
                 </div>
                 
-                {/* Social icons */}
-                <div className="flex gap-3 text-on-surface-variant border-t border-black/5 dark:border-white/5 pt-4">
-                  <span className="material-symbols-outlined hover:text-[#00f0ff] cursor-pointer text-md" title="Terminal Access">terminal</span>
-                  <span className="material-symbols-outlined hover:text-[#00f0ff] cursor-pointer text-md" title="Share profile">share</span>
-                </div>
+                {/* Experience */}
+                {member.experience && (
+                  <div className="border-t border-black/5 dark:border-white/5 pt-4 text-[10px] font-bold text-on-surface-variant uppercase tracking-widest flex items-center gap-1.5">
+                    <span className="material-symbols-outlined text-xs">work</span>
+                    <span>{member.experience} Experience</span>
+                  </div>
+                )}
               </div>
             </div>
           ))}
