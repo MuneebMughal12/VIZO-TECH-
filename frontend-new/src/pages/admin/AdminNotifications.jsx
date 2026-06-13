@@ -8,6 +8,9 @@ export const AdminNotifications = () => {
   const [selectedInquiry, setSelectedInquiry] = useState(null);
   const [replyText, setReplyText] = useState('');
   const [sending, setSending] = useState(false);
+  const [attachmentUrl, setAttachmentUrl] = useState('');
+  const [uploading, setUploading] = useState(false);
+  const [attachedFileName, setAttachedFileName] = useState('');
 
   const token = localStorage.getItem('vizo_admin_token');
 
@@ -60,6 +63,49 @@ export const AdminNotifications = () => {
     }
   };
 
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setUploading(true);
+    setAttachedFileName(file.name);
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const res = await fetch(`${API_URL}/api/upload/file`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+        body: formData
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        setAttachmentUrl(data.fileUrl);
+      } else {
+        const errData = await res.json();
+        alert(errData.msg || 'Upload failed');
+        setAttachmentUrl('');
+        setAttachedFileName('');
+      }
+    } catch (err) {
+      console.error('File upload error:', err);
+      alert('File upload failed.');
+      setAttachmentUrl('');
+      setAttachedFileName('');
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const removeAttachment = () => {
+    setAttachmentUrl('');
+    setAttachedFileName('');
+  };
+
   const handleSendReply = async (e) => {
     e.preventDefault();
     if (!replyText || !selectedInquiry) return;
@@ -72,13 +118,18 @@ export const AdminNotifications = () => {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify({ message: replyText })
+        body: JSON.stringify({ 
+          message: replyText,
+          attachmentUrl: attachmentUrl
+        })
       });
 
       if (res.ok) {
         const updatedInquiry = await res.json();
         setSelectedInquiry(updatedInquiry);
         setReplyText('');
+        setAttachmentUrl('');
+        setAttachedFileName('');
         // Refresh inquiries list to update message snippet and status
         fetchInquiries();
       }
@@ -247,6 +298,19 @@ export const AdminNotifications = () => {
                         : 'bg-white/5 rounded-tr-2xl rounded-br-2xl rounded-bl-2xl'
                     }`}>
                       <p className="text-sm leading-relaxed">{rep.message}</p>
+                      {rep.attachmentUrl && (
+                        <div className="mt-2 pt-2 border-t border-white/5 flex items-center">
+                          <a 
+                            href={rep.attachmentUrl} 
+                            target="_blank" 
+                            rel="noreferrer"
+                            className="inline-flex items-center gap-1 text-xs text-purple-400 hover:text-purple-300 font-semibold underline"
+                          >
+                            <span className="material-symbols-outlined text-xs">attachment</span>
+                            <span>View Attachment ({rep.attachmentUrl.split('.').pop().toUpperCase()})</span>
+                          </a>
+                        </div>
+                      )}
                     </div>
                   </div>
                 );
@@ -263,11 +327,48 @@ export const AdminNotifications = () => {
                   onChange={e => setReplyText(e.target.value)}
                   required
                 />
+                
+                {/* File attachment preview */}
+                {(uploading || attachmentUrl) && (
+                  <div className="flex items-center justify-between px-4 py-2 bg-white/5 border-t border-white/5 text-xs">
+                    <div className="flex items-center gap-2">
+                      <span className="material-symbols-outlined text-sm">attachment</span>
+                      {uploading ? (
+                        <span className="text-on-surface-variant animate-pulse">Uploading {attachedFileName}...</span>
+                      ) : (
+                        <span className="font-semibold text-green-400">Attached: {attachedFileName}</span>
+                      )}
+                    </div>
+                    {!uploading && (
+                      <button 
+                        type="button" 
+                        onClick={removeAttachment}
+                        className="text-red-400 hover:text-red-300 font-bold"
+                      >
+                        Remove
+                      </button>
+                    )}
+                  </div>
+                )}
+
                 <div className="flex justify-between items-center p-3 bg-white/5 border-t border-white/5">
-                  <span className="text-[10px] text-on-surface-variant font-mono">Auto-saving...</span>
+                  <div className="flex items-center gap-4">
+                    <label className="cursor-pointer inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs font-semibold hover:bg-white/10 transition-all">
+                      <span className="material-symbols-outlined text-sm">attach_file</span>
+                      <span>Attach File</span>
+                      <input 
+                        type="file" 
+                        className="hidden" 
+                        onChange={handleFileChange} 
+                        disabled={uploading || sending}
+                      />
+                    </label>
+                    {uploading && <span className="text-[10px] text-on-surface-variant font-mono animate-pulse">Uploading file...</span>}
+                  </div>
+                  
                   <button 
                     type="submit"
-                    disabled={sending || !replyText}
+                    disabled={sending || uploading || !replyText}
                     className={`px-6 py-2 rounded font-bold flex items-center gap-2 transition-all text-xs ${
                       theme === 'dark'
                         ? 'bg-[#00f0ff] text-black hover:brightness-110 shadow-lg shadow-[#00f0ff]/10'

@@ -42,11 +42,10 @@ router.post('/', async (req, res) => {
   }
 });
 
-// POST /api/inquiries/:id/reply (Protected) - appends responses to thread
+// POST /api/inquiries/:id/reply (Protected) - add a reply to an inquiry
 router.post('/:id/reply', auth, async (req, res) => {
-  const { message } = req.body;
-
   try {
+    const { message, attachmentUrl } = req.body;
     if (!message) {
       return res.status(400).json({ msg: 'Reply message is required' });
     }
@@ -60,6 +59,7 @@ router.post('/:id/reply', auth, async (req, res) => {
     inquiry.replies.push({
       sender: 'admin',
       message,
+      attachmentUrl: attachmentUrl || '',
       timestamp: new Date()
     });
 
@@ -70,7 +70,7 @@ router.post('/:id/reply', auth, async (req, res) => {
     // Trigger email notification and await it so serverless functions (Vercel) don't terminate before completion
     const { sendEmailNotification } = require('../utils/notifier');
     try {
-      await sendEmailNotification(inquiry.email, inquiry.name, message);
+      await sendEmailNotification(inquiry.email, inquiry.name, message, attachmentUrl || '');
     } catch (err) {
       console.error('Failed to send email notification:', err);
     }

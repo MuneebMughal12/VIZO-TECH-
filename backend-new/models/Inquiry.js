@@ -10,6 +10,10 @@ const ReplySchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  attachmentUrl: {
+    type: String,
+    default: ''
+  },
   timestamp: {
     type: Date,
     default: Date.now

@@ -37,4 +37,26 @@ const upload = multer({
   },
 });
 
-module.exports = { cloudinary, upload };
+// Cloudinary storage engine for arbitrary documents/files
+const fileStorage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: async (req, file) => {
+    const isSvg = file.originalname.toLowerCase().endsWith('.svg') || file.mimetype === 'image/svg+xml';
+    const isImage = file.mimetype.startsWith('image/');
+    return {
+      folder: 'vizo-tech-files',
+      resource_type: 'auto', // Cloudinary auto-detects image, video, raw file
+      transformation: (isImage && !isSvg) ? [{ width: 1200, crop: 'limit', quality: 'auto', fetch_format: 'auto' }] : undefined,
+      format: isSvg ? 'svg' : undefined,
+      public_id: `${Date.now()}-${file.originalname.split('.')[0].replace(/[^a-zA-Z0-9]/g, '_')}`,
+    };
+  },
+});
+
+// Multer instance for any file upload (PDF, zip, docx, image, etc.)
+const uploadAny = multer({
+  storage: fileStorage,
+  limits: { fileSize: 25 * 1024 * 1024 }, // 25MB limit
+});
+
+module.exports = { cloudinary, upload, uploadAny };
