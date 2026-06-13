@@ -399,8 +399,8 @@ export const Home = ({ onContactClick }) => {
           <div className="relative grid grid-cols-1 md:grid-cols-4 gap-gutter">
             {/* Neon line connector */}
             <div className={`hidden md:block absolute top-1/2 left-0 w-full h-[1px] -translate-y-1/2 z-0 ${theme === 'dark'
-                ? 'bg-gradient-to-r from-transparent via-[#00f0ff]/30 to-transparent'
-                : 'bg-gradient-to-r from-transparent via-[#0052FF]/30 to-transparent'
+              ? 'bg-gradient-to-r from-transparent via-[#00f0ff]/30 to-transparent'
+              : 'bg-gradient-to-r from-transparent via-[#0052FF]/30 to-transparent'
               }`} />
 
             {[
@@ -412,8 +412,8 @@ export const Home = ({ onContactClick }) => {
               <div key={step.id} className="relative z-10">
                 <div className="glass-card p-8 rounded-2xl text-center hover:shadow-[0_0_30px_rgba(0,240,255,0.15)] hover:-translate-y-2 transition-all duration-500 group">
                   <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-6 mx-auto border font-bold transition-all ${theme === 'dark'
-                      ? 'bg-[#00f0ff]/10 border-[#00f0ff]/40 text-[#00f0ff] group-hover:bg-[#00f0ff] group-hover:text-black'
-                      : 'bg-[#0052FF]/10 border-[#0052FF]/40 text-[#0052FF] group-hover:bg-[#0052FF] group-hover:text-white'
+                    ? 'bg-[#00f0ff]/10 border-[#00f0ff]/40 text-[#00f0ff] group-hover:bg-[#00f0ff] group-hover:text-black'
+                    : 'bg-[#0052FF]/10 border-[#0052FF]/40 text-[#0052FF] group-hover:bg-[#0052FF] group-hover:text-white'
                     }`}>
                     {step.id}
                   </div>
@@ -570,8 +570,8 @@ export const Home = ({ onContactClick }) => {
                 <div
                   key={rev._id}
                   className={`absolute inset-0 glass-card p-8 md:p-10 rounded-2xl flex flex-col justify-between transition-all duration-700 transform ${i === currentReviewIdx
-                      ? 'opacity-100 translate-x-0 scale-100 z-10'
-                      : 'opacity-0 translate-x-12 scale-95 pointer-events-none'
+                    ? 'opacity-100 translate-x-0 scale-100 z-10'
+                    : 'opacity-0 translate-x-12 scale-95 pointer-events-none'
                     }`}
                 >
                   <div>
@@ -705,15 +705,15 @@ export const Home = ({ onContactClick }) => {
                       type="text"
                       placeholder="Paste document link or image URL..."
                       className={`flex-grow border rounded-xl px-6 py-4 focus:outline-none w-full text-sm ${theme === 'dark'
-                          ? 'bg-white/5 border-white/10 text-white focus:border-[#00f0ff]'
-                          : 'bg-[#f8f9fa] border-black/10 text-black focus:border-[#0052FF]'
+                        ? 'bg-white/5 border-white/10 text-white focus:border-[#00f0ff]'
+                        : 'bg-[#f8f9fa] border-black/10 text-black focus:border-[#0052FF]'
                         }`}
                       value={contactAttachmentUrl}
                       onChange={e => setContactAttachmentUrl(e.target.value)}
                     />
                     <label className={`shrink-0 cursor-pointer border rounded-xl px-4 py-3 text-sm font-semibold flex items-center justify-center transition-all ${theme === 'dark'
-                        ? 'bg-white/5 border-white/10 text-white hover:bg-white/10'
-                        : 'bg-black/5 border-black/10 text-black hover:bg-black/10'
+                      ? 'bg-white/5 border-white/10 text-white hover:bg-white/10'
+                      : 'bg-black/5 border-black/10 text-black hover:bg-black/10'
                       }`}>
                       <span className="material-symbols-outlined text-[18px] mr-1">
                         {contactUploading ? 'sync' : 'cloud_upload'}
@@ -760,8 +760,8 @@ export const Home = ({ onContactClick }) => {
                   type="submit"
                   disabled={contactUploading}
                   className={`w-full py-4 rounded-xl font-bold flex items-center justify-center transition-all ${theme === 'dark'
-                      ? 'primary-gradient-btn text-black'
-                      : 'bg-[#0052FF] text-white hover:bg-[#003bbb] shadow-md shadow-[#0052FF]/20'
+                    ? 'primary-gradient-btn text-black'
+                    : 'bg-[#0052FF] text-white hover:bg-[#003bbb] shadow-md shadow-[#0052FF]/20'
                     } disabled:opacity-50`}
                 >
                   Send Proposal
@@ -781,7 +781,7 @@ export const Home = ({ onContactClick }) => {
 
             <a
               className="inline-flex items-center gap-3 px-8 py-4 bg-[#25D366]/20 border border-[#25D366]/40 hover:bg-[#25D366] hover:text-white transition-all rounded-full text-[#25D366] font-bold group"
-              href="https://wa.me/41221234567"
+              href="https://wa.me/923351912047"
               target="_blank"
               rel="noreferrer"
             >
