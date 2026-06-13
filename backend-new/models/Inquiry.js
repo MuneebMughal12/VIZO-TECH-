@@ -29,7 +29,7 @@ const InquirySchema = new mongoose.Schema({
   },
   whatsapp: {
     type: String,
-    required: true,
+    default: '',
     trim: true
   },
   serviceChips: {
