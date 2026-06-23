@@ -105,7 +105,11 @@ const seedDatabase = async () => {
         category: 'Development',
         title: 'Neural Nexus Core',
         description: 'Enterprise-grade distributed architecture for a global fintech powerhouse, handling millions of transactions with sub-millisecond latency.',
-        imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCsz_Om8DdQfQGW4mTHVMQv6TeAKidxj9-kHpnEhqVTX2C0Kx3GXbpDzMPYmbwLQWPCUgZoAx0ORfzNyO67b3PxUcB-vfdA6jLNb92erhnFurAb5CgboH_iwDEU2IBuvqrAjVAas0XaH4tMOJ-mojAv9KYBLqb49wsoJqPJbsD0zIv9DXwZ6Qb8VIhP8gn9Z9Slh4zq5x3FoE8dtGLZwbEXCZqqjxyxaiZMz-MccgFGOrAJs5A8C6leyP9nnPMq1jxfWF035wYn-koN',
+        thumbnail: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCsz_Om8DdQfQGW4mTHVMQv6TeAKidxj9-kHpnEhqVTX2C0Kx3GXbpDzMPYmbwLQWPCUgZoAx0ORfzNyO67b3PxUcB-vfdA6jLNb92erhnFurAb5CgboH_iwDEU2IBuvqrAjVAas0XaH4tMOJ-mojAv9KYBLqb49wsoJqPJbsD0zIv9DXwZ6Qb8VIhP8gn9Z9Slh4zq5x3FoE8dtGLZwbEXCZqqjxyxaiZMz-MccgFGOrAJs5A8C6leyP9nnPMq1jxfWF035wYn-koN',
+        gallery: [
+          'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=800&q=80',
+          'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=800&q=80'
+        ],
         projectLink: 'https://github.com/vizo-tech/neural-nexus-core',
         isPinnedHome: true,
         challenge: 'The client required a system capable of handling 500k+ concurrent transactions without a single millisecond of drift. Legacy infrastructure was failing under peak loads, leading to critical service interruptions during market volatility.',
@@ -123,7 +127,11 @@ const seedDatabase = async () => {
         category: 'AI',
         title: 'AetherMind LLM',
         description: 'Custom fine-tuned large language model specialized in proprietary luxury manufacturing processes and supply chain optimization.',
-        imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDLfItlr-t_SWK4i3mEMG687_hHK0IFWzRdLBzlGJRcHaX9qqPDVXLOSlPCgcFThyQTG2HtA8rU2cGvHOQ-VIvAnXA5UN_e-Uef81F7KKqPPB5_qVAfZiU3rqQLXWayWgkXTXpK7bzkL_Wt9IjD-CX6E5Ve_OF55aP022K3iLWeKl1Z2fDfxi3xsniT_qx48kKorSQhW0MPT_ChznY8HQyzGT41TZmcvWzbjyCBBiqUe9uOb5L6ZsPzsNOeQgkYk53UGhMAZc85rG-d',
+        thumbnail: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDLfItlr-t_SWK4i3mEMG687_hHK0IFWzRdLBzlGJRcHaX9qqPDVXLOSlPCgcFThyQTG2HtA8rU2cGvHOQ-VIvAnXA5UN_e-Uef81F7KKqPPB5_qVAfZiU3rqQLXWayWgkXTXpK7bzkL_Wt9IjD-CX6E5Ve_OF55aP022K3iLWeKl1Z2fDfxi3xsniT_qx48kKorSQhW0MPT_ChznY8HQyzGT41TZmcvWzbjyCBBiqUe9uOb5L6ZsPzsNOeQgkYk53UGhMAZc85rG-d',
+        gallery: [
+          'https://images.unsplash.com/photo-1677442136019-21780efad99a?auto=format&fit=crop&w=800&q=80',
+          'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=800&q=80'
+        ],
         projectLink: '',
         isPinnedHome: true,
         challenge: 'Our client needed to automate proprietary luxury brand customer inquiries while preserving high brand styling conventions and technical security protocols.',
@@ -141,7 +149,11 @@ const seedDatabase = async () => {
         category: 'Design',
         title: 'Prism Interface',
         description: 'A revolutionary design system for an international luxury real estate platform, blending immersive 3D with ultra-clean usability.',
-        imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDmuRbyzNZpsorT_2XgtZVrpqwks1dX2_o8EBwcdLATFy73omNoxhext9HaxBnBEte5QNU70qYeKYH-BHuL_WBSRlTurYR8gRJ3I7UTB6PUqtGNcAFbK6ecFwzwf55_i6QO4_ihO046qC63J7Ls-fKbEaKUfkweNzJnWSjnv33URrzvgSmVMHLdFAbCvBc9FlFFCbJwyxAO-EiJwIGCWpRSiRAt4344NOp2N6scNotMKvXNvp-2xZqMtMG8tNkz1sZnFawk4333ApWj',
+        thumbnail: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDmuRbyzNZpsorT_2XgtZVrpqwks1dX2_o8EBwcdLATFy73omNoxhext9HaxBnBEte5QNU70qYeKYH-BHuL_WBSRlTurYR8gRJ3I7UTB6PUqtGNcAFbK6ecFwzwf55_i6QO4_ihO046qC63J7Ls-fKbEaKUfkweNzJnWSjnv33URrzvgSmVMHLdFAbCvBc9FlFFCbJwyxAO-EiJwIGCWpRSiRAt4344NOp2N6scNotMKvXNvp-2xZqMtMG8tNkz1sZnFawk4333ApWj',
+        gallery: [
+          'https://images.unsplash.com/photo-1508921912186-1d1a45ebb3c1?auto=format&fit=crop&w=800&q=80',
+          'https://images.unsplash.com/photo-1541462608143-67571c6738dd?auto=format&fit=crop&w=800&q=80'
+        ],
         projectLink: '',
         isPinnedHome: true,
         challenge: 'The client was seeking an ultra-premium visual canvas to display high-end estates without visual lag or generic structures.',
@@ -159,7 +171,11 @@ const seedDatabase = async () => {
         category: 'Digital Marketing',
         title: 'VIZO Growth Engine',
         description: 'Programmatic ad bidding and hyper-targeted landing page arrays deploying automated lead generation mechanisms.',
-        imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAazq4gh6y0ckgL9AIJnXfTnJs5sXcXiIJ-Fz1BjP2G_ShaOy3ftv1jdou6X8xYPQ-XqmLFM4l4_DoewBNRzLp1czfFDy0QwH79qjsc9Y1yv0ulZZESd0ZKpuLpaTvxjAgRs-0KgEv1QG1FNIMWLMAfuPQsnmgNqmi3DtCQcil3wMmgvfsqU9kYyo0c0RILroU2Avn31Qovu6fxX01Ge7UM8oinVcnH3METmCsqh1d-32N8GlenRQLbMC6fsYO4b7CXlO6VE2tRmnrG',
+        thumbnail: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAazq4gh6y0ckgL9AIJnXfTnJs5sXcXiIJ-Fz1BjP2G_ShaOy3ftv1jdou6X8xYPQ-XqmLFM4l4_DoewBNRzLp1czfFDy0QwH79qjsc9Y1yv0ulZZESd0ZKpuLpaTvxjAgRs-0KgEv1QG1FNIMWLMAfuPQsnmgNqmi3DtCQcil3wMmgvfsqU9kYyo0c0RILroU2Avn31Qovu6fxX01Ge7UM8oinVcnH3METmCsqh1d-32N8GlenRQLbMC6fsYO4b7CXlO6VE2tRmnrG',
+        gallery: [
+          'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80',
+          'https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=800&q=80'
+        ],
         projectLink: '',
         isPinnedHome: false,
         challenge: 'A global enterprise required a unified B2B lead-generation pipeline with real-time bidding algorithms and custom tracking.',

@@ -24,9 +24,13 @@ const ProjectSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  imageUrl: {
+  thumbnail: {
     type: String,
     required: true
+  },
+  gallery: {
+    type: [String],
+    default: []
   },
   projectLink: {
     type: String,

@@ -495,7 +495,7 @@ export const Home = ({ onContactClick }) => {
                 <div className="h-full w-full overflow-hidden">
                   <img
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 brightness-75 group-hover:brightness-95"
-                    src={project.imageUrl}
+                    src={project.thumbnail}
                     alt={project.title}
                   />
                 </div>

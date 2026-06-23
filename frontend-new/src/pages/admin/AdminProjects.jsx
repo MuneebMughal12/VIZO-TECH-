@@ -16,7 +16,11 @@ export const AdminProjects = () => {
   const [client, setClient] = useState('');
   const [category, setCategory] = useState('Development');
   const [status, setStatus] = useState('Production');
-  const [imageUrl, setImageUrl] = useState('');
+  const [thumbnail, setThumbnail] = useState('');
+  const [gallery, setGallery] = useState([]);
+  const [galleryLinkInput, setGalleryLinkInput] = useState('');
+  const [isUploadingThumbnail, setIsUploadingThumbnail] = useState(false);
+  const [isUploadingGallery, setIsUploadingGallery] = useState(false);
   const [projectLink, setProjectLink] = useState('');
   const [description, setDescription] = useState('');
   const [challenge, setChallenge] = useState('');
@@ -58,7 +62,9 @@ export const AdminProjects = () => {
     setClient('');
     setCategory('Development');
     setStatus('Production');
-    setImageUrl('');
+    setThumbnail('');
+    setGallery([]);
+    setGalleryLinkInput('');
     setProjectLink('');
     setDescription('');
     setChallenge('');
@@ -79,7 +85,9 @@ export const AdminProjects = () => {
     setClient(proj.client || '');
     setCategory(proj.category || 'Development');
     setStatus(proj.status || 'Production');
-    setImageUrl(proj.imageUrl || '');
+    setThumbnail(proj.thumbnail || proj.imageUrl || '');
+    setGallery(proj.gallery || []);
+    setGalleryLinkInput('');
     setProjectLink(proj.projectLink || '');
     setDescription(proj.description || '');
     setChallenge(proj.challenge || '');
@@ -148,7 +156,8 @@ export const AdminProjects = () => {
       client,
       category,
       status,
-      imageUrl,
+      thumbnail,
+      gallery,
       projectLink,
       description,
       challenge,
@@ -286,8 +295,8 @@ export const AdminProjects = () => {
                     <td className="px-8 py-6">
                       <div className="flex items-center gap-4">
                         <div className="w-12 h-12 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center overflow-hidden shrink-0">
-                          {proj.imageUrl ? (
-                            <img src={proj.imageUrl} alt={proj.title} className="w-full h-full object-cover" />
+                          {(proj.thumbnail || proj.imageUrl) ? (
+                            <img src={proj.thumbnail || proj.imageUrl} alt={proj.title} className="w-full h-full object-cover" />
                           ) : (
                             <span className="material-symbols-outlined text-on-surface-variant">architecture</span>
                           )}
@@ -433,30 +442,34 @@ export const AdminProjects = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider mb-2">Image (Upload or Link)</label>
+                  <label className="block text-xs font-bold uppercase tracking-wider mb-2">Project Thumbnail (Main Image)</label>
                   <div className="flex gap-2">
                     <input
                       type="text"
-                      placeholder="Paste image URL..."
+                      placeholder="Paste thumbnail image URL..."
                       className={`flex-grow border rounded-xl px-4 py-3 text-sm focus:outline-none transition-all ${theme === 'dark' ? 'bg-white/5 border-white/10 focus:border-[#00f0ff]' : 'bg-[#f8f9fa] border-black/10 focus:border-[#0052FF]'
                         }`}
-                      value={imageUrl}
-                      onChange={e => setImageUrl(e.target.value)}
+                      value={thumbnail}
+                      onChange={e => setThumbnail(e.target.value)}
                     />
                     <label className={`shrink-0 cursor-pointer border rounded-xl px-4 py-3 text-sm font-semibold flex items-center justify-center transition-all ${theme === 'dark'
                         ? 'bg-white/5 border-white/10 text-white hover:bg-white/10'
                         : 'bg-black/5 border-black/10 text-black hover:bg-black/10'
                       }`}>
-                      <span className="material-symbols-outlined text-[18px] mr-1">cloud_upload</span>
-                      Upload
+                      <span className="material-symbols-outlined text-[18px] mr-1">
+                        {isUploadingThumbnail ? 'sync' : 'cloud_upload'}
+                      </span>
+                      {isUploadingThumbnail ? 'Uploading...' : 'Upload'}
                       <input
                         type="file"
                         accept="image/*"
                         className="hidden"
+                        disabled={isUploadingThumbnail}
                         onChange={async (e) => {
                           const file = e.target.files[0];
                           if (!file) return;
 
+                          setIsUploadingThumbnail(true);
                           const formData = new FormData();
                           formData.append('image', file);
 
@@ -471,7 +484,7 @@ export const AdminProjects = () => {
 
                             if (res.ok) {
                               const data = await res.json();
-                              setImageUrl(data.imageUrl);
+                              setThumbnail(data.imageUrl);
                             } else {
                               const errData = await res.json();
                               alert(errData.msg || 'Upload failed');
@@ -479,6 +492,8 @@ export const AdminProjects = () => {
                           } catch (err) {
                             console.error('Upload error:', err);
                             alert('Failed to upload image');
+                          } finally {
+                            setIsUploadingThumbnail(false);
                           }
                         }}
                       />
@@ -495,6 +510,118 @@ export const AdminProjects = () => {
                     onChange={e => setProjectLink(e.target.value)}
                   />
                 </div>
+              </div>
+
+              {/* Gallery Input & Preview */}
+              <div className="border-t border-white/5 pt-6 space-y-4">
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider mb-2">Project Gallery / Screenshots</label>
+                  <div className="flex flex-col sm:flex-row gap-2">
+                    <div className="flex-grow flex gap-2">
+                      <input
+                        type="text"
+                        placeholder="Paste image URL to add to gallery..."
+                        className={`flex-grow border rounded-xl px-4 py-3 text-sm focus:outline-none transition-all ${theme === 'dark' ? 'bg-white/5 border-white/10 focus:border-[#00f0ff]' : 'bg-[#f8f9fa] border-black/10 focus:border-[#0052FF]'
+                          }`}
+                        value={galleryLinkInput}
+                        onChange={e => setGalleryLinkInput(e.target.value)}
+                        onKeyDown={e => {
+                          if (e.key === 'Enter') {
+                            e.preventDefault();
+                            if (galleryLinkInput.trim()) {
+                              setGallery(prev => [...prev, galleryLinkInput.trim()]);
+                              setGalleryLinkInput('');
+                            }
+                          }
+                        }}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (galleryLinkInput.trim()) {
+                            setGallery(prev => [...prev, galleryLinkInput.trim()]);
+                            setGalleryLinkInput('');
+                          }
+                        }}
+                        className="px-4 py-3 rounded-xl border border-white/10 hover:bg-white/5 text-xs font-bold uppercase tracking-wider"
+                      >
+                        Add Link
+                      </button>
+                    </div>
+                    
+                    <label className={`shrink-0 cursor-pointer border rounded-xl px-4 py-3 text-sm font-semibold flex items-center justify-center transition-all ${theme === 'dark'
+                        ? 'bg-white/5 border-white/10 text-white hover:bg-white/10'
+                        : 'bg-black/5 border-black/10 text-black hover:bg-black/10'
+                      }`}>
+                      <span className="material-symbols-outlined text-[18px] mr-1">
+                        {isUploadingGallery ? 'sync' : 'cloud_upload'}
+                      </span>
+                      {isUploadingGallery ? 'Uploading...' : 'Upload Images'}
+                      <input
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        className="hidden"
+                        disabled={isUploadingGallery}
+                        onChange={async (e) => {
+                          const files = Array.from(e.target.files);
+                          if (files.length === 0) return;
+
+                          setIsUploadingGallery(true);
+                          try {
+                            const uploadPromises = files.map(async (file) => {
+                              const formData = new FormData();
+                              formData.append('image', file);
+                              const res = await fetch(`${API_URL}/api/upload`, {
+                                method: 'POST',
+                                headers: {
+                                  'Authorization': `Bearer ${token}`
+                                },
+                                body: formData
+                              });
+                              if (!res.ok) {
+                                const errData = await res.json();
+                                throw new Error(errData.msg || 'Upload failed');
+                              }
+                              const data = await res.json();
+                              return data.imageUrl;
+                            });
+
+                            const urls = await Promise.all(uploadPromises);
+                            setGallery(prev => [...prev, ...urls]);
+                          } catch (err) {
+                            console.error('Gallery upload error:', err);
+                            alert(err.message || 'Failed to upload some gallery images.');
+                          } finally {
+                            setIsUploadingGallery(false);
+                          }
+                        }}
+                      />
+                    </label>
+                  </div>
+                </div>
+
+                {/* Previews grid */}
+                {gallery.length > 0 && (
+                  <div className="space-y-2">
+                    <span className="block text-[10px] font-bold uppercase tracking-wider text-on-surface-variant font-mono">Gallery Preview ({gallery.length} images)</span>
+                    <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-3 p-4 rounded-2xl bg-black/25 border border-white/5">
+                      {gallery.map((url, idx) => (
+                        <div key={idx} className="relative aspect-square rounded-xl overflow-hidden bg-black/40 border border-white/10 group/item">
+                          <img src={url} alt={`Gallery ${idx + 1}`} className="w-full h-full object-cover" />
+                          <button
+                            type="button"
+                            onClick={() => setGallery(prev => prev.filter((_, i) => i !== idx))}
+                            className="absolute top-1 right-1 w-5 h-5 rounded-full bg-red-600/90 text-white flex items-center justify-center hover:bg-red-500 hover:scale-110 active:scale-95 transition-all shadow-md z-10"
+                            title="Remove image"
+                          >
+                            <span className="material-symbols-outlined text-[12px] font-bold">close</span>
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
 
               <div>
