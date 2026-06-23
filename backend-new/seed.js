@@ -21,11 +21,11 @@ const seedDatabase = async () => {
 
     // Create Admin User
     const adminUser = new User({
-      username: 'admin',
-      password: 'admin123' // Will be hashed in User Schema pre-save hook
+      username: 'vizotech.official@gmail.com',
+      password: '686332@Vizo' // Will be hashed in User Schema pre-save hook
     });
     await adminUser.save();
-    console.log('Seeded Admin: admin / admin123');
+    console.log('Seeded Admin: vizotech.official@gmail.com / 686332@Vizo');
 
     // Create Settings
     const settings = new Settings({
