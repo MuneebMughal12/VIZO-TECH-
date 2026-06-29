@@ -6,7 +6,11 @@ const auth = require('../middleware/auth');
 // GET /api/team
 router.get('/', async (req, res) => {
   try {
-    const team = await TeamMember.find();
+    const filter = {};
+    if (req.query.pinned === 'true') {
+      filter.isPinnedHome = true;
+    }
+    const team = await TeamMember.find(filter);
     res.json(team);
   } catch (err) {
     console.error(err);

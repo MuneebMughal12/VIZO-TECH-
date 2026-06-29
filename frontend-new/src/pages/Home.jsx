@@ -4,6 +4,7 @@ import { useTheme } from '../context/ThemeContext';
 import API_URL from '../config/api';
 import { ProjectModal } from '../components/ProjectModal';
 import { LeaveReviewModal } from '../components/LeaveReviewModal';
+import { TeamCarousel } from '../components/TeamCarousel';
 
 export const Home = ({ onContactClick }) => {
   const { theme } = useTheme();
@@ -55,8 +56,8 @@ export const Home = ({ onContactClick }) => {
         setPinnedProjects(pData.filter(p => p.isPinnedHome === true));
       }
 
-      // Team
-      const tRes = await fetch(`${API_URL}/api/team`);
+      // Team (Only fetch pinned members for Home Page carousel)
+      const tRes = await fetch(`${API_URL}/api/team?pinned=true`);
       if (tRes.ok) {
         const tData = await tRes.json();
         setTeam(tData);
@@ -290,10 +291,7 @@ export const Home = ({ onContactClick }) => {
     }
   };
 
-  const topMember = team.find(t => t.isTopMember) || team[0];
-  const otherPinnedTeam = topMember 
-    ? team.filter(t => t.isPinnedHome && t._id !== topMember._id)
-    : team.filter(t => t.isPinnedHome);
+
 
   return (
     <div className="relative overflow-hidden w-full">
@@ -519,64 +517,10 @@ export const Home = ({ onContactClick }) => {
         </div>
       </section>
 
-      {/* 6. Core Team Members (Pinned) */}
+      {/* 6. Core Team Members (3D Stacked Carousel) */}
       {team.length > 0 && (
         <section className="py-section-gap max-w-container-max mx-auto px-margin-desktop">
-          <div className="text-center mb-16">
-            <h2 className="font-display-lg text-4xl md:text-display-lg font-bold mb-4">The Minds Behind the Magic</h2>
-            <p className="text-on-surface-variant max-w-2xl mx-auto text-sm">
-              A collective of visionary engineers and designers dedicated to pushing the boundaries of what is possible in the digital realm.
-            </p>
-          </div>
-
-          <div className="space-y-16 flex flex-col items-center">
-            {/* Top Member (Featured) */}
-            {topMember && (
-              <div className="flex flex-col items-center text-center group">
-                <span className="text-[10px] font-extrabold tracking-[0.25em] uppercase text-[#00f0ff] mb-4">
-                  Leadership / Featured Architect
-                </span>
-                <div className="relative w-56 h-56 mb-6 p-2.5 rounded-full border border-purple-500/40 group-hover:border-[#00f0ff] transition-all duration-500 shadow-2xl">
-                  {/* Outer glow aura */}
-                  <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-[#00f0ff]/15 to-purple-500/15 blur-lg opacity-60 group-hover:opacity-100 transition-all duration-500" />
-                  
-                  <img
-                    className="w-full h-full object-cover rounded-full filter grayscale group-hover:grayscale-0 transition-all duration-500 relative z-10"
-                    src={topMember.imageUrl}
-                    alt={topMember.name}
-                  />
-                  <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-tr from-[#00f0ff]/20 to-transparent z-20" />
-                </div>
-                <h4 className="font-headline-lg text-2xl font-extrabold mb-1">{topMember.name}</h4>
-                <span className="text-on-surface-variant font-label-sm uppercase tracking-widest text-[10px]">{topMember.role}</span>
-              </div>
-            )}
-
-            {/* Other Pinned Members */}
-            {otherPinnedTeam.length > 0 && (
-              <div className="w-full flex flex-col items-center">
-                {topMember && <div className="w-full h-[1px] bg-white/5 mb-12 max-w-lg" />}
-                <div className="flex flex-wrap justify-center gap-12">
-                  {otherPinnedTeam.map((member, i) => (
-                    <div key={member._id} className="flex flex-col items-center group">
-                      <div className={`relative w-48 h-48 mb-6 p-2 rounded-full border transition-colors duration-500 ${i % 2 === 0 ? 'border-[#00f0ff]/30 group-hover:border-[#00f0ff]' : 'border-purple-500/30 group-hover:border-purple-500'
-                        }`}>
-                        <img
-                          className="w-full h-full object-cover rounded-full filter grayscale group-hover:grayscale-0 transition-all duration-500"
-                          src={member.imageUrl}
-                          alt={member.name}
-                        />
-                        <div className={`absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity ${i % 2 === 0 ? 'bg-gradient-to-tr from-[#00f0ff]/20 to-transparent' : 'bg-gradient-to-tr from-purple-500/20 to-transparent'
-                          }`} />
-                      </div>
-                      <h4 className="font-headline-lg text-xl font-bold mb-1">{member.name}</h4>
-                      <span className="text-on-surface-variant font-label-sm uppercase tracking-widest text-[10px]">{member.role}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
+          <TeamCarousel members={team} />
         </section>
       )}
 

@@ -51,3 +51,10 @@ app.get('/', (req, res) => {
 // Export for Vercel serverless (do NOT use app.listen on Vercel)
 module.exports = app;
 
+if (require.main === module) {
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => {
+    console.log(`Server running locally on port ${PORT}`);
+  });
+}
+
