@@ -12,6 +12,11 @@ export const AdminTechnologies = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedTech, setSelectedTech] = useState(null);
 
+  // Speed controls and Toast notifications
+  const [speedPreset, setSpeedPreset] = useState('Medium');
+  const [updatingSpeed, setUpdatingSpeed] = useState(false);
+  const [toastMsg, setToastMsg] = useState('');
+
   const token = localStorage.getItem('vizo_admin_token');
 
   const fetchTechnologies = async () => {
@@ -30,8 +35,49 @@ export const AdminTechnologies = () => {
     }
   };
 
+  const fetchSpeed = async () => {
+    try {
+      const res = await fetch(`${API_URL}/api/technologies/speed`);
+      if (res.ok) {
+        const data = await res.json();
+        setSpeedPreset(data.speedPreset || 'Medium');
+      }
+    } catch (err) {
+      console.error('Error fetching scroll speed setting:', err);
+    }
+  };
+
+  const handleSpeedChange = async (e) => {
+    const newSpeed = e.target.value;
+    setSpeedPreset(newSpeed);
+    setUpdatingSpeed(true);
+    try {
+      const res = await fetch(`${API_URL}/api/technologies/speed`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ speedPreset: newSpeed })
+      });
+      if (res.ok) {
+        setToastMsg('Scroll speed updated successfully!');
+        setTimeout(() => setToastMsg(''), 3000);
+        broadcastSync();
+      } else {
+        const data = await res.json();
+        alert(data.msg || 'Failed to update scroll speed');
+      }
+    } catch (err) {
+      console.error('Error saving scroll speed preset:', err);
+    } finally {
+      setUpdatingSpeed(false);
+    }
+  };
+
   useEffect(() => {
     fetchTechnologies();
+    fetchSpeed();
   }, []);
 
   const handleOpenAdd = () => {
@@ -133,7 +179,7 @@ export const AdminTechnologies = () => {
       </header>
 
       {/* Stats Bar */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <div className="glass-card p-6 rounded-2xl">
           <p className="text-[10px] font-bold text-secondary uppercase mb-1">Total Technologies</p>
           <p className="text-3xl font-extrabold">{technologies.length}</p>
@@ -145,6 +191,28 @@ export const AdminTechnologies = () => {
         <div className="glass-card p-6 rounded-2xl">
           <p className="text-[10px] font-bold text-on-surface-variant uppercase mb-1">Inactive / Draft</p>
           <p className="text-3xl font-extrabold">{technologies.filter(t => !t.isActive).length}</p>
+        </div>
+        <div className="glass-card p-6 rounded-2xl flex flex-col justify-between h-full relative">
+          <div>
+            <p className="text-[10px] font-bold text-[#9d05ff] uppercase mb-1">Marquee Scroll Speed</p>
+            <p className="text-xs text-on-surface-variant mb-2">Adjust speed of the homepage carousel loop.</p>
+          </div>
+          <div className="relative mt-2">
+            <select
+              value={speedPreset}
+              onChange={handleSpeedChange}
+              disabled={updatingSpeed}
+              className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-on-surface font-semibold focus:outline-none focus:border-blue-500/50 hover:bg-black/60 transition-all cursor-pointer disabled:opacity-50"
+            >
+              <option value="Slow" className="bg-zinc-950 text-white">Slow (40s)</option>
+              <option value="Medium" className="bg-zinc-950 text-white">Medium (25s)</option>
+              <option value="Fast" className="bg-zinc-950 text-white">Fast (12s)</option>
+              <option value="Ultra Fast" className="bg-zinc-950 text-white">Ultra Fast (6s)</option>
+            </select>
+            {updatingSpeed && (
+              <span className="absolute right-3 top-3 w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+            )}
+          </div>
         </div>
       </div>
 
@@ -236,6 +304,14 @@ export const AdminTechnologies = () => {
         onSave={handleSave}
         tech={selectedTech}
       />
+
+      {/* Toast Notification Alert Overlay */}
+      {toastMsg && (
+        <div className="fixed bottom-6 right-6 z-50 bg-zinc-950/95 border border-[#00f0ff]/30 text-white px-6 py-3.5 rounded-xl shadow-2xl flex items-center gap-2 animate-fade-in font-bold text-sm">
+          <span className="material-symbols-outlined text-[#00f0ff] animate-pulse">check_circle</span>
+          {toastMsg}
+        </div>
+      )}
     </div>
   );
 };

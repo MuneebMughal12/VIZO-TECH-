@@ -455,32 +455,34 @@ export const Home = ({ onContactClick }) => {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-gutter">
             {pinnedProjects.map(project => (
               <div
                 key={project._id}
-                className="group relative overflow-hidden rounded-[2rem] glass-card h-[500px]"
+                className="group relative overflow-hidden rounded-[2rem] glass-card flex flex-col lg:flex-row h-auto lg:h-[500px]"
               >
-                <div className="h-full w-full overflow-hidden">
+                <div className="w-full lg:w-1/2 h-[250px] lg:h-full overflow-hidden shrink-0 relative">
                   <img
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 brightness-75 group-hover:brightness-95"
                     src={project.thumbnail}
                     alt={project.title}
                   />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent lg:hidden" />
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
 
-                <div className="absolute bottom-0 left-0 p-10 w-full text-white">
+                <div className="p-6 sm:p-10 flex flex-col justify-center flex-grow text-white w-full">
                   <span className="text-xs font-bold uppercase tracking-widest text-[#00f0ff] mb-2 block">{project.category}</span>
-                  <h3 className="font-headline-lg text-2xl font-bold mb-3">{project.title}</h3>
-                  <p className="text-gray-300 text-sm mb-6 max-w-md line-clamp-2">{project.description}</p>
-                  <button
-                    onClick={() => setSelectedProject(project)}
-                    className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full border border-white/20 hover:bg-white hover:text-black transition-all font-semibold"
-                  >
-                    View Details
-                    <span className="material-symbols-outlined text-sm">north_east</span>
-                  </button>
+                  <h3 className="font-display-lg text-xl sm:text-2xl md:text-3xl font-bold mb-3 tracking-tight leading-tight">{project.title}</h3>
+                  <p className="text-gray-300 text-sm mb-6 max-w-md line-clamp-2 lg:line-clamp-4">{project.description}</p>
+                  <div>
+                    <button
+                      onClick={() => setSelectedProject(project)}
+                      className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full border border-white/20 hover:bg-white hover:text-black transition-all font-semibold"
+                    >
+                      View Details
+                      <span className="material-symbols-outlined text-sm">north_east</span>
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}
@@ -498,7 +500,7 @@ export const Home = ({ onContactClick }) => {
       {/* 7. Client Testimonials Slider */}
       {reviews.length > 0 && (
         <section className="py-section-gap relative overflow-hidden bg-black/5 dark:bg-white/5">
-          <div className="max-w-container-max mx-auto px-margin-desktop">
+          <div className="max-w-container-max mx-auto px-4 sm:px-6 md:px-8">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6">
               <div>
                 <span className={`font-label-sm uppercase tracking-[0.2em] mb-4 block ${theme === 'dark' ? 'text-[#00f0ff]' : 'text-[#0052FF]'
@@ -528,7 +530,7 @@ export const Home = ({ onContactClick }) => {
               </div>
             </div>
 
-            <div className="relative h-64 md:h-52 w-full max-w-4xl mx-auto flex items-center justify-center">
+            <div className="relative h-auto min-h-[340px] xs:min-h-[295px] sm:min-h-[260px] md:min-h-52 w-full max-w-4xl mx-auto flex items-center justify-center">
               {reviews.map((rev, i) => (
                 <div
                   key={rev._id}
@@ -564,7 +566,7 @@ export const Home = ({ onContactClick }) => {
       )}
 
       {/* 8. FAQs Accordion */}
-      <section className="py-section-gap relative max-w-3xl mx-auto px-margin-mobile">
+      <section className="py-section-gap relative max-w-3xl mx-auto px-4 sm:px-6 md:px-8">
         <div className="text-center mb-16">
           <span className={`font-label-sm uppercase tracking-[0.2em] mb-4 block ${theme === 'dark' ? 'text-[#00f0ff]' : 'text-[#0052FF]'
             }`}>Knowledge Base</span>
@@ -583,11 +585,11 @@ export const Home = ({ onContactClick }) => {
                 }`}
             >
               <button
-                className="w-full p-6 text-left flex justify-between items-center focus:outline-none"
+                className="w-full p-6 text-left flex items-center justify-between gap-4 focus:outline-none"
                 onClick={() => toggleFaq(i)}
               >
-                <span className="font-bold text-sm md:text-md">{faq.q}</span>
-                <span className="material-symbols-outlined accordion-icon transition-transform">expand_more</span>
+                <span className="font-bold text-sm md:text-base leading-snug">{faq.q}</span>
+                <span className="material-symbols-outlined accordion-icon transition-transform shrink-0">expand_more</span>
               </button>
               <div className="accordion-content">
                 <div className="p-6 pt-0 text-on-surface-variant text-sm border-t border-white/5 bg-black/5 dark:bg-white/5">

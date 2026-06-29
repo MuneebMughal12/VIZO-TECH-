@@ -135,7 +135,7 @@ export const Team = () => {
                     className="glass-card rounded-2xl overflow-hidden p-5 group flex flex-col hover:-translate-y-2 hover:scale-[1.01]"
                   >
                     {/* Image with grayscale-to-color filter */}
-                    <div className="relative w-full aspect-square mb-6 overflow-hidden rounded-xl bg-black/40 border border-white/5">
+                    <div className="relative w-full max-w-[280px] aspect-square mx-auto mb-6 overflow-hidden rounded-2xl bg-black/40 border border-white/5">
                       <img 
                         alt={member.name} 
                         className="w-full h-full object-cover filter grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out" 

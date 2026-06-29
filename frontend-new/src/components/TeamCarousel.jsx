@@ -65,12 +65,12 @@ export const TeamCarousel = ({ members }) => {
         </h2>
 
         {/* Main Carousel Stack Area */}
-        <div className="relative w-full flex items-center justify-between min-h-[340px] md:min-h-[380px] px-2 md:px-12">
+        <div className="relative w-full flex items-center justify-between min-h-[300px] md:min-h-[380px] px-2 md:px-12">
           
           {/* Left Arrow Button */}
           <button
             onClick={handlePrev}
-            className="z-30 w-10 h-10 rounded-full bg-blue-600 hover:bg-blue-700 dark:bg-sky-500 dark:hover:bg-sky-600 flex items-center justify-center text-white shadow-md hover:scale-110 active:scale-95 transition-all duration-300 focus:outline-none shrink-0"
+            className="hidden md:flex z-30 w-10 h-10 rounded-full bg-blue-600 hover:bg-blue-700 dark:bg-sky-500 dark:hover:bg-sky-600 items-center justify-center text-white shadow-md hover:scale-110 active:scale-95 transition-all duration-300 focus:outline-none shrink-0"
             aria-label="Previous Team Member"
           >
             <span className="material-symbols-outlined font-bold text-sm">chevron_left</span>
@@ -78,7 +78,7 @@ export const TeamCarousel = ({ members }) => {
 
           {/* 3D Stack Container */}
           <div 
-            className="relative flex-grow flex items-center justify-center h-[300px] md:h-[340px] overflow-visible"
+            className="relative flex-grow flex items-center justify-center h-[260px] md:h-[340px] overflow-visible"
             style={{ perspective: '1200px' }}
           >
             <AnimatePresence initial={false}>
@@ -156,7 +156,7 @@ export const TeamCarousel = ({ members }) => {
                         setActiveIndex(i);
                       }
                     }}
-                    className={`absolute w-[180px] h-[240px] md:w-[220px] md:h-[290px] rounded-2xl overflow-hidden cursor-pointer shadow-xl border ${
+                    className={`absolute w-[160px] h-[220px] md:w-[220px] md:h-[290px] rounded-2xl overflow-hidden cursor-pointer shadow-xl border ${
                       absDistance === 0 
                         ? 'border-blue-500/40 dark:border-sky-500/40 shadow-blue-500/10' 
                         : 'border-slate-300/40 dark:border-zinc-800/60'
@@ -178,10 +178,28 @@ export const TeamCarousel = ({ members }) => {
           {/* Right Arrow Button */}
           <button
             onClick={handleNext}
-            className="z-30 w-10 h-10 rounded-full bg-blue-600 hover:bg-blue-700 dark:bg-sky-500 dark:hover:bg-sky-600 flex items-center justify-center text-white shadow-md hover:scale-110 active:scale-95 transition-all duration-300 focus:outline-none shrink-0"
+            className="hidden md:flex z-30 w-10 h-10 rounded-full bg-blue-600 hover:bg-blue-700 dark:bg-sky-500 dark:hover:bg-sky-600 items-center justify-center text-white shadow-md hover:scale-110 active:scale-95 transition-all duration-300 focus:outline-none shrink-0"
             aria-label="Next Team Member"
           >
             <span className="material-symbols-outlined font-bold text-sm">chevron_right</span>
+          </button>
+        </div>
+
+        {/* Mobile Slide Arrow Navigation Controls */}
+        <div className="flex md:hidden items-center justify-center gap-6 mt-6 z-20">
+          <button
+            onClick={handlePrev}
+            className="w-8 h-8 rounded-full bg-blue-600 hover:bg-blue-700 dark:bg-sky-500 dark:hover:bg-sky-600 flex items-center justify-center text-white shadow-md hover:scale-105 active:scale-95 transition-all duration-300 focus:outline-none"
+            aria-label="Previous Team Member"
+          >
+            <span className="material-symbols-outlined font-bold text-xs">chevron_left</span>
+          </button>
+          <button
+            onClick={handleNext}
+            className="w-8 h-8 rounded-full bg-blue-600 hover:bg-blue-700 dark:bg-sky-500 dark:hover:bg-sky-600 flex items-center justify-center text-white shadow-md hover:scale-105 active:scale-95 transition-all duration-300 focus:outline-none"
+            aria-label="Next Team Member"
+          >
+            <span className="material-symbols-outlined font-bold text-xs">chevron_right</span>
           </button>
         </div>
 

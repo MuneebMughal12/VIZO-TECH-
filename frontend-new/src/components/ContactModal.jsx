@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTheme } from '../context/ThemeContext';
 import API_URL from '../config/api';
 
@@ -14,6 +14,17 @@ export const ContactModal = ({ isOpen, onClose }) => {
   const [error, setError] = useState('');
   const [attachmentUrl, setAttachmentUrl] = useState('');
   const [uploadingAttachment, setUploadingAttachment] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
 
   const services = ['Design', 'AI Integration', 'Technical Development', 'Digital Marketing', 'Video Editing', 'Shopify'];
 
@@ -82,11 +93,12 @@ export const ContactModal = ({ isOpen, onClose }) => {
       />
       
       {/* Modal Card */}
-      <div className={`glass-panel w-full max-w-lg rounded-3xl relative z-10 glow-border transition-all duration-300 scale-100 max-h-[90vh] flex flex-col overflow-hidden ${
-        theme === 'dark' ? 'text-white' : 'text-[#1a1c1c]'
-      }`}>
-        {/* Scrollable Container */}
-        <div className="overflow-y-auto p-8 md:p-10 flex-grow space-y-5">
+      <div 
+        className={`glass-panel w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl p-5 md:p-8 relative z-10 glow-border transition-all duration-300 scale-100 flex flex-col ${
+          theme === 'dark' ? 'text-white' : 'text-[#1a1c1c]'
+        }`}
+      >
+        <div className="flex-grow space-y-5">
           <div className="flex justify-between items-center mb-6">
             <h3 className={`font-display-lg text-[28px] font-bold ${
               theme === 'dark' ? 'text-dark-primary' : 'text-[#0052FF]'
@@ -175,7 +187,7 @@ export const ContactModal = ({ isOpen, onClose }) => {
                         key={service}
                         type="button"
                         onClick={() => toggleService(service)}
-                        className={`px-4 py-2 rounded-full text-xs font-semibold border transition-all ${
+                        className={`px-3 py-2 rounded-full text-sm font-semibold border transition-all ${
                           selected 
                             ? theme === 'dark'
                               ? 'bg-[#00f0ff]/20 border-[#00f0ff] text-[#00f0ff]'
@@ -272,7 +284,7 @@ export const ContactModal = ({ isOpen, onClose }) => {
               <button 
                 type="submit" 
                 disabled={submitting || uploadingAttachment}
-                className={`w-full py-4 rounded-xl font-bold flex items-center justify-center transition-all ${
+                className={`mt-6 w-full py-3.5 rounded-xl font-bold flex items-center justify-center transition-all ${
                   theme === 'dark'
                     ? 'bg-gradient-to-r from-[#00f0ff] to-[#9d05ff] text-black hover:brightness-110 shadow-lg shadow-[#00f0ff]/10'
                     : 'bg-[#0052FF] text-white hover:bg-[#003bbb] shadow-lg shadow-[#0052FF]/20'

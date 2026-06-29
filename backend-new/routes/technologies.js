@@ -4,7 +4,9 @@ const multer = require('multer');
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const { cloudinary } = require('../utils/cloudinary');
 const Technology = require('../models/Technology');
+const Setting = require('../models/Setting');
 const auth = require('../middleware/auth');
+
 
 // Multer Storage Configuration specifically for Technologies
 const storage = new CloudinaryStorage({
@@ -52,11 +54,53 @@ const deleteFromCloudinary = async (publicId) => {
   }
 };
 
-// GET /api/technologies - Public route (Active items only, sorted by displayOrder)
+// GET /api/technologies - Public route (Active items only, sorted by displayOrder, includes speedPreset)
 router.get('/', async (req, res) => {
   try {
     const technologies = await Technology.find({ isActive: true }).sort({ displayOrder: 1 });
-    res.json(technologies);
+    let speedSetting = await Setting.findOne({ key: 'marqueeSpeed' });
+    const speedPreset = speedSetting ? speedSetting.value : 'Medium';
+    res.json({
+      technologies,
+      speedPreset
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ msg: 'Server error' });
+  }
+});
+
+// GET /api/technologies/speed - Retrieve speed preset
+router.get('/speed', async (req, res) => {
+  try {
+    let speedSetting = await Setting.findOne({ key: 'marqueeSpeed' });
+    if (!speedSetting) {
+      speedSetting = new Setting({ key: 'marqueeSpeed', value: 'Medium' });
+      await speedSetting.save();
+    }
+    res.json({ speedPreset: speedSetting.value });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ msg: 'Server error' });
+  }
+});
+
+// PATCH /api/technologies/speed - Update speed preset (Protected)
+router.patch('/speed', auth, async (req, res) => {
+  try {
+    const { speedPreset } = req.body;
+    const allowedPresets = ['Slow', 'Medium', 'Fast', 'Ultra Fast'];
+    if (!allowedPresets.includes(speedPreset)) {
+      return res.status(400).json({ msg: 'Invalid speed preset. Must be Slow, Medium, Fast, or Ultra Fast.' });
+    }
+    let speedSetting = await Setting.findOne({ key: 'marqueeSpeed' });
+    if (!speedSetting) {
+      speedSetting = new Setting({ key: 'marqueeSpeed', value: speedPreset });
+    } else {
+      speedSetting.value = speedPreset;
+    }
+    await speedSetting.save();
+    res.json({ speedPreset: speedSetting.value, msg: 'Speed preset updated successfully' });
   } catch (err) {
     console.error(err);
     res.status(500).json({ msg: 'Server error' });

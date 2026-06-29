@@ -5,6 +5,7 @@ import API_URL from '../config/api';
 export const TechSlider = () => {
   const { theme } = useTheme();
   const [technologies, setTechnologies] = useState([]);
+  const [speedPreset, setSpeedPreset] = useState('Medium');
   const [loading, setLoading] = useState(true);
 
   const fetchTechs = async () => {
@@ -12,7 +13,13 @@ export const TechSlider = () => {
       const res = await fetch(`${API_URL}/api/technologies`);
       if (res.ok) {
         const data = await res.json();
-        setTechnologies(data);
+        if (data && data.technologies) {
+          setTechnologies(data.technologies);
+          setSpeedPreset(data.speedPreset || 'Medium');
+        } else if (Array.isArray(data)) {
+          setTechnologies(data);
+          setSpeedPreset('Medium');
+        }
       }
     } catch (err) {
       console.error('Failed to load technologies for slider:', err);
@@ -80,6 +87,14 @@ export const TechSlider = () => {
 
   const marqueeItems = getRepeatedItems(technologies);
 
+  const speedMapping = {
+    'Slow': 40,
+    'Medium': 25,
+    'Fast': 12,
+    'Ultra Fast': 6
+  };
+  const calculatedSeconds = speedMapping[speedPreset] || 25;
+
   return (
     <div className="w-full py-16 bg-transparent relative overflow-hidden select-none">
       
@@ -101,7 +116,10 @@ export const TechSlider = () => {
 
       {/* Infinite Marquee Slider track */}
       <div className="w-full flex overflow-hidden">
-        <div className="flex w-max gap-8 animate-marquee hover:[animation-play-state:paused] cursor-grab active:cursor-grabbing">
+        <div 
+          className="flex w-max gap-8 animate-marquee hover:[animation-play-state:paused] cursor-grab active:cursor-grabbing"
+          style={{ '--marquee-duration': `${calculatedSeconds}s` }}
+        >
           {marqueeItems.map((tech, idx) => {
             const uniqueKey = `${tech._id}-${idx}`;
 
