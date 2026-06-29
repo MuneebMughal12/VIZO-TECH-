@@ -66,9 +66,19 @@ export const TechSlider = () => {
     return null;
   }
 
-  // Duplicate the list of technologies to create a seamless infinite marquee scroll track
-  // Use unique key mapping (e.g. key={`${tech._id}-duplicate`}) to prevent duplicate React keys
-  const marqueeItems = [...technologies, ...technologies];
+  // Helper to repeat items so that short lists have enough cards to fill the viewport and scroll loop seamlessly
+  const getRepeatedItems = (list) => {
+    if (list.length === 0) return [];
+    let repeated = [...list];
+    // Ensure we have at least 15 items in the base set
+    while (repeated.length < 15) {
+      repeated = [...repeated, ...list];
+    }
+    // Duplicate the final base set once to support continuous translation (-50%)
+    return [...repeated, ...repeated];
+  };
+
+  const marqueeItems = getRepeatedItems(technologies);
 
   return (
     <div className="w-full py-16 bg-transparent relative overflow-hidden select-none">
@@ -93,9 +103,7 @@ export const TechSlider = () => {
       <div className="w-full flex overflow-hidden">
         <div className="flex w-max gap-8 animate-marquee hover:[animation-play-state:paused] cursor-grab active:cursor-grabbing">
           {marqueeItems.map((tech, idx) => {
-            // Determine if this is from the duplicate set
-            const isDuplicate = idx >= technologies.length;
-            const uniqueKey = isDuplicate ? `${tech._id}-duplicate` : tech._id;
+            const uniqueKey = `${tech._id}-${idx}`;
 
             return (
               <div 
