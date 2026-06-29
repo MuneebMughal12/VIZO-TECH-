@@ -34,7 +34,7 @@ export const About = ({ onContactClick }) => {
   ];
 
   return (
-    <main className="relative pt-24 md:pt-32 pb-section-gap">
+    <main className="relative pt-20 md:pt-32 pb-section-gap overflow-x-hidden">
       {/* Background Blurs */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10">
         <div className="absolute top-[10%] right-[-10%] w-[500px] h-[500px] bg-purple-500/10 blur-[120px] rounded-full animate-float" />
@@ -42,23 +42,23 @@ export const About = ({ onContactClick }) => {
       </div>
 
       {/* 1. Hero / Our Story */}
-      <section className="max-w-container-max mx-auto px-margin-desktop py-12">
-        <div className="flex flex-col gap-6 max-w-4xl">
-          <span className={`font-label-sm text-sm uppercase tracking-[0.2em] font-semibold ${
+      <section className="max-w-container-max mx-auto px-4 sm:px-6 md:px-margin-desktop py-10 md:py-12">
+        <div className="flex flex-col gap-5 max-w-4xl">
+          <span className={`font-label-sm text-xs sm:text-sm uppercase tracking-[0.2em] font-semibold ${
             theme === 'dark' ? 'text-[#00f0ff]' : 'text-[#0052FF]'
           }`}>Crafting the future</span>
-          <h1 className="font-display-xl text-4xl md:text-display-xl font-extrabold tracking-tight">Our Story</h1>
-          <p className="font-body-lg text-md md:text-body-lg text-on-surface-variant leading-relaxed">
+          <h1 className="font-display-xl text-3xl sm:text-4xl md:text-display-xl font-extrabold tracking-tight">Our Story</h1>
+          <p className="font-body-lg text-sm md:text-body-lg text-on-surface-variant leading-relaxed">
             Born from the intersection of architectural precision and digital avant-garde, VIZO TECH began as a small collective of engineering virtuosos in Zurich. We believed that technology should not just function, but inspire—carrying the weight of legacy with the lightness of modern innovation. Today, we stand as an international beacon for brands seeking to transcend the ordinary.
           </p>
         </div>
       </section>
 
       {/* 2. Mission & Vision */}
-      <section className="max-w-container-max mx-auto px-margin-desktop py-section-gap">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+      <section className="max-w-container-max mx-auto px-4 sm:px-6 md:px-margin-desktop py-section-gap">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-gutter">
           {/* Mission */}
-          <div className="glass-card p-10 md:p-12 rounded-2xl flex flex-col gap-6 hover:-translate-y-2 transition-all duration-500 shadow-2xl">
+          <div className="glass-card p-7 sm:p-9 md:p-12 rounded-2xl flex flex-col gap-5 hover:-translate-y-2 transition-all duration-500 shadow-2xl">
             <div className="w-16 h-16 rounded-full bg-[#00f0ff]/10 flex items-center justify-center border border-[#00f0ff]/20">
               <span className="material-symbols-outlined text-[#00f0ff] text-3xl fill-1">rocket_launch</span>
             </div>
@@ -69,7 +69,7 @@ export const About = ({ onContactClick }) => {
           </div>
 
           {/* Vision */}
-          <div className="glass-card p-10 md:p-12 rounded-2xl flex flex-col gap-6 hover:-translate-y-2 transition-all duration-500 shadow-2xl">
+          <div className="glass-card p-7 sm:p-9 md:p-12 rounded-2xl flex flex-col gap-5 hover:-translate-y-2 transition-all duration-500 shadow-2xl">
             <div className="w-16 h-16 rounded-full bg-purple-500/10 flex items-center justify-center border border-purple-500/20">
               <span className="material-symbols-outlined text-purple-400 text-3xl fill-1">visibility</span>
             </div>
@@ -82,9 +82,9 @@ export const About = ({ onContactClick }) => {
       </section>
 
       {/* 3. Milestone Timeline */}
-      <section className="max-w-container-max mx-auto px-margin-desktop py-section-gap">
-        <div className="text-center mb-20">
-          <h2 className="font-display-lg text-3xl md:text-display-lg font-bold">Defining Moments</h2>
+      <section className="max-w-container-max mx-auto px-4 sm:px-6 md:px-margin-desktop py-section-gap">
+        <div className="text-center mb-12 md:mb-20">
+          <h2 className="font-display-lg text-2xl sm:text-3xl md:text-display-lg font-bold">Defining Moments</h2>
           <div className={`w-20 h-1 mx-auto mt-6 rounded-full ${
             theme === 'dark' ? 'bg-[#00f0ff]' : 'bg-[#0052FF]'
           }`} />
@@ -123,25 +123,27 @@ export const About = ({ onContactClick }) => {
       </section>
 
       {/* 4. CTA Section */}
-      <section className="max-w-container-max mx-auto px-margin-desktop py-section-gap">
-        <div className="relative glass-card rounded-3xl overflow-hidden p-12 md:p-16 text-center shadow-2xl">
-          <div className="absolute -top-12 -left-12 w-48 h-48 bg-purple-500/10 blur-[80px] rounded-full" />
-          
-          <div className="relative z-10 space-y-8">
-            <h2 className="font-display-lg text-3xl md:text-4xl font-extrabold tracking-tight">Ready to Build the Future?</h2>
-            <p className="font-body-lg text-sm md:text-body-lg text-on-surface-variant max-w-2xl mx-auto leading-relaxed">
+      <section className="max-w-container-max mx-auto px-4 sm:px-6 md:px-margin-desktop py-section-gap">
+        <div className="relative glass-card rounded-2xl md:rounded-3xl overflow-hidden p-8 sm:p-10 md:p-16 text-center shadow-2xl">
+          <div className="absolute -top-12 -left-12 w-48 h-48 bg-purple-500/10 blur-[80px] rounded-full pointer-events-none" />
+
+          <div className="relative z-10 space-y-6 md:space-y-8">
+            <h2 className="font-display-lg text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight">
+              Ready to Build the Future?
+            </h2>
+            <p className="font-body-lg text-sm md:text-body-lg text-on-surface-variant max-w-sm sm:max-w-xl mx-auto leading-relaxed px-2">
               Partner with a team that views code as craft and every interface as a masterpiece.
             </p>
-            <div className="flex flex-col sm:flex-row justify-center gap-6">
-              <button 
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <button
                 onClick={onContactClick}
-                className="px-10 py-4 bg-gradient-to-r from-[#00f0ff] to-[#9d05ff] text-black font-bold rounded-full hover:scale-105 transition-transform duration-300 shadow-md shadow-[#00f0ff]/10"
+                className="inline-flex items-center justify-center px-8 py-3.5 bg-gradient-to-r from-[#00f0ff] to-[#9d05ff] text-black text-sm sm:text-base font-bold rounded-full hover:scale-105 transition-transform duration-300 shadow-md shadow-[#00f0ff]/10 w-full sm:w-auto"
               >
                 Start a Project
               </button>
-              <button 
+              <button
                 onClick={() => navigate('/team')}
-                className="px-10 py-4 glass-card text-on-surface font-bold rounded-full hover:bg-white/10 dark:hover:bg-black/20 transition-all duration-300"
+                className="inline-flex items-center justify-center px-8 py-3.5 glass-card text-on-surface text-sm sm:text-base font-bold rounded-full hover:bg-white/10 dark:hover:bg-black/20 transition-all duration-300 w-full sm:w-auto"
               >
                 Meet the Team
               </button>
