@@ -40,6 +40,7 @@ app.use('/api/team', require('./routes/team'));
 app.use('/api/reviews', require('./routes/reviews'));
 app.use('/api/inquiries', require('./routes/inquiries'));
 app.use('/api/settings', require('./routes/settings'));
+app.use('/api/technologies', require('./routes/technologies'));
 app.use('/api/upload', require('./routes/upload'));
 app.use('/api/analytics', require('./routes/analytics'));
 

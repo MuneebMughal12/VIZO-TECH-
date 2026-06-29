@@ -18,6 +18,7 @@ import { AdminSettings } from './pages/admin/AdminSettings';
 import { AdminProjects } from './pages/admin/AdminProjects';
 import { AdminTeam } from './pages/admin/AdminTeam';
 import { AdminReviews } from './pages/admin/AdminReviews';
+import { AdminTechnologies } from './pages/admin/AdminTechnologies';
 
 // Inner App shell to capture location for conditional navbar rendering
 const AppContent = () => {
@@ -105,6 +106,7 @@ const AppContent = () => {
           <Route index element={<AdminDashboard />} />
           <Route path="projects" element={<AdminProjects />} />
           <Route path="team" element={<AdminTeam />} />
+          <Route path="technologies" element={<AdminTechnologies />} />
           <Route path="reviews" element={<AdminReviews />} />
           <Route path="notifications" element={<AdminNotifications />} />
           <Route path="settings" element={<AdminSettings />} />

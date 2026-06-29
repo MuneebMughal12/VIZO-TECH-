@@ -5,6 +5,7 @@ import API_URL from '../config/api';
 import { ProjectModal } from '../components/ProjectModal';
 import { LeaveReviewModal } from '../components/LeaveReviewModal';
 import { TeamCarousel } from '../components/TeamCarousel';
+import { TechSlider } from '../components/TechSlider';
 
 export const Home = ({ onContactClick }) => {
   const { theme } = useTheme();
@@ -400,6 +401,9 @@ export const Home = ({ onContactClick }) => {
           </div>
         </div>
       </section>
+
+      {/* Technology Auto-Slider (Marquee) */}
+      <TechSlider />
 
       {/* 3. The Development Process */}
       <section className="py-section-gap relative overflow-hidden bg-black/5 dark:bg-white/5">

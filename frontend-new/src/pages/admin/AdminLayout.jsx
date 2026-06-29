@@ -28,6 +28,7 @@ export const AdminLayout = () => {
     { name: 'Dashboard', path: '/admin', icon: 'dashboard' },
     { name: 'Projects', path: '/admin/projects', icon: 'work' },
     { name: 'Team', path: '/admin/team', icon: 'group' },
+    { name: 'Technologies', path: '/admin/technologies', icon: 'terminal' },
     { name: 'Reviews', path: '/admin/reviews', icon: 'rate_review' },
     { name: 'Notifications', path: '/admin/notifications', icon: 'notifications' },
     { name: 'Settings', path: '/admin/settings', icon: 'settings' }

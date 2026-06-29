@@ -106,6 +106,15 @@ export default {
         "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
         "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "500" }],
         "display-lg": ["48px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+      },
+      keyframes: {
+        marquee: {
+          '0%': { transform: 'translateX(0%)' },
+          '100%': { transform: 'translateX(-50%)' }
+        }
+      },
+      animation: {
+        marquee: 'marquee 25s linear infinite'
       }
     },
   },
