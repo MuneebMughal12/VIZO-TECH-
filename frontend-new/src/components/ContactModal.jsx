@@ -15,6 +15,7 @@ export const ContactModal = ({ isOpen, onClose }) => {
   const [attachmentUrl, setAttachmentUrl] = useState('');
   const [uploadingAttachment, setUploadingAttachment] = useState(false);
 
+  /* --- Body scroll lock when modal is open --- */
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -84,217 +85,235 @@ export const ContactModal = ({ isOpen, onClose }) => {
 
   if (!isOpen) return null;
 
+  /* --- Shared input class factory --- */
+  const inputClass = `w-full py-3 px-4 text-sm sm:text-base rounded-xl border outline-none transition-all ${
+    theme === 'dark'
+      ? 'bg-[#0f0f11]/80 border-white/10 text-white focus:border-cyan-500/50 placeholder:text-white/30'
+      : 'bg-[#f8f9fa] border-black/10 text-black focus:border-[#0052FF] placeholder:text-black/30'
+  }`;
+
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-4">
       {/* Backdrop */}
-      <div 
-        className="absolute inset-0 bg-black/80 backdrop-blur-sm" 
+      <div
+        className="absolute inset-0 bg-black/80 backdrop-blur-sm"
         onClick={onClose}
       />
-      
-      {/* Modal Card */}
-      <div 
-        className={`glass-panel w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl p-5 md:p-8 relative z-10 glow-border transition-all duration-300 scale-100 flex flex-col ${
-          theme === 'dark' ? 'text-white' : 'text-[#1a1c1c]'
-        }`}
+
+      {/* ── Modal Sheet ── */}
+      <div
+        className={`glass-panel relative z-10 glow-border transition-all duration-300 scale-100
+          w-full max-w-md md:max-w-xl mx-auto
+          rounded-2xl md:rounded-3xl
+          max-h-[92vh] overflow-y-auto
+          p-5 sm:p-6 md:p-8
+          flex flex-col
+          [&::-webkit-scrollbar]:w-1.5
+          [&::-webkit-scrollbar-track]:bg-transparent
+          [&::-webkit-scrollbar-thumb]:bg-white/10
+          [&::-webkit-scrollbar-thumb]:rounded-full
+          ${theme === 'dark' ? 'text-white' : 'text-[#1a1c1c]'}
+        `}
       >
-        <div className="flex-grow space-y-5">
-          <div className="flex justify-between items-center mb-6">
-            <h3 className={`font-display-lg text-[28px] font-bold ${
-              theme === 'dark' ? 'text-dark-primary' : 'text-[#0052FF]'
-            }`}>
-              Initialize Inquiry
-            </h3>
-            <button 
-              className="material-symbols-outlined hover:scale-110 hover:text-red-500 transition-all cursor-pointer"
-              onClick={onClose}
-            >
-              close
-            </button>
-          </div>
-
-          {success ? (
-            <div className="py-12 text-center flex flex-col items-center gap-4">
-              <span className={`material-symbols-outlined text-5xl ${
-                theme === 'dark' ? 'text-[#00f0ff]' : 'text-[#0052FF]'
-              }`}>check_circle</span>
-              <h4 className="text-xl font-bold">Inquiry Transmitted Successfully</h4>
-              <p className="text-on-surface-variant text-sm">An engineering architect will contact you shortly.</p>
-            </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="space-y-5">
-              {error && (
-                <div className="p-3 bg-red-500/10 border border-red-500/20 text-red-500 rounded-lg text-sm">
-                  {error}
-                </div>
-              )}
-              
-              <div>
-                <label className="block text-[11px] font-semibold text-on-surface-variant mb-2 uppercase tracking-widest">Full Name *</label>
-                <input 
-                  className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none transition-colors ${
-                    theme === 'dark' 
-                      ? 'bg-white/5 border-white/10 text-white focus:border-dark-primary' 
-                      : 'bg-[#f8f9fa] border-black/10 text-black focus:border-[#0052FF]'
-                  }`}
-                  placeholder="John Doe" 
-                  type="text"
-                  value={name}
-                  onChange={e => setName(e.target.value)}
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block text-[11px] font-semibold text-on-surface-variant mb-2 uppercase tracking-widest">Email Address *</label>
-                <input 
-                  className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none transition-colors ${
-                    theme === 'dark' 
-                      ? 'bg-white/5 border-white/10 text-white focus:border-dark-primary' 
-                      : 'bg-[#f8f9fa] border-black/10 text-black focus:border-[#0052FF]'
-                  }`}
-                  placeholder="john@enterprise.com" 
-                  type="email"
-                  value={email}
-                  onChange={e => setEmail(e.target.value)}
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block text-[11px] font-semibold text-on-surface-variant mb-2 uppercase tracking-widest">WhatsApp Number *</label>
-                <input 
-                  className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none transition-colors ${
-                    theme === 'dark' 
-                      ? 'bg-white/5 border-white/10 text-white focus:border-dark-primary' 
-                      : 'bg-[#f8f9fa] border-black/10 text-black focus:border-[#0052FF]'
-                  }`}
-                  placeholder="+41 79 123 45 67" 
-                  type="tel"
-                  value={whatsapp}
-                  onChange={e => setWhatsapp(e.target.value)}
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block text-[11px] font-semibold text-on-surface-variant mb-2 uppercase tracking-widest">Select Scope Services</label>
-                <div className="flex flex-wrap gap-2">
-                  {services.map(service => {
-                    const selected = selectedServices.includes(service);
-                    return (
-                      <button
-                        key={service}
-                        type="button"
-                        onClick={() => toggleService(service)}
-                        className={`px-3 py-2 rounded-full text-sm font-semibold border transition-all ${
-                          selected 
-                            ? theme === 'dark'
-                              ? 'bg-[#00f0ff]/20 border-[#00f0ff] text-[#00f0ff]'
-                              : 'bg-[#0052FF]/20 border-[#0052FF] text-[#0052FF]'
-                            : theme === 'dark'
-                              ? 'bg-white/5 border-white/10 text-on-surface-variant hover:bg-white/10'
-                              : 'bg-black/5 border-black/10 text-on-surface-variant hover:bg-black/10'
-                        }`}
-                      >
-                        {service}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-[11px] font-semibold text-on-surface-variant mb-2 uppercase tracking-widest">Project Details *</label>
-                <textarea 
-                  className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none transition-colors h-24 resize-none ${
-                    theme === 'dark' 
-                      ? 'bg-white/5 border-white/10 text-white focus:border-dark-primary' 
-                      : 'bg-[#f8f9fa] border-black/10 text-black focus:border-[#0052FF]'
-                  }`}
-                  placeholder="Describe your architectural design and development requirements..."
-                  value={message}
-                  onChange={e => setMessage(e.target.value)}
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block text-[11px] font-semibold text-on-surface-variant mb-2 uppercase tracking-widest">
-                  Attach Document / Image (Link or Upload)
-                </label>
-                <div className="flex gap-2">
-                  <input 
-                    type="text" 
-                    placeholder="Paste document link or image URL..."
-                    className={`flex-grow border rounded-xl px-4 py-3 text-sm focus:outline-none transition-all ${
-                      theme === 'dark' 
-                        ? 'bg-white/5 border-white/10 text-white focus:border-dark-primary' 
-                        : 'bg-[#f8f9fa] border-black/10 text-black focus:border-[#0052FF]'
-                    }`}
-                    value={attachmentUrl} 
-                    onChange={e => setAttachmentUrl(e.target.value)} 
-                  />
-                  <label className={`shrink-0 cursor-pointer border rounded-xl px-4 py-3 text-sm font-semibold flex items-center justify-center transition-all ${
-                    theme === 'dark' 
-                      ? 'bg-white/5 border-white/10 text-white hover:bg-white/10' 
-                      : 'bg-black/5 border-black/10 text-black hover:bg-black/10'
-                  }`}>
-                    <span className="material-symbols-outlined text-[18px] mr-1">
-                      {uploadingAttachment ? 'sync' : 'cloud_upload'}
-                    </span>
-                    {uploadingAttachment ? 'Uploading...' : 'Upload'}
-                    <input 
-                      type="file"
-                      accept="image/*,application/pdf,.doc,.docx,.txt"
-                      className="hidden"
-                      onChange={async (e) => {
-                        const file = e.target.files[0];
-                        if (!file) return;
-
-                        setUploadingAttachment(true);
-                        const formData = new FormData();
-                        formData.append('image', file);
-
-                        try {
-                          const res = await fetch(`${API_URL}/api/upload`, {
-                            method: 'POST',
-                            body: formData
-                          });
-
-                          if (res.ok) {
-                            const data = await res.json();
-                            setAttachmentUrl(data.fileUrl);
-                          } else {
-                            const errData = await res.json();
-                            alert(errData.msg || 'Upload failed');
-                          }
-                        } catch (err) {
-                          console.error('File upload failed:', err);
-                          alert('Error uploading file');
-                        } finally {
-                          setUploadingAttachment(false);
-                        }
-                      }}
-                    />
-                  </label>
-                </div>
-              </div>
-
-              <button 
-                type="submit" 
-                disabled={submitting || uploadingAttachment}
-                className={`mt-6 w-full py-3.5 rounded-xl font-bold flex items-center justify-center transition-all ${
-                  theme === 'dark'
-                    ? 'bg-gradient-to-r from-[#00f0ff] to-[#9d05ff] text-black hover:brightness-110 shadow-lg shadow-[#00f0ff]/10'
-                    : 'bg-[#0052FF] text-white hover:bg-[#003bbb] shadow-lg shadow-[#0052FF]/20'
-                } disabled:opacity-50`}
-              >
-                {submitting ? 'Transmitting...' : 'Transmit Message'}
-              </button>
-            </form>
-          )}
+        {/* ── Header row ── */}
+        <div className="flex items-center justify-between mb-5">
+          <h3
+            className={`text-xl sm:text-2xl font-bold tracking-tight ${
+              theme === 'dark' ? 'text-[#00f0ff]' : 'text-[#0052FF]'
+            }`}
+          >
+            Initialize Inquiry
+          </h3>
+          <button
+            className="material-symbols-outlined text-xl leading-none hover:scale-110 hover:text-red-500 transition-all cursor-pointer shrink-0"
+            onClick={onClose}
+          >
+            close
+          </button>
         </div>
+
+        {/* ── Success state ── */}
+        {success ? (
+          <div className="py-12 text-center flex flex-col items-center gap-4">
+            <span className={`material-symbols-outlined text-5xl ${theme === 'dark' ? 'text-[#00f0ff]' : 'text-[#0052FF]'}`}>
+              check_circle
+            </span>
+            <h4 className="text-xl font-bold">Inquiry Transmitted Successfully</h4>
+            <p className="text-on-surface-variant text-sm">An engineering architect will contact you shortly.</p>
+          </div>
+        ) : (
+          /* ── Form ── */
+          <form onSubmit={handleSubmit} className="space-y-4 md:space-y-5">
+            {error && (
+              <div className="p-3 bg-red-500/10 border border-red-500/20 text-red-500 rounded-lg text-sm">
+                {error}
+              </div>
+            )}
+
+            {/* Full Name */}
+            <div>
+              <label className="block text-[10px] sm:text-[11px] font-semibold text-on-surface-variant mb-1.5 uppercase tracking-widest">
+                Full Name *
+              </label>
+              <input
+                className={inputClass}
+                placeholder="John Doe"
+                type="text"
+                value={name}
+                onChange={e => setName(e.target.value)}
+                required
+              />
+            </div>
+
+            {/* Email */}
+            <div>
+              <label className="block text-[10px] sm:text-[11px] font-semibold text-on-surface-variant mb-1.5 uppercase tracking-widest">
+                Email Address *
+              </label>
+              <input
+                className={inputClass}
+                placeholder="john@enterprise.com"
+                type="email"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                required
+              />
+            </div>
+
+            {/* WhatsApp */}
+            <div>
+              <label className="block text-[10px] sm:text-[11px] font-semibold text-on-surface-variant mb-1.5 uppercase tracking-widest">
+                WhatsApp Number *
+              </label>
+              <input
+                className={inputClass}
+                placeholder="+41 79 123 45 67"
+                type="tel"
+                value={whatsapp}
+                onChange={e => setWhatsapp(e.target.value)}
+                required
+              />
+            </div>
+
+            {/* Service Chips */}
+            <div>
+              <label className="block text-[10px] sm:text-[11px] font-semibold text-on-surface-variant mb-1.5 uppercase tracking-widest">
+                Select Scope Services
+              </label>
+              <div className="flex flex-wrap gap-2 md:gap-2.5">
+                {services.map(service => {
+                  const selected = selectedServices.includes(service);
+                  return (
+                    <button
+                      key={service}
+                      type="button"
+                      onClick={() => toggleService(service)}
+                      className={`px-3 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold border transition-all ${
+                        selected
+                          ? theme === 'dark'
+                            ? 'bg-[#00f0ff]/20 border-[#00f0ff] text-[#00f0ff]'
+                            : 'bg-[#0052FF]/20 border-[#0052FF] text-[#0052FF]'
+                          : theme === 'dark'
+                            ? 'bg-white/5 border-white/10 text-on-surface-variant hover:bg-white/10'
+                            : 'bg-black/5 border-black/10 text-on-surface-variant hover:bg-black/10'
+                      }`}
+                    >
+                      {service}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Project Details */}
+            <div>
+              <label className="block text-[10px] sm:text-[11px] font-semibold text-on-surface-variant mb-1.5 uppercase tracking-widest">
+                Project Details *
+              </label>
+              <textarea
+                className={`${inputClass} h-24 sm:h-28 resize-none`}
+                placeholder="Describe your architectural design and development requirements..."
+                value={message}
+                onChange={e => setMessage(e.target.value)}
+                required
+              />
+            </div>
+
+            {/* Attachment — stacks vertically on mobile */}
+            <div>
+              <label className="block text-[10px] sm:text-[11px] font-semibold text-on-surface-variant mb-1.5 uppercase tracking-widest">
+                Attach Document / Image (Link or Upload)
+              </label>
+              <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center w-full">
+                <input
+                  type="text"
+                  placeholder="Paste document link or image URL..."
+                  className={`${inputClass} flex-grow`}
+                  value={attachmentUrl}
+                  onChange={e => setAttachmentUrl(e.target.value)}
+                />
+                <label
+                  className={`shrink-0 cursor-pointer border rounded-xl px-4 py-3 text-sm font-semibold flex items-center justify-center gap-1.5 transition-all ${
+                    theme === 'dark'
+                      ? 'bg-white/5 border-white/10 text-white hover:bg-white/10'
+                      : 'bg-black/5 border-black/10 text-black hover:bg-black/10'
+                  }`}
+                >
+                  <span className="material-symbols-outlined text-[18px]">
+                    {uploadingAttachment ? 'sync' : 'cloud_upload'}
+                  </span>
+                  {uploadingAttachment ? 'Uploading...' : 'Upload'}
+                  <input
+                    type="file"
+                    accept="image/*,application/pdf,.doc,.docx,.txt"
+                    className="hidden"
+                    onChange={async (e) => {
+                      const file = e.target.files[0];
+                      if (!file) return;
+
+                      setUploadingAttachment(true);
+                      const formData = new FormData();
+                      formData.append('image', file);
+
+                      try {
+                        const res = await fetch(`${API_URL}/api/upload`, {
+                          method: 'POST',
+                          body: formData
+                        });
+
+                        if (res.ok) {
+                          const data = await res.json();
+                          setAttachmentUrl(data.fileUrl);
+                        } else {
+                          const errData = await res.json();
+                          alert(errData.msg || 'Upload failed');
+                        }
+                      } catch (err) {
+                        console.error('File upload failed:', err);
+                        alert('Error uploading file');
+                      } finally {
+                        setUploadingAttachment(false);
+                      }
+                    }}
+                  />
+                </label>
+              </div>
+            </div>
+
+            {/* CTA Submit */}
+            <button
+              type="submit"
+              disabled={submitting || uploadingAttachment}
+              className={`mt-4 w-full py-3.5 text-center font-semibold text-sm sm:text-base rounded-xl flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.01] transition-transform disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 ${
+                theme === 'dark'
+                  ? 'bg-gradient-to-r from-[#00f0ff] to-[#9d05ff] text-black shadow-lg shadow-[#00f0ff]/10 hover:brightness-110'
+                  : 'bg-[#0052FF] text-white hover:bg-[#003bbb] shadow-lg shadow-[#0052FF]/20'
+              }`}
+            >
+              {submitting ? 'Transmitting...' : 'Transmit Message'}
+            </button>
+          </form>
+        )}
       </div>
     </div>
   );
