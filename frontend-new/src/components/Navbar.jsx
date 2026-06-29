@@ -95,8 +95,8 @@ export const Navbar = ({ onContactClick }) => {
 
   return (
     <nav className={`fixed left-1/2 -translate-x-1/2 z-50 transition-all duration-500 ease-in-out ${scrolled
-        ? 'top-4 w-[90%] max-w-container-max rounded-full bg-white/5 dark:bg-black/20 backdrop-blur-xl border border-black/10 dark:border-white/10 shadow-2xl py-3 px-8'
-        : 'top-0 w-full rounded-none bg-transparent py-5 px-margin-desktop'
+        ? 'top-4 w-[90%] max-w-container-max rounded-full bg-white/5 dark:bg-black/20 backdrop-blur-xl border border-black/10 dark:border-white/10 shadow-2xl py-3 px-4 md:px-8'
+        : 'top-0 w-full rounded-none bg-transparent py-5 px-margin-mobile md:px-margin-desktop'
       }`}>
       <div className="max-w-container-max mx-auto flex justify-between items-center h-14">
         {/* Dynamic Branding Logo */}
@@ -184,7 +184,7 @@ export const Navbar = ({ onContactClick }) => {
             {/* Hire Us / Contact Us CTA */}
             <button
               onClick={onContactClick}
-              className={`px-6 py-2.5 rounded-full font-bold active:scale-95 duration-200 transition-all ${theme === 'dark'
+              className={`hidden sm:block px-6 py-2.5 rounded-full font-bold active:scale-95 duration-200 transition-all ${theme === 'dark'
                   ? 'primary-gradient-btn text-black'
                   : 'bg-[#0052FF] text-white hover:bg-[#003bbb] shadow-md shadow-[#0052FF]/20'
                 }`}
@@ -197,23 +197,50 @@ export const Navbar = ({ onContactClick }) => {
 
       {/* Mobile Menu Dropdown */}
       {mobileMenuOpen && (
-        <div className="absolute top-[110%] left-0 right-0 glass-card rounded-3xl p-6 flex flex-col gap-4 animate-fade-in md:hidden border border-black/10 dark:border-white/10 mt-2 z-50">
-          <ul className="flex flex-col gap-4">
-            {navLinks.map((link) => (
-              <li key={link.name}>
-                <Link
-                  to={link.path}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={`block py-2 text-sm font-semibold transition-all duration-300 relative ${isActive(link.path)
-                      ? theme === 'dark' ? 'text-[#00f0ff]' : 'text-[#0052FF]'
-                      : 'text-on-surface-variant hover:text-primary'
-                    }`}
-                >
-                  {link.name}
-                </Link>
-              </li>
-            ))}
+        <div 
+          className="absolute top-[110%] left-0 right-0 backdrop-blur-2xl rounded-3xl p-6 flex flex-col gap-4 animate-fade-in md:hidden border mt-2 z-50 shadow-2xl"
+          style={{
+            backgroundColor: theme === 'dark' ? 'rgba(5, 5, 5, 0.96)' : 'rgba(255, 255, 255, 0.96)',
+            borderColor: theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
+            color: theme === 'dark' ? '#ffffff' : '#1a1c1c'
+          }}
+        >
+          <ul className="flex flex-col gap-2">
+            {navLinks.map((link) => {
+              const active = isActive(link.path);
+              return (
+                <li key={link.name}>
+                  <Link
+                    to={link.path}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="block py-3 text-sm font-semibold transition-all duration-300 relative border-b hover:text-primary"
+                    style={{
+                      borderBottomColor: theme === 'dark' ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)',
+                      color: active 
+                        ? (theme === 'dark' ? '#00f0ff' : '#0052FF') 
+                        : (theme === 'dark' ? 'rgba(229, 226, 225, 0.7)' : 'rgba(93, 96, 97, 0.7)')
+                    }}
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
+
+          {/* Mobile Direct Contact CTA */}
+          <button
+            onClick={() => {
+              setMobileMenuOpen(false);
+              onContactClick();
+            }}
+            className={`w-full mt-2 py-3 rounded-full font-bold text-sm active:scale-95 duration-200 transition-all text-center ${theme === 'dark'
+                ? 'primary-gradient-btn text-black'
+                : 'bg-[#0052FF] text-white hover:bg-[#003bbb] shadow-md shadow-[#0052FF]/20'
+              }`}
+          >
+            Contact Us
+          </button>
         </div>
       )}
     </nav>
