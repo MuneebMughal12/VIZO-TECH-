@@ -34,7 +34,7 @@ export const About = ({ onContactClick }) => {
   ];
 
   return (
-    <main className="relative pt-32 pb-section-gap">
+    <main className="relative pt-24 md:pt-32 pb-section-gap">
       {/* Background Blurs */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10">
         <div className="absolute top-[10%] right-[-10%] w-[500px] h-[500px] bg-purple-500/10 blur-[120px] rounded-full animate-float" />
@@ -101,7 +101,7 @@ export const About = ({ onContactClick }) => {
                 <div key={idx} className="relative flex flex-col md:flex-row items-center justify-between w-full">
                   {/* Left Column (Desktop) */}
                   <div className={`w-full md:w-[45%] order-2 md:order-1 ${
-                    isEven ? 'md:text-right md:pr-12' : 'md:text-left md:pl-12 md:order-3'
+                    isEven ? 'text-center md:text-right md:pr-12' : 'text-center md:text-left md:pl-12 md:order-3'
                   } mt-4 md:mt-0`}>
                     <span className={`font-label-sm text-sm font-semibold mb-2 block ${
                       theme === 'dark' ? 'text-[#00f0ff]' : 'text-[#0052FF]'
@@ -114,7 +114,7 @@ export const About = ({ onContactClick }) => {
                   <div className={`z-10 w-6 h-6 rounded-full border-4 border-black dark:border-[#050505] order-1 md:order-2 ${milestone.colorClass}`} />
 
                   {/* Right Column Spacer (Desktop) */}
-                  <div className={`w-full md:w-[45%] order-3 ${isEven ? 'md:order-3' : 'md:order-1'}`} />
+                  <div className={`hidden md:block w-[45%] order-3 ${isEven ? 'md:order-3' : 'md:order-1'}`} />
                 </div>
               );
             })}

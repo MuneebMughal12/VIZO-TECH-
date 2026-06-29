@@ -6,6 +6,7 @@ export const Navbar = ({ onContactClick }) => {
   const { theme, toggleTheme } = useTheme();
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [customLogo, setCustomLogo] = useState(() => {
     const t = localStorage.getItem('vizo_theme') || 'dark';
     return localStorage.getItem(t === 'dark' ? 'vizo_logo_dark' : 'vizo_logo_light') || '';
@@ -66,7 +67,20 @@ export const Navbar = ({ onContactClick }) => {
   // Re-read on every route change (catches post-admin-upload navigations)
   useEffect(() => {
     refreshLogo();
+    setMobileMenuOpen(false);
   }, [location.pathname]);
+
+  // Block background scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.classList.add('overflow-hidden');
+    } else {
+      document.body.classList.remove('overflow-hidden');
+    }
+    return () => {
+      document.body.classList.remove('overflow-hidden');
+    };
+  }, [mobileMenuOpen]);
 
   const isActive = (path) => {
     return location.pathname === path;
@@ -153,6 +167,20 @@ export const Navbar = ({ onContactClick }) => {
               </span>
             </button>
 
+            {/* Hamburger Menu Toggle (Mobile) */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className={`w-9 h-9 rounded-full flex md:hidden items-center justify-center border transition-all ${theme === 'dark'
+                  ? 'border-white/10 hover:bg-white/5 text-[#00E5FF]'
+                  : 'border-black/10 hover:bg-black/5 text-[#0052FF]'
+                }`}
+              aria-label="Toggle Menu"
+            >
+              <span className="material-symbols-outlined text-[20px]">
+                {mobileMenuOpen ? 'close' : 'menu'}
+              </span>
+            </button>
+
             {/* Hire Us / Contact Us CTA */}
             <button
               onClick={onContactClick}
@@ -166,6 +194,28 @@ export const Navbar = ({ onContactClick }) => {
           </div>
         </div>
       </div>
+
+      {/* Mobile Menu Dropdown */}
+      {mobileMenuOpen && (
+        <div className="absolute top-[110%] left-0 right-0 glass-card rounded-3xl p-6 flex flex-col gap-4 animate-fade-in md:hidden border border-black/10 dark:border-white/10 mt-2 z-50">
+          <ul className="flex flex-col gap-4">
+            {navLinks.map((link) => (
+              <li key={link.name}>
+                <Link
+                  to={link.path}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`block py-2 text-sm font-semibold transition-all duration-300 relative ${isActive(link.path)
+                      ? theme === 'dark' ? 'text-[#00f0ff]' : 'text-[#0052FF]'
+                      : 'text-on-surface-variant hover:text-primary'
+                    }`}
+                >
+                  {link.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </nav>
   );
 };
