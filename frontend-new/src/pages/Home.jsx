@@ -444,39 +444,6 @@ export const Home = ({ onContactClick }) => {
         </div>
       </section>
 
-      {/* 4. Technology Stack Grid */}
-      <section className="py-section-gap max-w-container-max mx-auto px-margin-desktop">
-        <div className="text-center mb-16">
-          <span className={`font-label-sm uppercase tracking-[0.2em] mb-4 block ${theme === 'dark' ? 'text-[#00f0ff]' : 'text-[#0052FF]'
-            }`}>The Stack</span>
-          <h2 className="font-display-lg text-4xl md:text-display-lg font-bold">Powering Digital Innovation</h2>
-        </div>
-
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6">
-          {[
-            { name: 'Rust', img: 'https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/rust.svg' },
-            { name: 'TypeScript', img: 'https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/typescript.svg' },
-            { name: 'React', img: 'https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/react.svg' },
-            { name: 'Python', img: 'https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/python.svg' },
-            { name: 'AWS', img: 'https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/amazonaws.svg' },
-            { name: 'OpenAI', img: 'https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/openai.svg' }
-          ].map(tech => (
-            <div
-              key={tech.name}
-              className={`glass-card p-6 rounded-2xl flex flex-col items-center justify-center group hover:border-[#00f0ff]/50 transition-all cursor-default`}
-            >
-              <img
-                alt={tech.name}
-                className="w-10 h-10 mb-3 opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all filter brightness-[100]"
-                src={tech.img}
-                style={{ filter: theme === 'dark' ? 'brightness(0) invert(1)' : 'none' }}
-              />
-              <span className="font-label-sm text-[10px] text-on-surface-variant group-hover:text-primary transition-colors uppercase tracking-widest">{tech.name}</span>
-            </div>
-          ))}
-        </div>
-      </section>
-
       {/* 5. Featured Showcase Pinned items */}
       <section id="showcase" className="py-section-gap bg-black/5 dark:bg-white/5">
         <div className="max-w-container-max mx-auto px-margin-desktop">
