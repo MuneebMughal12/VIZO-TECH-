@@ -459,28 +459,29 @@ export const Home = ({ onContactClick }) => {
             {pinnedProjects.map(project => (
               <div
                 key={project._id}
-                className="group relative overflow-hidden rounded-[2rem] glass-card flex flex-col lg:flex-row h-auto lg:h-[500px]"
+                className="group relative flex flex-col lg:flex-row bg-[#0d0d11] border border-white/5 rounded-3xl overflow-hidden hover:border-cyan-500/20 hover:shadow-2xl hover:shadow-cyan-500/5 transition-all duration-300"
               >
-                <div className="w-full lg:w-1/2 h-[250px] lg:h-full overflow-hidden shrink-0 relative">
+                <div className="w-full lg:w-1/2 h-auto sm:h-[300px] lg:h-full overflow-hidden shrink-0 relative">
                   <img
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 brightness-75 group-hover:brightness-95"
+                    className="w-full h-auto sm:h-full object-cover object-top rounded-t-2xl lg:rounded-none group-hover:scale-105 transition-transform duration-700 brightness-75 group-hover:brightness-95"
                     src={project.thumbnail}
                     alt={project.title}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent lg:hidden" />
                 </div>
 
-                <div className="p-6 sm:p-10 flex flex-col justify-center flex-grow text-white w-full">
-                  <span className="text-xs font-bold uppercase tracking-widest text-[#00f0ff] mb-2 block">{project.category}</span>
-                  <h3 className="font-display-lg text-xl sm:text-2xl md:text-3xl font-bold mb-3 tracking-tight leading-tight">{project.title}</h3>
-                  <p className="text-gray-300 text-sm mb-6 max-w-md line-clamp-2 lg:line-clamp-4">{project.description}</p>
-                  <div>
+                <div className="w-full lg:w-1/2 flex flex-col justify-between p-5 sm:p-6 lg:p-8 xl:p-12 text-white">
+                  <div className="space-y-3">
+                    <span className="text-xs font-bold uppercase tracking-widest text-[#00f0ff] block">{project.category}</span>
+                    <h3 className="font-display-lg text-xl sm:text-2xl md:text-3xl font-bold tracking-tight leading-tight">{project.title}</h3>
+                    <p className="text-gray-300 text-sm max-w-md line-clamp-2 lg:line-clamp-4">{project.description}</p>
+                  </div>
+                  <div className="mt-6 lg:mt-0">
                     <button
                       onClick={() => setSelectedProject(project)}
-                      className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full border border-white/20 hover:bg-white hover:text-black transition-all font-semibold"
+                      className="w-full py-3 text-center text-sm font-semibold text-white bg-gradient-to-r from-cyan-500 to-purple-600 rounded-xl shadow-lg hover:opacity-90 transition-all"
                     >
-                      View Details
-                      <span className="material-symbols-outlined text-sm">north_east</span>
+                      View Case Study &rarr;
                     </button>
                   </div>
                 </div>
