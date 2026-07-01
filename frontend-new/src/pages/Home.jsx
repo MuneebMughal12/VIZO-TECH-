@@ -459,24 +459,24 @@ export const Home = ({ onContactClick }) => {
             {pinnedProjects.map(project => (
               <div
                 key={project._id}
-                className="group relative w-full flex flex-col lg:flex-row bg-[#0d0d11] border border-white/5 rounded-2xl md:rounded-3xl overflow-hidden hover:border-cyan-500/20 hover:shadow-2xl hover:shadow-cyan-500/5 transition-all duration-300"
+                className="group relative flex flex-col bg-[#0d0d11]/90 border border-white/5 rounded-3xl overflow-hidden w-full hover:border-cyan-500/20 hover:shadow-2xl hover:shadow-cyan-500/5 transition-all duration-300"
               >
-                <div className="w-full lg:w-1/2 h-auto lg:h-full overflow-hidden shrink-0 relative">
+                <div className="w-full overflow-hidden shrink-0 relative">
                   <img
-                    className="w-full h-auto aspect-[16/10] lg:aspect-auto object-cover object-top rounded-t-2xl md:rounded-t-3xl lg:rounded-none group-hover:scale-105 transition-transform duration-700 brightness-75 group-hover:brightness-95"
+                    className="w-full h-[240px] md:h-[280px] object-cover object-top border-b border-white/5 group-hover:scale-105 transition-transform duration-700 brightness-75 group-hover:brightness-95"
                     src={project.thumbnail}
                     alt={project.title}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent lg:hidden" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-60" />
                 </div>
 
-                <div className="w-full lg:w-1/2 flex flex-col justify-between p-5 sm:p-6 lg:p-8 xl:p-12 text-white space-y-4 lg:space-y-0">
+                <div className="w-full flex flex-col justify-between p-6 md:p-8 flex-grow space-y-4 text-white">
                   <div className="space-y-3">
                     <span className="text-xs font-bold uppercase tracking-widest text-[#00f0ff] block">{project.category}</span>
                     <h3 className="font-display-lg text-xl sm:text-2xl md:text-3xl font-bold tracking-tight leading-tight">{project.title}</h3>
                     <p className="text-gray-300 text-sm max-w-md line-clamp-2 lg:line-clamp-4">{project.description}</p>
                   </div>
-                  <div className="mt-6 lg:mt-0">
+                  <div>
                     <button
                       onClick={() => setSelectedProject(project)}
                       className="w-full py-3.5 flex items-center justify-center gap-2 text-sm sm:text-base font-semibold text-neutral-900 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-xl hover:scale-[1.01] transition-transform shadow-lg shadow-cyan-500/10"
