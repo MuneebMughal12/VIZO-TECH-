@@ -156,6 +156,26 @@ export const ProjectModal = ({ isOpen, onClose, project }) => {
               )}
             </div>
 
+            {/* Restored Metrics Row */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+              <div className="bg-[#0d0d11]/60 border border-white/5 rounded-xl p-4 flex flex-col items-center justify-center text-center">
+                <div className="text-[#00f0ff] font-extrabold text-lg md:text-xl truncate">{metrics.latency || '14ms'}</div>
+                <div className="text-[10px] text-on-surface-variant uppercase tracking-wider mt-1">LATENCY AVG</div>
+              </div>
+              <div className="bg-[#0d0d11]/60 border border-white/5 rounded-xl p-4 flex flex-col items-center justify-center text-center">
+                <div className="text-purple-400 font-extrabold text-lg md:text-xl truncate">{metrics.dailyTxs || '320k'}</div>
+                <div className="text-[10px] text-on-surface-variant uppercase tracking-wider mt-1">DAILY TXS</div>
+              </div>
+              <div className="bg-[#0d0d11]/60 border border-white/5 rounded-xl p-4 flex flex-col items-center justify-center text-center">
+                <div className="text-emerald-400 font-extrabold text-lg md:text-xl truncate">{metrics.uptime || '99.95%'}</div>
+                <div className="text-[10px] text-on-surface-variant uppercase tracking-wider mt-1">CORE UPTIME</div>
+              </div>
+              <div className="bg-[#0d0d11]/60 border border-white/5 rounded-xl p-4 flex flex-col items-center justify-center text-center">
+                <div className="text-amber-400 font-extrabold text-lg md:text-xl truncate">{metrics.roiMultiplier || '12x'}</div>
+                <div className="text-[10px] text-on-surface-variant uppercase tracking-wider mt-1">ROI MULTIPLIER</div>
+              </div>
+            </div>
+
             {/* Under-Slider Grid: Detailed Narrative segments */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 mt-8 pt-6 border-t border-white/5">
               <div className="space-y-3">
