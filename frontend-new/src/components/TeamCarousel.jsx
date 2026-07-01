@@ -8,6 +8,13 @@ export const TeamCarousel = ({ members }) => {
 
   // Auto-rotation timer (optional, pause on hover)
   const [isHovered, setIsHovered] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024);
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     if (isHovered || members.length <= 1) return;
@@ -45,12 +52,12 @@ export const TeamCarousel = ({ members }) => {
 
   return (
     <div 
-      className="w-full max-w-5xl mx-auto px-4 py-8"
+      className="w-full max-w-5xl mx-auto px-3 sm:px-4 py-8"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Outer rounded container mirroring the premium design */}
-      <div className="relative rounded-[2.5rem] bg-slate-50 dark:bg-zinc-900/40 border border-slate-200/50 dark:border-zinc-800/80 shadow-2xl p-8 md:p-12 overflow-hidden flex flex-col items-center">
+      <div className="relative w-full rounded-2xl md:rounded-[2.5rem] bg-slate-50 dark:bg-zinc-900/40 border border-slate-200/50 dark:border-zinc-800/80 shadow-2xl px-3 py-8 sm:p-8 md:p-12 overflow-hidden flex flex-col items-center">
         {/* Subtle decorative mesh background inside container */}
         <div className="absolute inset-0 pointer-events-none -z-10 overflow-hidden opacity-30">
           <div className="absolute -top-[10%] -left-[10%] w-[30%] h-[30%] bg-blue-500/10 blur-[80px] rounded-full" />
@@ -92,7 +99,7 @@ export const TeamCarousel = ({ members }) => {
 
                 // 3D positioning config based on circular distance
                 // Horizontal spacing scaling down as stack goes deeper
-                const spacing = window.innerWidth < 768 ? 55 : 120;
+                const spacing = windowWidth < 475 ? 45 : (windowWidth < 768 ? 55 : 120);
                 const xOffset = distance * spacing;
 
                 // Scale decreases for background cards
@@ -156,7 +163,7 @@ export const TeamCarousel = ({ members }) => {
                         setActiveIndex(i);
                       }
                     }}
-                    className={`absolute w-[160px] h-[220px] md:w-[220px] md:h-[290px] rounded-2xl overflow-hidden cursor-pointer shadow-xl border ${
+                    className={`absolute w-[140px] h-[190px] xs:w-[160px] xs:h-[220px] md:w-[220px] md:h-[290px] rounded-2xl overflow-hidden cursor-pointer shadow-xl border ${
                       absDistance === 0 
                         ? 'border-blue-500/40 dark:border-sky-500/40 shadow-blue-500/10' 
                         : 'border-slate-300/40 dark:border-zinc-800/60'

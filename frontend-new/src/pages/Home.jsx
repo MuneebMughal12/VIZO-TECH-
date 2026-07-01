@@ -446,7 +446,7 @@ export const Home = ({ onContactClick }) => {
 
       {/* 5. Featured Showcase Pinned items */}
       <section id="showcase" className="py-section-gap bg-black/5 dark:bg-white/5">
-        <div className="max-w-container-max mx-auto px-margin-desktop">
+        <div className="w-full px-3 sm:px-4 md:px-margin-desktop mx-auto max-w-container-max">
           <div className="flex justify-between items-end mb-16">
             <div>
               <span className={`font-label-sm uppercase tracking-[0.2em] mb-4 block ${theme === 'dark' ? 'text-[#00f0ff]' : 'text-[#0052FF]'
@@ -459,7 +459,7 @@ export const Home = ({ onContactClick }) => {
             {pinnedProjects.map(project => (
               <div
                 key={project._id}
-                className="group relative flex flex-col lg:flex-row bg-[#0d0d11] border border-white/5 rounded-3xl overflow-hidden hover:border-cyan-500/20 hover:shadow-2xl hover:shadow-cyan-500/5 transition-all duration-300"
+                className="group relative w-full flex flex-col lg:flex-row bg-[#0d0d11] border border-white/5 rounded-2xl md:rounded-3xl overflow-hidden hover:border-cyan-500/20 hover:shadow-2xl hover:shadow-cyan-500/5 transition-all duration-300"
               >
                 <div className="w-full lg:w-1/2 h-auto lg:h-full overflow-hidden shrink-0 relative">
                   <img
@@ -501,7 +501,7 @@ export const Home = ({ onContactClick }) => {
 
       {/* 6. Core Team Members (3D Stacked Carousel) */}
       {team.length > 0 && (
-        <section className="py-section-gap max-w-container-max mx-auto px-margin-desktop">
+        <section className="py-section-gap w-full px-3 sm:px-4 md:px-margin-desktop mx-auto max-w-container-max">
           <TeamCarousel members={team} />
         </section>
       )}
