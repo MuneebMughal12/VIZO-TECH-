@@ -93,94 +93,71 @@ export const ProjectModal = ({ isOpen, onClose, project }) => {
 
           {/* Content Body */}
           <div className="space-y-8">
-            {/* Main Visual Image & Key Stats */}
-            <div className="grid md:grid-cols-12 gap-6 items-stretch">
-              {/* Project Image Slider / Carousel */}
-              <div className="md:col-span-7 aspect-video relative rounded-2xl overflow-hidden bg-black/40 border border-white/5 group/slider">
-                {allImages.length === 0 ? (
-                  <div className="w-full h-full flex items-center justify-center text-on-surface-variant font-mono text-xs">
-                    No preview media available
+            {/* The Carousel Engine: Full-Width Project Image Slider */}
+            <div className="w-full h-[220px] sm:h-[320px] lg:h-[450px] xl:h-[500px] rounded-xl lg:rounded-2xl relative overflow-hidden group bg-black/40 border border-white/5">
+              {allImages.length === 0 ? (
+                <div className="w-full h-full flex items-center justify-center text-on-surface-variant font-mono text-xs">
+                  No preview media available
+                </div>
+              ) : (
+                <>
+                  {/* Slides container */}
+                  <div 
+                    className="w-full h-full flex transition-transform duration-500 ease-out"
+                    style={{ transform: `translateX(-${currentSlideIndex * 100}%)` }}
+                  >
+                    {allImages.map((src, idx) => (
+                      <div key={idx} className="w-full h-full shrink-0 relative">
+                        <img 
+                          src={src} 
+                          alt={`${title} slide ${idx + 1}`} 
+                          className="w-full h-full object-cover opacity-80"
+                        />
+                      </div>
+                    ))}
                   </div>
-                ) : (
-                  <>
-                    {/* Slides container */}
-                    <div 
-                      className="w-full h-full flex transition-transform duration-500 ease-out"
-                      style={{ transform: `translateX(-${currentSlideIndex * 100}%)` }}
-                    >
-                      {allImages.map((src, idx) => (
-                        <div key={idx} className="w-full h-full shrink-0 relative">
-                          <img 
-                            src={src} 
-                            alt={`${title} slide ${idx + 1}`} 
-                            className="w-full h-full object-cover opacity-80"
+
+                  {/* Navigation Arrows (show on hover) */}
+                  {allImages.length > 1 && (
+                    <>
+                      <button
+                        onClick={prevSlide}
+                        className="absolute left-4 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/60 border border-white/10 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 hover:bg-[#00f0ff]/15 hover:border-[#00f0ff] hover:text-[#00f0ff] transition-all z-10"
+                      >
+                        <span className="material-symbols-outlined text-[20px]">chevron_left</span>
+                      </button>
+                      <button
+                        onClick={nextSlide}
+                        className="absolute right-4 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/60 border border-white/10 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 hover:bg-[#9d4edd]/15 hover:border-[#9d4edd] hover:text-[#9d4edd] transition-all z-10"
+                      >
+                        <span className="material-symbols-outlined text-[20px]">chevron_right</span>
+                      </button>
+
+                      {/* Pagination Dots */}
+                      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5 z-10 bg-black/40 px-3 py-1.5 rounded-full border border-white/5 backdrop-blur-sm">
+                        {allImages.map((_, idx) => (
+                          <button
+                            key={idx}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setCurrentSlideIndex(idx);
+                            }}
+                            className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                              idx === currentSlideIndex 
+                                ? 'bg-[#00f0ff] scale-125 shadow-[0_0_8px_#00f0ff]' 
+                                : 'bg-white/40 hover:bg-white/70'
+                            }`}
                           />
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* Navigation Arrows (show on hover) */}
-                    {allImages.length > 1 && (
-                      <>
-                        <button
-                          onClick={prevSlide}
-                          className="absolute left-4 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/60 border border-white/10 text-[#00f0ff] flex items-center justify-center opacity-0 group-hover/slider:opacity-100 hover:bg-[#00f0ff]/15 hover:border-[#00f0ff] transition-all z-10"
-                        >
-                          <span className="material-symbols-outlined text-[20px]">chevron_left</span>
-                        </button>
-                        <button
-                          onClick={nextSlide}
-                          className="absolute right-4 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/60 border border-white/10 text-[#9d4edd] flex items-center justify-center opacity-0 group-hover/slider:opacity-100 hover:bg-[#9d4edd]/15 hover:border-[#9d4edd] transition-all z-10"
-                        >
-                          <span className="material-symbols-outlined text-[20px]">chevron_right</span>
-                        </button>
-
-                        {/* Pagination Dots */}
-                        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5 z-10 bg-black/40 px-3 py-1.5 rounded-full border border-white/5 backdrop-blur-sm">
-                          {allImages.map((_, idx) => (
-                            <button
-                              key={idx}
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setCurrentSlideIndex(idx);
-                              }}
-                              className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                                idx === currentSlideIndex 
-                                  ? 'bg-[#00f0ff] scale-125 shadow-[0_0_8px_#00f0ff]' 
-                                  : 'bg-white/40 hover:bg-white/70'
-                              }`}
-                            />
-                          ))}
-                        </div>
-                      </>
-                    )}
-                  </>
-                )}
-              </div>
-
-              {/* Quick Metrics Dashboard */}
-              <div className="md:col-span-5 grid grid-cols-2 gap-4">
-                <div className="glass-card p-4 rounded-xl text-center flex flex-col justify-center border-l-4 border-l-[#00f0ff]">
-                  <div className="text-[#00f0ff] font-extrabold text-lg md:text-xl truncate">{metrics.latency || 'N/A'}</div>
-                  <div className="text-[10px] text-on-surface-variant uppercase tracking-wider mt-1">Latency Avg</div>
-                </div>
-                <div className="glass-card p-4 rounded-xl text-center flex flex-col justify-center border-l-4 border-l-purple-500">
-                  <div className="text-purple-400 font-extrabold text-lg md:text-xl truncate">{metrics.dailyTxs || 'N/A'}</div>
-                  <div className="text-[10px] text-on-surface-variant uppercase tracking-wider mt-1">Daily Txs</div>
-                </div>
-                <div className="glass-card p-4 rounded-xl text-center flex flex-col justify-center border-l-4 border-l-emerald-500">
-                  <div className="text-emerald-400 font-extrabold text-lg md:text-xl truncate">{metrics.uptime || '99.99%'}</div>
-                  <div className="text-[10px] text-on-surface-variant uppercase tracking-wider mt-1">Core Uptime</div>
-                </div>
-                <div className="glass-card p-4 rounded-xl text-center flex flex-col justify-center border-l-4 border-l-amber-500">
-                  <div className="text-amber-400 font-extrabold text-lg md:text-xl truncate">{metrics.roiMultiplier || '12x'}</div>
-                  <div className="text-[10px] text-on-surface-variant uppercase tracking-wider mt-1">ROI Multiplier</div>
-                </div>
-              </div>
+                        ))}
+                      </div>
+                    </>
+                  )}
+                </>
+              )}
             </div>
 
-            {/* Detailed Narrative segments */}
-            <div className="grid md:grid-cols-3 gap-8">
+            {/* Under-Slider Grid: Detailed Narrative segments */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 mt-8 pt-6 border-t border-white/5">
               <div className="space-y-3">
                 <h4 className={`text-md font-bold uppercase tracking-wider flex items-center gap-2 ${
                   theme === 'dark' ? 'text-[#00f0ff]' : 'text-[#0052FF]'
