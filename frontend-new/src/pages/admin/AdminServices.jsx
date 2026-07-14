@@ -406,6 +406,41 @@ export const AdminServices = () => {
     }
   };
 
+  const handleTogglePackagePinned = async (pkg) => {
+    const updatedPinned = !pkg.isPinned;
+    if (updatedPinned) {
+      try {
+        const res = await fetch(`${API_URL}/api/packages?isPinned=true`);
+        if (res.ok) {
+          const pinnedList = await res.json();
+          if (pinnedList.length >= 6) {
+            if (!window.confirm("Warning: More than 6 packages are currently pinned to the Home page! Only the top 6 will display. Do you want to proceed?")) {
+              return;
+            }
+          }
+        }
+      } catch (e) {
+        console.error('Error checking pinned count:', e);
+      }
+    }
+
+    try {
+      const res = await fetch(`${API_URL}/api/packages/${pkg._id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ isPinned: updatedPinned })
+      });
+      if (res.ok) {
+        fetchPackages(selectedService._id);
+      }
+    } catch (err) {
+      console.error('Error toggling package pin status:', err);
+    }
+  };
+
   // Helper nested array updates
   const addFeature = () => {
     if (!newFeatureText.trim()) return;
@@ -644,16 +679,32 @@ export const AdminServices = () => {
 
                         {/* Action buttons */}
                         <div className="flex md:flex-col justify-end items-end gap-2 shrink-0 self-end md:self-center">
-                          <button
-                            onClick={() => handleTogglePackageActive(pkg)}
-                            className={`px-3 py-1.5 rounded-lg border text-xs font-bold w-24 transition-colors ${
-                              pkg.isActive
-                                ? 'bg-transparent border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/10'
-                                : 'bg-transparent border-red-500/30 text-red-400 hover:bg-red-500/10'
-                            }`}
-                          >
-                            {pkg.isActive ? 'Active' : 'Inactive'}
-                          </button>
+                          <div className="flex flex-row md:flex-col gap-2">
+                            <button
+                              onClick={() => handleTogglePackageActive(pkg)}
+                              className={`px-3 py-1.5 rounded-lg border text-xs font-bold w-24 transition-colors ${
+                                pkg.isActive
+                                  ? 'bg-transparent border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/10'
+                                  : 'bg-transparent border-red-500/30 text-red-400 hover:bg-red-500/10'
+                              }`}
+                            >
+                              {pkg.isActive ? 'Active' : 'Inactive'}
+                            </button>
+
+                            <button
+                              onClick={() => handleTogglePackagePinned(pkg)}
+                              className={`px-3 py-1.5 rounded-lg border text-xs font-bold w-24 flex items-center justify-center gap-1 transition-colors ${
+                                pkg.isPinned
+                                  ? 'bg-transparent border-purple-500/30 text-purple-400 hover:bg-purple-500/10'
+                                  : 'bg-transparent border-gray-500/30 text-gray-400 hover:bg-gray-500/10'
+                              }`}
+                            >
+                              <span className="material-symbols-outlined text-[14px]">
+                                {pkg.isPinned ? 'push_pin' : 'push_pin'}
+                              </span>
+                              {pkg.isPinned ? 'Pinned' : 'Pin'}
+                            </button>
+                          </div>
                           
                           <div className="flex gap-2">
                             <button
