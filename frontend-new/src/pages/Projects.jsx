@@ -8,10 +8,12 @@ export const Projects = () => {
   const [projects, setProjects] = useState([]);
   const [activeCategory, setActiveCategory] = useState('All');
   const [selectedProject, setSelectedProject] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const categories = ['All', 'Design', 'AI', 'Development', 'Digital Marketing', 'Video Editing', 'Shopify'];
 
   const fetchProjects = async () => {
+    setLoading(true);
     try {
       const res = await fetch(`${API_URL}/api/projects`);
       if (res.ok) {
@@ -20,6 +22,8 @@ export const Projects = () => {
       }
     } catch (err) {
       console.error('Error fetching projects:', err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -65,31 +69,36 @@ export const Projects = () => {
       </header>
 
       {/* Tabs Filter */}
-      <div className="flex flex-wrap justify-center gap-3 mb-16">
-        {categories.map(cat => {
-          const isActive = activeCategory === cat;
-          return (
-            <button
-              key={cat}
-              onClick={() => setActiveCategory(cat)}
-              className={`px-6 py-2.5 rounded-full font-label-sm text-xs font-semibold tracking-wider uppercase transition-all duration-300 ${
-                isActive
-                  ? theme === 'dark'
-                    ? 'bg-[#9d05ff] text-white shadow-lg shadow-[#9d05ff]/25'
-                    : 'bg-[#0052FF] text-white shadow-lg shadow-[#0052FF]/20'
-                  : theme === 'dark'
-                    ? 'bg-white/5 border border-white/10 text-on-surface-variant hover:bg-white/10 hover:text-white'
-                    : 'bg-black/5 border border-black/10 text-on-surface-variant hover:bg-black/10 hover:text-black'
-              }`}
-            >
-              {cat}
-            </button>
-          );
-        })}
+      <div className="flex justify-center mb-16">
+        <div className="flex items-center gap-1.5 p-1.5 rounded-full overflow-x-auto max-w-full no-scrollbar glass-panel shadow-2xl border border-white/5">
+          {categories.map((cat) => {
+            const isActive = activeCategory === cat;
+            return (
+              <button
+                key={cat}
+                onClick={() => setActiveCategory(cat)}
+                className={`px-5 py-2.5 rounded-full text-xs font-bold transition-all duration-300 whitespace-nowrap active:scale-95 ${
+                  isActive
+                    ? theme === 'dark'
+                      ? 'bg-[#00f0ff] text-black shadow-[0_0_15px_rgba(0,240,255,0.4)]'
+                      : 'bg-[#0052FF] text-white shadow-[0_0_15px_rgba(0,82,255,0.4)]'
+                    : 'text-on-surface-variant hover:text-white hover:bg-white/5'
+                }`}
+              >
+                {cat}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
-      {/* Projects Grid */}
-      {filteredProjects.length === 0 ? (
+      {/* Projects Grid / Loading State */}
+      {loading ? (
+        <div className="flex flex-col items-center justify-center py-24 space-y-4">
+          <div className="w-12 h-12 rounded-full border-4 border-t-cyan-400 border-white/10 animate-spin" />
+          <p className="text-on-surface-variant text-sm font-semibold tracking-wider">Syncing Projects...</p>
+        </div>
+      ) : filteredProjects.length === 0 ? (
         <div className="py-24 text-center text-on-surface-variant text-sm font-semibold">
           No projects registered in this category yet.
         </div>
