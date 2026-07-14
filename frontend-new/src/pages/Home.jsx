@@ -356,7 +356,7 @@ export const Home = ({ onContactClick }) => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-gutter">
           {/* Design */}
-          <div className="glass-card p-10 group hover:-translate-y-2 transition-transform duration-500 rounded-2xl">
+          <Link to="/services?tab=design" className="glass-card p-10 group hover:-translate-y-2 transition-transform duration-500 rounded-2xl block">
             <div className="w-16 h-16 rounded-2xl bg-[#00f0ff]/10 flex items-center justify-center mb-8 border border-[#00f0ff]/20">
               <span className="material-symbols-outlined text-[#00f0ff] text-3xl">brush</span>
             </div>
@@ -364,10 +364,10 @@ export const Home = ({ onContactClick }) => {
             <p className="text-on-surface-variant leading-relaxed text-sm">
               Crafting immersive digital experiences through high-fidelity visual narratives and user-centric architecture that resonates globally.
             </p>
-          </div>
+          </Link>
 
           {/* AI Integration */}
-          <div className="glass-card p-10 group hover:-translate-y-2 transition-transform duration-500 rounded-2xl">
+          <Link to="/services?tab=ai" className="glass-card p-10 group hover:-translate-y-2 transition-transform duration-500 rounded-2xl block">
             <div className="w-16 h-16 rounded-2xl bg-purple-500/10 flex items-center justify-center mb-8 border border-purple-500/20">
               <span className="material-symbols-outlined text-purple-400 text-3xl">psychology</span>
             </div>
@@ -375,10 +375,10 @@ export const Home = ({ onContactClick }) => {
             <p className="text-on-surface-variant leading-relaxed text-sm">
               Embedding intelligent automation and predictive modeling into existing workflows to redefine operational efficiency.
             </p>
-          </div>
+          </Link>
 
           {/* Technical Development */}
-          <div className="glass-card p-10 group hover:-translate-y-2 transition-transform duration-500 rounded-2xl">
+          <Link to="/services?tab=development" className="glass-card p-10 group hover:-translate-y-2 transition-transform duration-500 rounded-2xl block">
             <div className="w-16 h-16 rounded-2xl bg-emerald-500/10 flex items-center justify-center mb-8 border border-emerald-500/20">
               <span className="material-symbols-outlined text-emerald-400 text-3xl">terminal</span>
             </div>
@@ -386,10 +386,10 @@ export const Home = ({ onContactClick }) => {
             <p className="text-on-surface-variant leading-relaxed text-sm">
               High-performance engineering that scales. Robust backend architectures built for precision, speed, and absolute reliability.
             </p>
-          </div>
+          </Link>
 
           {/* Digital Marketing */}
-          <div className="glass-card p-10 group hover:-translate-y-2 transition-transform duration-500 rounded-2xl">
+          <Link to="/services?tab=digital-marketing" className="glass-card p-10 group hover:-translate-y-2 transition-transform duration-500 rounded-2xl block">
             <div className="w-16 h-16 rounded-2xl bg-orange-500/10 flex items-center justify-center mb-8 border border-orange-500/20">
               <span className="material-symbols-outlined text-orange-400 text-3xl">trending_up</span>
             </div>
@@ -397,10 +397,10 @@ export const Home = ({ onContactClick }) => {
             <p className="text-on-surface-variant leading-relaxed text-sm">
               Accelerating brand authority and organic reach through data-driven SEO, strategic content marketing, and hyper-targeted conversion optimization.
             </p>
-          </div>
+          </Link>
 
           {/* Video Editing */}
-          <div className="glass-card p-10 group hover:-translate-y-2 transition-transform duration-500 rounded-2xl">
+          <Link to="/services?tab=video-editing" className="glass-card p-10 group hover:-translate-y-2 transition-transform duration-500 rounded-2xl block">
             <div className="w-16 h-16 rounded-2xl bg-rose-500/10 flex items-center justify-center mb-8 border border-rose-500/20">
               <span className="material-symbols-outlined text-rose-400 text-3xl">video_camera_back</span>
             </div>
@@ -408,10 +408,10 @@ export const Home = ({ onContactClick }) => {
             <p className="text-on-surface-variant leading-relaxed text-sm">
               Creating high-impact visual narratives, corporate showcase reels, and social media campaigns with cinematic editing, sound design, and color grading.
             </p>
-          </div>
+          </Link>
 
           {/* Shopify */}
-          <div className="glass-card p-10 group hover:-translate-y-2 transition-transform duration-500 rounded-2xl">
+          <Link to="/services?tab=shopify" className="glass-card p-10 group hover:-translate-y-2 transition-transform duration-500 rounded-2xl block">
             <div className="w-16 h-16 rounded-2xl bg-[#96bf48]/10 flex items-center justify-center mb-8 border border-[#96bf48]/20">
               <span className="material-symbols-outlined text-[#96bf48] text-3xl">storefront</span>
             </div>
@@ -419,7 +419,7 @@ export const Home = ({ onContactClick }) => {
             <p className="text-on-surface-variant leading-relaxed text-sm">
               Custom e-commerce architectures, bespoke theme development, app integrations, and conversion-optimized storefronts designed to scale your global sales.
             </p>
-          </div>
+          </Link>
         </div>
       </section>
 

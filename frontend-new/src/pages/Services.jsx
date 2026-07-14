@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useTheme } from '../context/ThemeContext';
+import { useLocation } from 'react-router-dom';
 import API_URL from '../config/api';
 
 export const Services = () => {
   const { theme } = useTheme();
+  const location = useLocation();
   const [services, setServices] = useState([]);
   const [packages, setPackages] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -44,6 +46,14 @@ export const Services = () => {
     };
     fetchData();
   }, []);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const tabParam = params.get('tab');
+    if (tabParam) {
+      setActiveTab(tabParam.toLowerCase());
+    }
+  }, [location]);
 
   // Filter logic: Filter services based on activeTab
   const filteredServices = services.filter(service => {
