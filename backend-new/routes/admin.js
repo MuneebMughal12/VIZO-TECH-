@@ -41,4 +41,28 @@ router.post('/login', async (req, res) => {
   }
 });
 
+const Service = require('../models/Service');
+const Package = require('../models/Package');
+const auth = require('../middleware/auth');
+
+// GET /api/admin/dashboard-stats
+router.get('/dashboard-stats', auth, async (req, res) => {
+  try {
+    const totalServices = await Service.countDocuments();
+    const totalPackages = await Package.countDocuments();
+    const pinnedPackages = await Package.countDocuments({ isPinned: true });
+    const activeDiscounts = await Package.countDocuments({ discountActive: true });
+
+    res.json({
+      totalServices,
+      totalPackages,
+      pinnedPackages,
+      activeDiscounts
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ msg: 'Server error' });
+  }
+});
+
 module.exports = router;

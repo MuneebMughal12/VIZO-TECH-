@@ -8,6 +8,7 @@ import { Home } from './pages/Home';
 import { About } from './pages/About';
 import { Projects } from './pages/Projects';
 import { Team } from './pages/Team';
+import { Services } from './pages/Services';
 
 // Admin Pages
 import { AdminLogin } from './pages/admin/AdminLogin';
@@ -19,6 +20,7 @@ import { AdminProjects } from './pages/admin/AdminProjects';
 import { AdminTeam } from './pages/admin/AdminTeam';
 import { AdminReviews } from './pages/admin/AdminReviews';
 import { AdminTechnologies } from './pages/admin/AdminTechnologies';
+import { AdminServices } from './pages/admin/AdminServices';
 
 // Inner App shell to capture location for conditional navbar rendering
 const AppContent = () => {
@@ -97,6 +99,7 @@ const AppContent = () => {
         {/* Public Client pages */}
         <Route path="/" element={<Home onContactClick={() => setIsContactOpen(true)} />} />
         <Route path="/about" element={<About onContactClick={() => setIsContactOpen(true)} />} />
+        <Route path="/services" element={<Services />} />
         <Route path="/projects" element={<Projects />} />
         <Route path="/team" element={<Team />} />
 
@@ -104,6 +107,7 @@ const AppContent = () => {
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<AdminDashboard />} />
+          <Route path="services" element={<AdminServices />} />
           <Route path="projects" element={<AdminProjects />} />
           <Route path="team" element={<AdminTeam />} />
           <Route path="technologies" element={<AdminTechnologies />} />
@@ -167,7 +171,7 @@ const AppContent = () => {
               <h5 className="font-label-sm text-xs font-extrabold text-gray-800 dark:text-gray-300 uppercase tracking-widest">Navigation</h5>
               <Link to="/team" className="text-gray-600 hover:text-black dark:text-gray-400 dark:hover:text-white text-sm transition-colors">Our Team</Link>
               <Link to="/projects" className="text-gray-600 hover:text-black dark:text-gray-400 dark:hover:text-white text-sm transition-colors">Project Archive</Link>
-              <Link to="/about" className="text-gray-600 hover:text-black dark:text-gray-400 dark:hover:text-white text-sm transition-colors">Service Suite</Link>
+              <Link to="/services" className="text-gray-600 hover:text-black dark:text-gray-400 dark:hover:text-white text-sm transition-colors">Services</Link>
             </div>
 
             <div className="flex flex-col gap-4">

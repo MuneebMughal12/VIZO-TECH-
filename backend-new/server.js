@@ -43,6 +43,8 @@ app.use('/api/settings', require('./routes/settings'));
 app.use('/api/technologies', require('./routes/technologies'));
 app.use('/api/upload', require('./routes/upload'));
 app.use('/api/analytics', require('./routes/analytics'));
+app.use('/api/services', require('./routes/services'));
+app.use('/api/packages', require('./routes/packages'));
 
 // Base route for testing
 app.get('/', (req, res) => {

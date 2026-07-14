@@ -26,6 +26,7 @@ export const AdminLayout = () => {
 
   const menuItems = [
     { name: 'Dashboard', path: '/admin', icon: 'dashboard' },
+    { name: 'Services', path: '/admin/services', icon: 'design_services' },
     { name: 'Projects', path: '/admin/projects', icon: 'work' },
     { name: 'Team', path: '/admin/team', icon: 'group' },
     { name: 'Technologies', path: '/admin/technologies', icon: 'terminal' },

@@ -9,6 +9,12 @@ export const AdminDashboard = () => {
   const [totalVisits, setTotalVisits] = useState(0);
   const [weeklyTraffic, setWeeklyTraffic] = useState([0, 0, 0, 0, 0, 0, 0]);
   const [daysLabel, setDaysLabel] = useState(['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']);
+  const [catalogStats, setCatalogStats] = useState({
+    totalServices: 0,
+    totalPackages: 0,
+    pinnedPackages: 0,
+    activeDiscounts: 0
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,6 +43,13 @@ export const AdminDashboard = () => {
           setTotalVisits(aData.totalVisits);
           setWeeklyTraffic(aData.chartData);
           setDaysLabel(aData.daysLabel);
+        }
+
+        // Catalog Stats
+        const sRes = await fetch(`${API_URL}/api/admin/dashboard-stats`, { headers });
+        if (sRes.ok) {
+          const sData = await sRes.json();
+          setCatalogStats(sData);
         }
       } catch (err) {
         console.error('Failed to load dashboard metrics:', err);
@@ -85,47 +98,95 @@ export const AdminDashboard = () => {
       </header>
 
       {/* Bento Grid Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* Stat Card 1 */}
-        <div className="glass-panel p-8 rounded-3xl flex flex-col justify-between group glow-border">
+        <div className="glass-panel p-6 rounded-3xl flex flex-col justify-between group glow-border">
           <div className="flex justify-between items-start">
             <span className="material-symbols-outlined text-[#00f0ff] group-hover:scale-110 transition-transform">rocket_launch</span>
-            <span className="text-emerald-400 bg-emerald-400/10 px-2 py-0.5 rounded text-[10px] font-bold">+12%</span>
+            <span className="text-emerald-400 bg-emerald-400/10 px-2 py-0.5 rounded text-[10px] font-bold">Projects</span>
           </div>
-          <div className="mt-8">
+          <div className="mt-6">
             <h3 className="text-on-surface-variant font-label-sm text-[10px] uppercase tracking-widest">Total Projects</h3>
-            <p className="text-4xl font-extrabold mt-2">{projects.length}</p>
+            <p className="text-3xl font-extrabold mt-1">{projects.length}</p>
           </div>
         </div>
 
         {/* Stat Card 2 */}
-        <div className="glass-panel p-8 rounded-3xl flex flex-col justify-between group glow-border">
+        <div className="glass-panel p-6 rounded-3xl flex flex-col justify-between group glow-border">
           <div className="flex justify-between items-start">
             <span className="material-symbols-outlined text-purple-400 group-hover:scale-110 transition-transform">groups</span>
-            <span className="text-purple-400 bg-purple-400/10 px-2 py-0.5 rounded text-[10px] font-bold">Stable</span>
+            <span className="text-purple-400 bg-purple-400/10 px-2 py-0.5 rounded text-[10px] font-bold">Team</span>
           </div>
-          <div className="mt-8">
+          <div className="mt-6">
             <h3 className="text-on-surface-variant font-label-sm text-[10px] uppercase tracking-widest">Team Members</h3>
-            <p className="text-4xl font-extrabold mt-2">{teamCount}</p>
+            <p className="text-3xl font-extrabold mt-1">{teamCount}</p>
           </div>
         </div>
 
         {/* Stat Card 3 */}
-        <div className="glass-panel p-8 rounded-3xl flex flex-col justify-between group glow-border">
+        <div className="glass-panel p-6 rounded-3xl flex flex-col justify-between group glow-border">
           <div className="flex justify-between items-start">
             <span className="material-symbols-outlined text-[#00E5FF] group-hover:scale-110 transition-transform">visibility</span>
-            <span className="text-emerald-400 bg-emerald-400/10 px-2 py-0.5 rounded text-[10px] font-bold">+28%</span>
+            <span className="text-emerald-400 bg-emerald-400/10 px-2 py-0.5 rounded text-[10px] font-bold">Traffic</span>
           </div>
-          <div className="mt-8">
+          <div className="mt-6">
             <h3 className="text-on-surface-variant font-label-sm text-[10px] uppercase tracking-widest">Site Visits</h3>
-            <p className="text-4xl font-extrabold mt-2">{totalVisits}</p>
+            <p className="text-3xl font-extrabold mt-1">{totalVisits}</p>
           </div>
         </div>
 
-        {/* Stat Card 4 */}
-        <div className="bg-[#00f0ff]/10 border border-[#00f0ff]/30 p-8 rounded-3xl flex flex-col justify-center items-center text-center group cursor-pointer hover:bg-[#00f0ff]/20 transition-all">
-          <span className="material-symbols-outlined text-[#00f0ff] text-4xl mb-2">add_circle</span>
-          <p className="font-label-sm text-xs text-[#00f0ff] font-extrabold uppercase tracking-widest">Quick Task</p>
+        {/* Stat Card 4 - Total Services */}
+        <div className="glass-panel p-6 rounded-3xl flex flex-col justify-between group glow-border">
+          <div className="flex justify-between items-start">
+            <span className="material-symbols-outlined text-cyan-400 group-hover:scale-110 transition-transform">design_services</span>
+            <span className="text-cyan-400 bg-cyan-400/10 px-2 py-0.5 rounded text-[10px] font-bold">Catalog</span>
+          </div>
+          <div className="mt-6">
+            <h3 className="text-on-surface-variant font-label-sm text-[10px] uppercase tracking-widest">Total Services</h3>
+            <p className="text-3xl font-extrabold mt-1">{catalogStats.totalServices}</p>
+          </div>
+        </div>
+
+        {/* Stat Card 5 - Total Packages */}
+        <div className="glass-panel p-6 rounded-3xl flex flex-col justify-between group glow-border">
+          <div className="flex justify-between items-start">
+            <span className="material-symbols-outlined text-indigo-400 group-hover:scale-110 transition-transform">inventory_2</span>
+            <span className="text-indigo-400 bg-indigo-400/10 px-2 py-0.5 rounded text-[10px] font-bold">Packages</span>
+          </div>
+          <div className="mt-6">
+            <h3 className="text-on-surface-variant font-label-sm text-[10px] uppercase tracking-widest">Total Packages</h3>
+            <p className="text-3xl font-extrabold mt-1">{catalogStats.totalPackages}</p>
+          </div>
+        </div>
+
+        {/* Stat Card 6 - Pinned Packages */}
+        <div className="glass-panel p-6 rounded-3xl flex flex-col justify-between group glow-border">
+          <div className="flex justify-between items-start">
+            <span className="material-symbols-outlined text-purple-400 group-hover:scale-110 transition-transform">push_pin</span>
+            <span className="text-purple-400 bg-purple-400/10 px-2 py-0.5 rounded text-[10px] font-bold">Featured</span>
+          </div>
+          <div className="mt-6">
+            <h3 className="text-on-surface-variant font-label-sm text-[10px] uppercase tracking-widest">Pinned Packages</h3>
+            <p className="text-3xl font-extrabold mt-1">{catalogStats.pinnedPackages}</p>
+          </div>
+        </div>
+
+        {/* Stat Card 7 - Active Discounts */}
+        <div className="glass-panel p-6 rounded-3xl flex flex-col justify-between group glow-border">
+          <div className="flex justify-between items-start">
+            <span className="material-symbols-outlined text-rose-400 group-hover:scale-110 transition-transform">sell</span>
+            <span className="text-rose-400 bg-rose-400/10 px-2 py-0.5 rounded text-[10px] font-bold">Discounts</span>
+          </div>
+          <div className="mt-6">
+            <h3 className="text-on-surface-variant font-label-sm text-[10px] uppercase tracking-widest">Active Discounts</h3>
+            <p className="text-3xl font-extrabold mt-1">{catalogStats.activeDiscounts}</p>
+          </div>
+        </div>
+
+        {/* Stat Card 8 - Quick Task */}
+        <div className="bg-[#00f0ff]/10 border border-[#00f0ff]/30 p-6 rounded-3xl flex flex-col justify-center items-center text-center group cursor-pointer hover:bg-[#00f0ff]/20 transition-all">
+          <span className="material-symbols-outlined text-[#00f0ff] text-3xl mb-2">add_circle</span>
+          <p className="font-label-sm text-[11px] text-[#00f0ff] font-extrabold uppercase tracking-widest">Quick Task</p>
         </div>
       </div>
 

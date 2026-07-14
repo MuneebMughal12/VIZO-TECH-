@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import * as THREE from 'three';
 import { useTheme } from '../context/ThemeContext';
 import API_URL from '../config/api';
@@ -13,6 +14,8 @@ export const Home = ({ onContactClick }) => {
 
   // States
   const [pinnedProjects, setPinnedProjects] = useState([]);
+  const [pinnedPackages, setPinnedPackages] = useState([]);
+  const [servicesMap, setServicesMap] = useState({});
   const [team, setTeam] = useState([]);
   const [reviews, setReviews] = useState([
     {
@@ -50,6 +53,24 @@ export const Home = ({ onContactClick }) => {
   // Fetch baseline data
   const fetchData = async () => {
     try {
+      // Services for lookup
+      const sRes = await fetch(`${API_URL}/api/services`);
+      const sMap = {};
+      if (sRes.ok) {
+        const sData = await sRes.json();
+        sData.forEach(s => {
+          sMap[s._id] = s.name;
+        });
+        setServicesMap(sMap);
+      }
+
+      // Pinned Packages
+      const pkgRes = await fetch(`${API_URL}/api/packages?isPinned=true&isActive=true`);
+      if (pkgRes.ok) {
+        const pkgData = await pkgRes.json();
+        setPinnedPackages(pkgData);
+      }
+
       // Projects
       const pRes = await fetch(`${API_URL}/api/projects`);
       if (pRes.ok) {
@@ -401,6 +422,110 @@ export const Home = ({ onContactClick }) => {
           </div>
         </div>
       </section>
+
+      {/* Featured Packages Section */}
+      {pinnedPackages.length > 0 && (
+        <section className="py-section-gap relative max-w-container-max mx-auto px-margin-desktop">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6">
+            <div>
+              <span className={`font-label-sm uppercase tracking-[0.2em] mb-4 block ${theme === 'dark' ? 'text-[#00f0ff]' : 'text-[#0052FF]'}`}>
+                Specialized Offers
+              </span>
+              <h2 className="font-display-lg text-4xl md:text-display-lg font-bold">Featured Packages</h2>
+            </div>
+            <Link
+              to="/services"
+              className={`font-semibold text-sm transition-all flex items-center gap-1 hover:underline ${
+                theme === 'dark' ? 'text-[#00f0ff]' : 'text-[#0052FF]'
+              }`}
+            >
+              View Full Catalog
+              <span className="material-symbols-outlined text-[16px]">arrow_right_alt</span>
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+            {pinnedPackages.map((pkg) => {
+              const finalPrice = pkg.discountActive 
+                ? pkg.price - (pkg.price * pkg.discountPercent / 100)
+                : pkg.price;
+
+              return (
+                <div
+                  key={pkg._id}
+                  className="glass-card rounded-3xl p-8 flex flex-col justify-between hover:-translate-y-2 duration-500 shadow-2xl relative overflow-hidden group"
+                >
+                  <div className="space-y-6">
+                    <div>
+                      {/* Service Category Label */}
+                      <span className="text-[10px] bg-white/10 border border-white/5 text-gray-300 font-extrabold uppercase px-2.5 py-1 rounded-full tracking-wider inline-block mb-3">
+                        {servicesMap[pkg.serviceId] || 'Services'}
+                      </span>
+                      <h3 className="text-xl font-bold tracking-tight mb-2 truncate">{pkg.name}</h3>
+
+                      {/* Pricing */}
+                      <div className="flex items-baseline my-3">
+                        <span className={`text-3xl font-black tracking-tight ${theme === 'dark' ? 'text-white' : 'text-[#1a1c1c]'}`}>
+                          ${finalPrice}
+                        </span>
+                        {pkg.priceSuffix && (
+                          <span className="text-xs text-on-surface-variant font-medium ml-1">
+                            {pkg.priceSuffix}
+                          </span>
+                        )}
+                        {pkg.discountActive && (
+                          <div className="ml-2.5 flex flex-col">
+                            <span className="text-[10px] text-on-surface-variant line-through font-semibold">
+                              ${pkg.price}
+                            </span>
+                            <span className="text-[9px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-1.5 py-0.5 rounded font-extrabold uppercase tracking-wide mt-0.5">
+                              {pkg.discountLabel || 'Sale'}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+
+                      <p className="text-xs text-on-surface-variant leading-relaxed line-clamp-2 mt-2">
+                        {pkg.description}
+                      </p>
+                    </div>
+
+                    {/* features (first 3-4 key features) */}
+                    <div className="space-y-2.5 pt-4 border-t border-white/5">
+                      <ul className="space-y-2">
+                        {pkg.features.slice(0, 4).map((feat) => (
+                          <li key={feat._id} className="flex items-start gap-2 text-xs truncate">
+                            {feat.isIncluded ? (
+                              <span className="material-symbols-outlined text-emerald-400 text-base shrink-0 select-none">check_circle</span>
+                            ) : (
+                              <span className="material-symbols-outlined text-red-500 text-base shrink-0 select-none">cancel</span>
+                            )}
+                            <span className={feat.isIncluded ? 'text-gray-300' : 'text-on-surface-variant line-through'}>
+                              {feat.text}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+
+                  <Link
+                    to="/services"
+                    className={`w-full mt-8 py-3 rounded-xl font-bold text-xs tracking-wider transition-all duration-300 flex items-center justify-center gap-1.5 ${
+                      theme === 'dark'
+                        ? 'bg-[#00f0ff] hover:bg-[#00dbe9] text-black shadow-lg shadow-[#00f0ff]/5'
+                        : 'bg-[#0052FF] hover:bg-[#003bbb] text-white shadow-lg shadow-[#0052FF]/5'
+                    }`}
+                  >
+                    Learn More
+                    <span className="material-symbols-outlined text-[14px]">arrow_right_alt</span>
+                  </Link>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+      )}
 
       {/* Technology Auto-Slider (Marquee) */}
       <TechSlider />
@@ -782,7 +907,7 @@ export const Home = ({ onContactClick }) => {
 
             <a
               className="inline-flex items-center gap-3 px-8 py-4 bg-[#25D366]/20 border border-[#25D366]/40 hover:bg-[#25D366] hover:text-white transition-all rounded-full text-[#25D366] font-bold group"
-              href="https://wa.me/923351912047"
+              href="https://wa.me/15819062494"
               target="_blank"
               rel="noreferrer"
             >
