@@ -53,40 +53,39 @@ export const Home = ({ onContactClick }) => {
   // Fetch baseline data
   const fetchData = async () => {
     try {
-      // Services for lookup
-      const sRes = await fetch(`${API_URL}/api/services`);
-      const sMap = {};
+      // Fetch all endpoints concurrently
+      const [sRes, pkgRes, pRes, tRes, rRes] = await Promise.all([
+        fetch(`${API_URL}/api/services`),
+        fetch(`${API_URL}/api/packages?isPinned=true&isActive=true`),
+        fetch(`${API_URL}/api/projects`),
+        fetch(`${API_URL}/api/team?pinned=true`),
+        fetch(`${API_URL}/api/reviews`)
+      ]);
+
       if (sRes.ok) {
         const sData = await sRes.json();
+        const sMap = {};
         sData.forEach(s => {
           sMap[s._id] = s.name;
         });
         setServicesMap(sMap);
       }
 
-      // Pinned Packages
-      const pkgRes = await fetch(`${API_URL}/api/packages?isPinned=true&isActive=true`);
       if (pkgRes.ok) {
         const pkgData = await pkgRes.json();
         setPinnedPackages(pkgData);
       }
 
-      // Projects
-      const pRes = await fetch(`${API_URL}/api/projects`);
       if (pRes.ok) {
         const pData = await pRes.json();
         setPinnedProjects(pData.filter(p => p.isPinnedHome === true));
       }
 
-      // Team (Only fetch pinned members for Home Page carousel)
-      const tRes = await fetch(`${API_URL}/api/team?pinned=true`);
       if (tRes.ok) {
         const tData = await tRes.json();
         setTeam(tData);
       }
 
-      // Reviews
-      const rRes = await fetch(`${API_URL}/api/reviews`);
       if (rRes.ok) {
         const rData = await rRes.json();
         if (rData && rData.length > 0) {
