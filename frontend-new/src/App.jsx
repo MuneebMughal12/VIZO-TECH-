@@ -4,6 +4,7 @@ import API_URL from './config/api';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
 import { Navbar } from './components/Navbar';
 import { ContactModal } from './components/ContactModal';
+import { WhatsappButton } from './components/WhatsappButton';
 import { Home } from './pages/Home';
 import { About } from './pages/About';
 import { Projects } from './pages/Projects';
@@ -122,6 +123,9 @@ const AppContent = () => {
         isOpen={isContactOpen}
         onClose={() => setIsContactOpen(false)}
       />
+
+      {/* Floating WhatsApp Button (Client side only) */}
+      {!isAdminRoute && <WhatsappButton />}
 
       {/* Global Footer (Client side only) */}
       {!isAdminRoute && (

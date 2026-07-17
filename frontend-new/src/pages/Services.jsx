@@ -156,7 +156,7 @@ export const Services = () => {
 
                       // Pre-fill WhatsApp message:
                       const waText = `Hi! I'm interested in the ${pkg.name} package. Can we discuss?`;
-                      const waLink = `https://wa.me/15819062494?text=${encodeURIComponent(waText)}`;
+                      const waLink = `https://wa.me/923351912047?text=${encodeURIComponent(waText)}`;
 
                       return (
                         <div

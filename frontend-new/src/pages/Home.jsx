@@ -907,7 +907,7 @@ export const Home = ({ onContactClick }) => {
 
             <a
               className="inline-flex items-center gap-3 px-8 py-4 bg-[#25D366]/20 border border-[#25D366]/40 hover:bg-[#25D366] hover:text-white transition-all rounded-full text-[#25D366] font-bold group"
-              href="https://wa.me/15819062494"
+              href="https://wa.me/923351912047"
               target="_blank"
               rel="noreferrer"
             >
