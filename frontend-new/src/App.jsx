@@ -11,6 +11,7 @@ import { Projects } from './pages/Projects';
 import { Team } from './pages/Team';
 import { Services } from './pages/Services';
 import { SEO } from './components/SEO';
+import { GoogleAnalytics } from './components/GoogleAnalytics';
 
 // Admin Pages
 import { AdminLogin } from './pages/admin/AdminLogin';
@@ -94,6 +95,7 @@ const AppContent = () => {
     <div className={`min-h-screen transition-colors duration-500 ease-in-out ${theme === 'dark' ? 'bg-[#050505] text-[#e5e2e1]' : 'bg-[#ffffff] text-[#1a1c1c]'
       }`}>
       <SEO />
+      <GoogleAnalytics />
 
       {!isAdminRoute && (
         <Navbar onContactClick={() => setIsContactOpen(true)} />
