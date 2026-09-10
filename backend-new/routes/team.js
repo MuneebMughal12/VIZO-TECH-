@@ -37,11 +37,6 @@ router.post('/', auth, async (req, res) => {
 
     const member = await newMember.save();
 
-    // If this new member is set as top member, set all other members to false
-    if (isTopMember) {
-      await TeamMember.updateMany({ _id: { $ne: member._id } }, { isTopMember: false });
-    }
-
     res.json(member);
   } catch (err) {
     console.error(err);
@@ -62,11 +57,6 @@ router.put('/:id', auth, async (req, res) => {
       { $set: req.body },
       { new: true }
     );
-
-    // If this member was set to top member, set all other members to false
-    if (req.body.isTopMember === true) {
-      await TeamMember.updateMany({ _id: { $ne: req.params.id } }, { isTopMember: false });
-    }
 
     res.json(member);
   } catch (err) {

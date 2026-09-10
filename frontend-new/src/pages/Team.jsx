@@ -33,8 +33,10 @@ export const Team = () => {
     };
   }, []);
 
-  const topMember = team.find(m => m.isTopMember) || team[0];
-  const otherMembers = topMember ? team.filter(m => m._id !== topMember._id) : [];
+  const selectedTopMembers = team.filter(member => member.isTopMember);
+  const topMembers = selectedTopMembers.length > 0 ? selectedTopMembers : team.slice(0, 1);
+  const topMemberIds = new Set(topMembers.map(member => member._id));
+  const otherMembers = team.filter(member => !topMemberIds.has(member._id));
 
   return (
     <main className="pt-32 pb-section-gap max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
@@ -59,64 +61,68 @@ export const Team = () => {
         </div>
       ) : (
         <div className="space-y-20">
-          {/* Featured Top Member */}
-          {topMember && (
+          {/* Featured Top Members */}
+          {topMembers.length > 0 && (
             <div className="space-y-6">
               <h2 className="text-[10px] font-extrabold uppercase tracking-[0.25em] text-[#00f0ff] text-center md:text-left">
-                Leadership / Featured Architect
+                Leadership / Featured Architects
               </h2>
-              <div className="glass-card rounded-[2rem] overflow-hidden p-8 md:p-12 flex flex-col md:flex-row gap-10 items-center border border-white/10 shadow-2xl relative group hover:border-[#00f0ff]/30 transition-all duration-500">
-                {/* Floating gradient glow behind top member */}
-                <div className="absolute -inset-0.5 bg-gradient-to-r from-[#00f0ff]/10 to-purple-500/10 rounded-[2rem] blur opacity-30 group-hover:opacity-50 transition-opacity duration-500 pointer-events-none -z-10" />
-                
-                {/* Top Member Image */}
-                <div className="relative w-60 h-60 shrink-0 rounded-2xl overflow-hidden bg-black/40 border border-white/10">
-                  <img 
-                    alt={topMember.name} 
-                    className="w-full h-full object-cover filter grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out" 
-                    src={topMember.imageUrl}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-                </div>
+              <div className="space-y-8">
+                {topMembers.map((topMember) => (
+                  <div key={topMember._id} className="glass-card rounded-[2rem] overflow-hidden p-8 md:p-12 flex flex-col md:flex-row gap-10 items-center border border-white/10 shadow-2xl relative group hover:border-[#00f0ff]/30 transition-all duration-500">
+                    {/* Floating gradient glow behind top member */}
+                    <div className="absolute -inset-0.5 bg-gradient-to-r from-[#00f0ff]/10 to-purple-500/10 rounded-[2rem] blur opacity-30 group-hover:opacity-50 transition-opacity duration-500 pointer-events-none -z-10" />
 
-                {/* Top Member Details */}
-                <div className="flex-grow flex flex-col justify-between h-full space-y-6 text-center md:text-left">
-                  <div>
-                    <div className="flex flex-col md:flex-row md:items-center gap-3 mb-2">
-                      <h2 className="font-display-lg text-3xl font-extrabold text-on-surface">{topMember.name}</h2>
-                      {topMember.experience && (
-                        <span className="self-center md:self-auto px-3 py-1 bg-white/5 border border-white/10 rounded-full text-[10px] font-bold tracking-widest uppercase text-on-surface-variant flex items-center gap-1">
-                          <span className="material-symbols-outlined text-[10px]">work</span>
-                          {topMember.experience} Experience
-                        </span>
+                    {/* Top Member Image */}
+                    <div className="relative w-60 h-60 shrink-0 rounded-2xl overflow-hidden bg-black/40 border border-white/10">
+                      <img
+                        alt={topMember.name}
+                        className="w-full h-full object-cover filter grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out"
+                        src={topMember.imageUrl}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                    </div>
+
+                    {/* Top Member Details */}
+                    <div className="flex-grow flex flex-col justify-between h-full space-y-6 text-center md:text-left">
+                      <div>
+                        <div className="flex flex-col md:flex-row md:items-center gap-3 mb-2">
+                          <h2 className="font-display-lg text-3xl font-extrabold text-on-surface">{topMember.name}</h2>
+                          {topMember.experience && (
+                            <span className="self-center md:self-auto px-3 py-1 bg-white/5 border border-white/10 rounded-full text-[10px] font-bold tracking-widest uppercase text-on-surface-variant flex items-center gap-1">
+                              <span className="material-symbols-outlined text-[10px]">work</span>
+                              {topMember.experience} Experience
+                            </span>
+                          )}
+                        </div>
+
+                        <p className={`font-label-sm text-xs font-extrabold tracking-widest uppercase mb-4 ${
+                          theme === 'dark' ? 'text-[#00f0ff]' : 'text-[#0052FF]'
+                        }`}>
+                          {topMember.role}
+                        </p>
+
+                        <p className="text-xs md:text-sm text-on-surface-variant leading-relaxed max-w-3xl">
+                          {topMember.bio}
+                        </p>
+                      </div>
+
+                      {/* Tech Stack tags */}
+                      {topMember.techStack && topMember.techStack.length > 0 && (
+                        <div className="pt-6 border-t border-black/5 dark:border-white/5">
+                          <h4 className="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mb-3">Area of Expertise</h4>
+                          <div className="flex flex-wrap justify-center md:justify-start gap-2">
+                            {topMember.techStack.map((stack) => (
+                              <span key={stack} className="px-3 py-1 bg-white/5 text-on-surface text-xs rounded-lg border border-white/5 hover:border-[#00f0ff]/30 transition-all">
+                                {stack}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
                       )}
                     </div>
-                    
-                    <p className={`font-label-sm text-xs font-extrabold tracking-widest uppercase mb-4 ${
-                      theme === 'dark' ? 'text-[#00f0ff]' : 'text-[#0052FF]'
-                    }`}>
-                      {topMember.role}
-                    </p>
-                    
-                    <p className="text-xs md:text-sm text-on-surface-variant leading-relaxed max-w-3xl">
-                      {topMember.bio}
-                    </p>
                   </div>
-
-                  {/* Tech Stack tags */}
-                  {topMember.techStack && topMember.techStack.length > 0 && (
-                    <div className="pt-6 border-t border-black/5 dark:border-white/5">
-                      <h4 className="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mb-3">Area of Expertise</h4>
-                      <div className="flex flex-wrap justify-center md:justify-start gap-2">
-                        {topMember.techStack.map((stack) => (
-                          <span key={stack} className="px-3 py-1 bg-white/5 text-on-surface text-xs rounded-lg border border-white/5 hover:border-[#00f0ff]/30 transition-all">
-                            {stack}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
+                ))}
               </div>
             </div>
           )}
