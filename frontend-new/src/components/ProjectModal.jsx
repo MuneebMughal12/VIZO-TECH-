@@ -20,6 +20,7 @@ export const ProjectModal = ({ isOpen, onClose, project }) => {
     thumbnail = '',
     imageUrl = '',
     gallery = [],
+    projectLink = '',
     challenge = '',
     solution = '',
     impact = '',
@@ -220,6 +221,17 @@ export const ProjectModal = ({ isOpen, onClose, project }) => {
               </div>
 
               <div className="flex gap-4 items-center shrink-0">
+                {projectLink && (
+                  <a
+                    href={projectLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-6 py-2.5 rounded-xl text-sm font-bold bg-gradient-to-r from-[#00dbe9] to-[#9d05ff] text-white hover:opacity-90 hover:scale-[1.02] transition-all inline-flex items-center gap-2"
+                  >
+                    Visit Live Website
+                    <span className="material-symbols-outlined text-[18px]">open_in_new</span>
+                  </a>
+                )}
                 <button 
                   onClick={onClose}
                   className="px-6 py-2.5 glass-card rounded-xl text-sm font-bold hover:bg-white/5 transition-all"
